@@ -6,3 +6,4 @@ logs/
 temp/
 deploy_docs.sh
 *mesh_series*
+*electro_out*

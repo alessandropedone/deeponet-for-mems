@@ -1,5 +1,5 @@
 //---------------------------------------
-// actuator_template_transfinite.geo
+// actuator_air_only_transfinite.geo
 // Units: MICRONS
 //---------------------------------------
 SetFactory("OpenCASCADE");
@@ -14,6 +14,10 @@ nx = 50;
 L = 100 - overetch;
 n = 4;
 
+xmin = -50;
+xmax =  50 - overetch;
+yheight = 4 - 2*overetch;
+
 // ---- Modal coefficients (microns) ----
 coeff(1) = __COEFF1__;
 coeff(2) = __COEFF2__;
@@ -27,17 +31,12 @@ beta(3) =  7.854757438237612 / L;
 beta(4) = 10.995540734875466 / L;
 
 //---------------------------------------
-// Upper plate (deformed rectangle)
+// Upper plate boundary curves (used as hole boundary)
 //---------------------------------------
-xmin = -50;
-xmax =  50 - overetch;
-yheight = 4 - 2*overetch;
-
 UpperID[] = {};
 LowerID[] = {};
 p = 1;
 
-// Build points
 For i In {1:nx}
   x = xmin + (i-1)*(xmax - xmin)/(nx-1);
 
@@ -63,18 +62,16 @@ For i In {1:nx}
   LowerPts[] += {LowerID[i]};
 EndFor
 
-// Curves of upper plate boundary
-Spline(1) = {UpperPts[]};                    // top edge
-Spline(2) = {LowerPts[]};                    // bottom edge (gap-facing)  <-- force_segment
-Line(3)   = {LowerPts[nx-1], UpperPts[nx-1]}; // right edge
-Line(4)   = {LowerPts[0],    UpperPts[0]};    // left edge (clamp)
+Spline(1) = {UpperPts[]};                     // top edge of upper electrode
+Spline(2) = {LowerPts[]};                     // bottom edge of upper electrode (gap-facing)
+Line(3)   = {LowerPts[nx-1], UpperPts[nx-1]};  // right edge
+Line(4)   = {LowerPts[0],    UpperPts[0]};     // left edge
 
-// Upper solid surface (will be subtracted)
 Curve Loop(1) = {2, 3, -1, -4};
-Plane Surface(1) = {1};
+Plane Surface(1) = {1};   // only used to cut a hole
 
 //---------------------------------------
-// Lower plate (rectangle)
+// Lower plate (hole)
 //---------------------------------------
 Point(1001) = {xmin, -distance/2,     0, 1.0};
 Point(1002) = {xmax, -distance/2,     0, 1.0};
@@ -82,19 +79,18 @@ Point(1003) = {xmax, -distance/2 - 4, 0, 1.0};
 Point(1004) = {xmin, -distance/2 - 4, 0, 1.0};
 
 Line(5) = {1001, 1002}; // top edge (gap-facing)
-Line(6) = {1002, 1003}; // right edge
-Line(7) = {1003, 1004}; // bottom edge
-Line(8) = {1004, 1001}; // left edge
+Line(6) = {1002, 1003};
+Line(7) = {1003, 1004};
+Line(8) = {1004, 1001};
 
 Line Loop(2) = {5, 6, 7, 8};
-Plane Surface(2) = {2};
+Plane Surface(2) = {2};   // only used to cut a hole
 
 //---------------------------------------
-// Outer (fictitious) boundary (circle)
+// Outer boundary (air container)
 //---------------------------------------
 R = 200;
-
-Point(1005) = {0, 0, 0};     // center
+Point(1005) = {0, 0, 0};
 Point(1006) = { R, 0, 0};
 Point(1007) = {0,  R, 0};
 Point(1008) = {-R, 0, 0};
@@ -109,49 +105,44 @@ Curve Loop(3) = {9, 10, 11, 12};
 Plane Surface(3) = {3};
 
 //---------------------------------------
-// Transfinite Curves (node control + progression)
+// Transfinite Curves (meshing strategy like your example)
 //---------------------------------------
-// r controls density; d controls bias through thickness
 r = 16;
 d = 0.15;
 
-// Upper plate boundary
-// (keep many points along gap-facing curve 2)
+// Upper electrode boundary
 Transfinite Curve {2} = 50*r     Using Progression 1;
 Transfinite Curve {1} = 50*r/4   Using Progression 1;
+Transfinite Curve {3,4} = 2*r    Using Progression (1 + d);
 
-// Thickness edges: bias node spacing (cluster near gap if desired)
-// For the upper plate: curves 3 and 4 go from bottom to top
-Transfinite Curve {3,4} = 2*r Using Progression (1 + d);
-
-// Lower plate boundary
+// Lower electrode boundary
 Transfinite Curve {5} = 50*r     Using Progression 1;
 Transfinite Curve {7} = 50*r/4   Using Progression 1;
 Transfinite Curve {6} = 2*r      Using Progression (1 + d);
 Transfinite Curve {8} = 2*r      Using Progression (1 - d);
 
-// Outer circle
+// Outer boundary
 Transfinite Curve {9,10,11,12} = 20 Using Progression 1;
 
 //---------------------------------------
-// Subtract solids from outer domain -> AIR domain only
+// BooleanDifference: keep only AIR
 //---------------------------------------
 air[] = BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; };
 
 //---------------------------------------
-// Physical groups (for FEM boundary marking)
+// Physical groups (for electrostatics BCs + traction integration)
 //---------------------------------------
-Physical Line("force_segment", 10) = {2};       // bottom of upper plate (gap-facing)
-Physical Line("upper_plate",   11) = {1,3,4};   // rest of upper electrode boundary
-Physical Line("lower_plate",   12) = {5,6,7,8}; // lower electrode boundary
+Physical Line("force_segment", 10) = {2};         // gap-facing upper boundary
+Physical Line("upper_plate",   11) = {1,3,4};     // rest of upper electrode boundary
+Physical Line("lower_plate",   12) = {5,6,7,8};   // lower electrode boundary
 Physical Line("boundary",      20) = {9,10,11,12};
 
-Physical Surface("space",      30) = {air[]};
+Physical Surface("air",        30) = {air[]};
 
 //---------------------------------------
-// Mesh settings
+// Mesh options
 //---------------------------------------
-Mesh.Algorithm = 6;         // Frontal-Delaunay (good default)
+Mesh.Algorithm = 6;
 Mesh.Optimize = 1;
 Mesh.OptimizeNetgen = 1;
 
