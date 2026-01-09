@@ -241,3 +241,19 @@ At each step:
 - Air treated as linear dielectric (constant \(\varepsilon_r\)).
 - Modal mechanics assumes a linear basis and diagonal modal dynamics (no geometric nonlinearity, no contact/pull-in).
 - Coupling is partitioned with remeshing; stability near pull-in may require smaller \(\Delta t\) and/or iterative coupling.
+
+
+TO launch the code:
+
+'''
+cd multi-physics_solver
+python coupled_modal_electro.py \
+  --template-geo geometry.geo \
+  --dt 1e-5 --nsteps 200 \
+  --Vdc 0 --Vac 5 --freq 2.5e3 \
+  --Vupper 0 --Vouter 0 \
+  --omega 6.3e5 3.9e6 1.1e7 2.1e7 \
+  --mass  1e-12 1e-12 1e-12 1e-12 \
+  --zeta  0.01  0.01  0.01  0.01 \
+  --print-every 1 --fail-fast
+'''
