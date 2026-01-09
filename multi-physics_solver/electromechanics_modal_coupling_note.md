@@ -257,3 +257,12 @@ python coupled_modal_electro.py \
   --zeta  0.01  0.01  0.01  0.01 \
   --print-every 1 --fail-fast
 '''
+
+
+### References:
+
+Forces:
+https://www.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaabcfxsg&utm_source=chatgpt.com
+Modal Projection:
+https://lib.physcon.ru/file?id=c3839b099d0c
+https://amsdottorato.unibo.it/id/eprint/461/1/2007_03_13_Tesi_Dottorato_Laura_Del_Tin.pdf
