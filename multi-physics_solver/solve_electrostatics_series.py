@@ -14,6 +14,7 @@ from dolfinx.fem.petsc import LinearProblem
 from dolfinx import default_scalar_type
 import ufl
 
+from dolfinx.io import VTKFile
 
 def solve_one_mesh(
     msh_path: Path,
@@ -131,6 +132,7 @@ def main():
                     help="Dirichlet potential on outer boundary (tag 20). Use --no-outer-bc for Neumann.")
     ap.add_argument("--no-outer-bc", action="store_true", help="Do not apply Dirichlet on outer boundary (natural Neumann).")
     ap.add_argument("--epsr", type=float, default=1.0, help="Relative permittivity in air (default 1.0).")
+    ap.add_argument("--dt", type=float, default=1.0, help="Time step used only for ParaView time series.")
     args = ap.parse_args()
 
     comm = MPI.COMM_WORLD
@@ -176,6 +178,27 @@ def main():
             w.writeheader()
             w.writerows(summary_rows)
         print(f"\nSummary: {csv_path}")
+        
+    series_path = args.outdir / "electro_series.pvd"
+    with VTKFile(MPI.COMM_WORLD, str(series_path), "w") as vtk:
+        for k, msh in enumerate(msh_files):
+            t = k * args.dt   # add --dt argument, or read from your coeff CSV
+
+            phi_h, E, info = solve_one_mesh(
+                msh_path=msh,
+                V_lower=args.Vlower,
+                V_upper=args.Vupper,
+                V_outer=None if args.no_outer_bc else args.Vouter,
+                eps_r=args.epsr,
+            )
+
+            # Important: write mesh + fields at the SAME time value
+            vtk.write_mesh(phi_h.function_space.mesh, t)
+            vtk.write_function(phi_h, t)
+            vtk.write_function(E, t)
+
+    if MPI.COMM_WORLD.rank == 0:
+        print(f"Open in ParaView: {series_path}")
 
 
 if __name__ == "__main__":
