@@ -3,18 +3,18 @@
 
 ## Strucutre of the repository
 ```bash
-Geom-DeepONet
+deeponet-for-mems
 ├── README.md
-├── data (module)
-├── surrogate (module)
-├── docs (...)
-├── geometries (...)
-├── models (...)
-├── test (...)
 ├── build_docs.sh
-└── setup.sh
+├── data (module)
+├── docs 
+├── environment.yml
+├── geometries 
+├── models 
+├── multi-physics_solver
+├── surrogate (module)
+└── test
 ```
-
 ## Setup
 > Conda (or Mamba) is required.
 
