@@ -594,7 +594,7 @@ def plot_normal_derivative(file, postpone_show=False, pred=False, error=False, z
         if pred:
             normal_derivative = file["normal_derivative_pred"][:]
         elif error:
-            normal_derivative = file["normal_derivative_pred"][:] - file["normal_derivatives_plate"][:]
+            normal_derivative = abs(file["normal_derivative_pred"][:] - file["normal_derivatives_plate"][:]) / np.median(abs(file["normal_derivatives_plate"][:] + 1e-9))
         else:
             normal_derivative = file["normal_derivatives_plate"][:]
         points = file["midpoints_plate"][:]
@@ -622,7 +622,7 @@ def plot_normal_derivative(file, postpone_show=False, pred=False, error=False, z
         if pred:
             ax.set_title("Predicted normal derivative (zoom {})".format(zoom[i]) if zoom is not None else "Predicted normal derivative")
         elif error:
-            ax.set_title("Normal derivative error (zoom {})".format(zoom[i]) if zoom is not None else "Normal derivative error")
+            ax.set_title("Normal derivative error rescaled (zoom {})".format(zoom[i]) if zoom is not None else "Normal derivative error rescaled")
         else:
             ax.set_title("Normal derivative (zoom {})".format(zoom[i]) if zoom is not None else "Normal derivative")
 

@@ -5,3 +5,6 @@ libdevice.10.bc
 logs/
 temp/
 deploy_docs.sh
+*mesh_series*
+*coupled_work*
+*electro_out*

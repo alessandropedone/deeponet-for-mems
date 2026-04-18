@@ -157,11 +157,11 @@ BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; }
 //---------------------------------------
 
 // Set the number of points on the boundaries
-r = 6;
+r = 3;
 d = 0.15;
 
 // Plates
-Transfinite Curve {1} = 50*r/4 Using Progression 1;
+Transfinite Curve {1} = 50*r/2 Using Progression 1;
 Transfinite Line {2} = 50*r Using Progression 1;
 Transfinite Curve {3, 4} = 2*r Using Progression 1+d;
 Transfinite Line {5} = 50*r  Using Progression 1;
