@@ -27,13 +27,11 @@ def main():
     parser.add_argument("--model_path", type=str, default="models/model.keras", help="Path to save the trained model.")
     parser.add_argument("--splitting_seed", type=int, default=40, help="Random seed for data splitting.")
     parser.add_argument("--target", choices=["potential", "normal_derivative"], default="potential", help="Target quantity to predict.")
-    parser.add_argument("--prediction_seed", type=int, default=40, help="Random seed for test sample selection.")
     parser.add_argument("--using_training_set", action="store_true", help="If set, divide the set into training, validation, and test sets as in the training script.")
 
     args = parser.parse_args()
     data_folder = args.folder
     seed = args.splitting_seed
-    seed2 = args.prediction_seed
     target = args.target
     model_path = args.model_path
     training_set_flag = args.using_training_set

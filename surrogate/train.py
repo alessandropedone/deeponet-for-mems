@@ -31,13 +31,13 @@ from .loader import load
 
 
 
-
 def train(model_path: str, 
           r: int,
           x: np.ndarray,
           y:  np.ndarray,
           mu: np.ndarray,
-          seed: int = 40) -> None:
+          seed: int = 40,
+          batch_size: int = 8) -> None:
     """
     .. admonition:: Description
 
@@ -50,6 +50,7 @@ def train(model_path: str,
     :param y: Output solution array of shape ``(ns, nh)``.
     :param mu: Geometrical parameters array of shape ``(ns, p)``.
     :param seed: Random seed for data splitting.
+    :param batch_size: Batch size for training.
     """
     # Hyperparameters setup ----------------------------------------------------------
     r    = r             # low-rank dimension
@@ -58,6 +59,7 @@ def train(model_path: str,
     ns   = mu.shape[0]   # number of samples = number of meshes
     nh   = x.shape[1]    # max number of dofs = x-coordinates available for each mesh
     seed = seed          # random seed for data splitting
+    batch_size = batch_size  # batch size for training
     # --------------------------------------------------------------------------------
 
     # Print shapes
@@ -83,7 +85,6 @@ def train(model_path: str,
     # Mixed Precision Setup
     policy = tf.keras.mixed_precision.Policy('float32')
     tf.keras.mixed_precision.set_global_policy(policy)
-
 
     branch = DenseNetwork(
         normalization_layer=True,
@@ -155,7 +156,7 @@ def train(model_path: str,
         y_val = y_val,
         learning_rate= 1e-3, 
         epochs = 1000, 
-        batch_size = 8, 
+        batch_size = batch_size, 
         loss = masked_mse, 
         validation_freq = 1, 
         verbose = 1, 
@@ -185,6 +186,7 @@ def main():
     parser.add_argument("--r", type=int, default=20, help="Low-rank dimension of the DeepONet.")
     parser.add_argument("--seed", type=int, default=40, help="Random seed for data splitting.")
     parser.add_argument("--target", choices=["potential", "normal_derivative"], default="potential", help="Target quantity to predict.")
+    parser.add_argument("--batch_size", type=int, default=8, help="Batch size for training.")
     args = parser.parse_args()
     data_folder = args.folder
     model_path = args.model_path
@@ -204,7 +206,7 @@ def main():
 
     # Train the model
     from .gpu import run_on_device
-    run_on_device(train, model_path=model_path, r=r, x=x, y=y, mu=mu, seed=seed)
+    run_on_device(train, model_path=model_path, r=r, x=x, y=y, mu=mu, seed=seed, batch_size=args.batch_size)
 
 if __name__ == "__main__":
     main()

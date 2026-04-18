@@ -82,30 +82,19 @@ def main():
         x = np.stack((x_plate, y_plate), axis=2)
         y = np.array(normal_derivatives_plate)
 
+    import random
+    random.seed(seed2)
     if use_test_set:
         # Split the dataset into training, validation, and test sets as in the training script
         from sklearn.model_selection import train_test_split
         ns = mu.shape[0]
         idx = np.arange(ns)
         idx_trainval, idx_test = train_test_split(idx, test_size=0.2, random_state=seed)
-        # Split train+val indices into train and val sets
-        idx_train, idx_val = train_test_split(idx_trainval, test_size=0.2, random_state=seed)
-        # Use indices to split the arrays along the first dimension
-        mu_train, mu_val, mu_test = mu[idx_train], mu[idx_val], mu[idx_test]
-        x_train, x_val, x_test = x[idx_train], x[idx_val], x[idx_test]
-        y_train, y_val, y_test = y[idx_train], y[idx_val], y[idx_test]
         # Identify the index of a random test sample
-        import random
-        random.seed(seed2)
         test_sample_index = random.choice(idx_test)
     else:
         # Use the entire dataset for choosing the test sample
-        x_test = x
-        y_test = y
-        mu_test = mu
         # Identify the index of a random sample from the entire dataset
-        import random
-        random.seed(seed2)
         test_sample_index = random.randint(0, mu.shape[0]-1)
 
     # Extract the corresponding input and output data
@@ -141,18 +130,14 @@ def main():
     trunk_output = model.call([mu_sample, x_sample], return_trunk=True).numpy()
     print("Trunk output shape: ", trunk_output.shape)
 
-    # Save y_pred to a .h5 file with the same structure as the FOM results
-    # Find the number of the file corresponding to the test sample
-    # Open parameters.csv to find the index of the test sample that has the corresponding mu
+    # Find the index of the test sample in parameters.csv
     idx = _find_id(mu=mu_sample[0], data_folder=data_folder)
-
 
     # Read the corresponding .h5 file in data_folder/results and plot the error
     print(f"\033[38;2;0;175;6m\n\nSaving prediction and plotting results for test sample index {idx}.\033[0m")
     print(f"Results file: {os.path.join(data_folder, 'results', f'{idx}.h5')}")
     print(f"\033[38;2;0;175;6m\n\nPlotting prediction and error in the case mu = {mu_sample[0]}.\033[0m")
     print("\n\n")
-
 
     if target == "potential":
         import h5py
