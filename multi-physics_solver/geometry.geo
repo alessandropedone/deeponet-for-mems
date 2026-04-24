@@ -1,12 +1,13 @@
-//---------------------------------------
+//-----------------------------------
 // actuator_air_only_transfinite.geo
 // Units: MICRONS
-//---------------------------------------
+//-----------------------------------
+
 SetFactory("OpenCASCADE");
 
-//---------------------------------------
+//-----------------------------------
 // Parameters
-//---------------------------------------
+//-----------------------------------
 overetch = 0.0;
 distance = 1.5;
 nx = 50;
@@ -18,7 +19,7 @@ xmin = -50;
 xmax =  50 - overetch;
 yheight = 4 - 2*overetch;
 
-// ---- Modal coefficients (microns) ----
+// Modal coefficients (microns)
 coeff(1) = __COEFF1__;
 coeff(2) = __COEFF2__;
 coeff(3) = __COEFF3__;
@@ -30,9 +31,9 @@ beta(2) =  4.694091132974174 / L;
 beta(3) =  7.854757438237612 / L;
 beta(4) = 10.995540734875466 / L;
 
-//---------------------------------------
-// Upper plate boundary curves (used as hole boundary)
-//---------------------------------------
+//-----------------------------------
+// Upper plate (hole)
+//-----------------------------------
 UpperID[] = {};
 LowerID[] = {};
 p = 1;
@@ -62,17 +63,17 @@ For i In {1:nx}
   LowerPts[] += {LowerID[i]};
 EndFor
 
-Spline(1) = {UpperPts[]};                     // top edge of upper electrode
-Spline(2) = {LowerPts[]};                     // bottom edge of upper electrode (gap-facing)
+Spline(1) = {UpperPts[]};                      // top edge of upper electrode
+Spline(2) = {LowerPts[]};                      // bottom edge of upper electrode (gap-facing)
 Line(3)   = {LowerPts[nx-1], UpperPts[nx-1]};  // right edge
 Line(4)   = {LowerPts[0],    UpperPts[0]};     // left edge
 
 Curve Loop(1) = {2, 3, -1, -4};
 Plane Surface(1) = {1};   // only used to cut a hole
 
-//---------------------------------------
+//-----------------------------------
 // Lower plate (hole)
-//---------------------------------------
+//-----------------------------------
 Point(1001) = {xmin, -distance/2,     0, 1.0};
 Point(1002) = {xmax, -distance/2,     0, 1.0};
 Point(1003) = {xmax, -distance/2 - 4, 0, 1.0};
@@ -86,9 +87,9 @@ Line(8) = {1004, 1001};
 Line Loop(2) = {5, 6, 7, 8};
 Plane Surface(2) = {2};   // only used to cut a hole
 
-//---------------------------------------
+//-----------------------------------
 // Outer boundary (air container)
-//---------------------------------------
+//-----------------------------------
 R = 200;
 Point(1005) = {0, 0, 0};
 Point(1006) = { R, 0, 0};
@@ -104,9 +105,9 @@ Circle(12) = {1009, 1005, 1006};
 Curve Loop(3) = {9, 10, 11, 12};
 Plane Surface(3) = {3};
 
-//---------------------------------------
-// Transfinite Curves (meshing strategy like your example)
-//---------------------------------------
+//-----------------------------------
+// Transfinite Curves
+//-----------------------------------
 r = 16;
 d = 0.15;
 
