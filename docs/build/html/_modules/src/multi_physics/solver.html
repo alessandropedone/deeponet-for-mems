@@ -1,0 +1,1062 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>src.multi_physics.solver - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for src.multi_physics.solver</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Coupled multi-physics solver for electrostatic actuation of a cantilever beam (air electrostatics coupled to modal mechanics), implemented in FEniCSx with remeshing at each time step.</span>
+
+<span class="sd">- Mesh template: it uses MICRONS as the unit, then mesh coordinates are converted to meters in the code for SI consistency.</span>
+<span class="sd">- Electrostatic force: given number of mode shapes, Maxwell traction is projected onto the first cantilever mode shapes (transverse-only) on tag=10 (`force_segment`).</span>
+<span class="sd">- Mechanics (diagonal modal system):</span>
+
+<span class="sd">  .. math::</span>
+
+<span class="sd">      m_i \\ddot{q}_i + c_i \\dot{q}_i + k_i q_i = F_i, \\quad i = 1 \\ldots 4,</span>
+
+<span class="sd">  where :math:`k_i = m_i \\omega_i^2` and :math:`c_i = 2 \\zeta_i \\sqrt{m_i k_i}`,</span>
+<span class="sd">  integrated with Newmark average acceleration :math:`(\\beta = 1/4,\\ \\gamma = 1/2)`.</span>
+
+<span class="sd">Example usage::</span>
+
+<span class="sd">    python -m coupled_modal_electro --template-geo geometry.geo --dt 1e-5 --nsteps 200 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast</span>
+
+<span class="sd">There are several optional arguments to customize the behavior:</span>
+
+<span class="sd">- ``--template-geo``: Path to the Gmsh geometry template file (required). This file should contain placeholders ``__COEFF1__``, ``__COEFF2__``, ``__COEFF3__``, and ``__COEFF4__`` which will be replaced by the current modal coefficients (in microns) at each time step.</span>
+<span class="sd">- ``--workdir``: Base directory for output files (default: &quot;coupled_work&quot;). Meshes will be saved in ``workdir/meshes`` and results in ``workdir/results``.</span>
+<span class="sd">- ``--gmsh``: Path to the Gmsh executable (default: &quot;gmsh&quot;).</span>
+<span class="sd">- ``--mshver``: Gmsh mesh format version to use (&quot;2.2&quot; or &quot;4.1&quot;, default: &quot;4.1&quot;). Note that the code currently expects physical tags to be integers, which is the case in both versions, but the internal handling of tags differs between versions. Version 4.1 is recommended for better performance and support for larger meshes.</span>
+<span class="sd">- ``--dt``: Time step size for the Newmark integration (default: 1e-6 seconds).</span>
+<span class="sd">- ``--nsteps``: Total number of time steps to simulate (default: 200).</span>
+<span class="sd">- ``--xmin-um``, ``--L-um``, ``--thickness-um``: Geometric parameters of the cantilever beam in microns (default: -50, 100, 10).</span>
+<span class="sd">- ``--Vupper``, ``--Vouter``: Voltages for the upper conductor and outer boundary (default: 0.0 V). Use ``--no-outer-bc`` to apply natural Neumann conditions on the outer boundary instead of a Dirichlet condition.</span>
+<span class="sd">- ``--epsr``: Relative permittivity of the medium (default: 1.0).</span>
+<span class="sd">- ``--Vdc``, ``--Vac``, ``--freq``: Parameters for the time-varying voltage applied to the lower conductor: DC offset, AC amplitude, and frequency in Hz (default: 0 V, 20 V, 1e5 Hz).</span>
+<span class="sd">- ``--omega``, ``--mass``, ``--zeta``: Mechanical parameters for the 4 modes: natural frequencies (rad/s), modal masses (kg), and damping ratios (default: 0.01 for all modes).</span>
+<span class="sd">- ``--print-every``: Frequency of printing diagnostics to the console (default: every step).</span>
+<span class="sd">- ``--fail-fast``: If set, the simulation will check for basic mesh quality and tag presence at each step and will abort if the mesh looks broken (e.g., too few nodes/cells or missing critical tags). This can help catch issues early in the remeshing process.</span>
+<span class="sd">- ``--min-nodes``, ``--min-cells``: Thresholds for the minimum number of nodes and cells in the mesh when ``--fail-fast`` is enabled (default: 2000 each).</span>
+
+<span class="sd">.. outputs:</span>
+
+<span class="sd">    :file:`results/electro_series.pvd`: ParaView time series containing the electrostatic potential field at each time step.</span>
+<span class="sd">    :file:`results/modal_history.csv`: CSV file with the time history of modal coefficients, forces, field extrema, energy, and mesh statistics for each time step. (q_i, F_i, diagnostics vs time)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">gmshio</span><span class="p">,</span> <span class="n">VTKFile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem</span><span class="w"> </span><span class="kn">import</span> <span class="n">functionspace</span><span class="p">,</span> <span class="n">Constant</span><span class="p">,</span> <span class="n">dirichletbc</span><span class="p">,</span> <span class="n">locate_dofs_topological</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearProblem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_scalar_type</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
+
+<span class="n">UM</span> <span class="o">=</span> <span class="mf">1e-6</span>  <span class="c1"># micron -&gt; meter</span>
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Utilities</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Run a subprocess command and raise an error if it fails, including the output in the error message.</span>
+
+<span class="sd">    :param cmd: List of command arguments to run (e.g., [&quot;gmsh&quot;, &quot;-2&quot;, &quot;mesh.geo&quot;, &quot;-o&quot;, &quot;mesh.msh&quot;]).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Command failed:</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Output:</span><span class="se">\n</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">stdout</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="render_geo_template">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.render_geo_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_geo_template</span><span class="p">(</span><span class="n">template_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">coeff_um</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Replace `__COEFF1__`, `__COEFF2__`, `__COEFF3__`, `__COEFF4__` in the template text with the given coefficients (in microns).</span>
+
+<span class="sd">    :param template_text: The Gmsh geometry template text.</span>
+<span class="sd">    :param coeff_um: Array of coefficients in microns.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - geo_text (``str``) -- The rendered Gmsh geometry text with coefficients substituted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c4</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">coeff_um</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">template_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__COEFF1__&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c1</span><span class="si">:</span><span class="s2">.16g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__COEFF2__&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c2</span><span class="si">:</span><span class="s2">.16g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__COEFF3__&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c3</span><span class="si">:</span><span class="s2">.16g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__COEFF4__&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c4</span><span class="si">:</span><span class="s2">.16g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_mesh_step">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.make_mesh_step">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_mesh_step</span><span class="p">(</span>
+    <span class="n">template_geo</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">workdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">coeff_m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># meters, shape (4,)</span>
+    <span class="n">gmsh_exec</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gmsh&quot;</span><span class="p">,</span>
+    <span class="n">mshver</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;4.1&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Generate a Gmsh mesh for the given time step by rendering the geometry template with the current modal coefficients and running Gmsh to produce a mesh file.</span>
+
+<span class="sd">    :param template_geo: Path to the Gmsh geometry template file.</span>
+<span class="sd">    :param workdir: Directory where the generated mesh file will be saved.</span>
+<span class="sd">    :param step: Current time step index (used for naming the output files).</span>
+<span class="sd">    :param coeff_m: Array of modal coefficients in meters (shape (4,)) to substitute into the geometry template.</span>
+<span class="sd">    :param gmsh_exec: Name or path of the Gmsh executable to run (default: &quot;gmsh&quot;).</span>
+<span class="sd">    :param mshver: Gmsh mesh format version to use (&quot;2.2&quot; or &quot;4.1&quot;, default: &quot;4.1&quot;).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - msh_path (``Path``) -- Path to the generated Gmsh mesh file for this time step.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">workdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">step</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">geo_path</span> <span class="o">=</span> <span class="n">workdir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;step_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">.geo&quot;</span>
+    <span class="n">msh_path</span> <span class="o">=</span> <span class="n">workdir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;step_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">.msh&quot;</span>
+
+    <span class="n">template_text</span> <span class="o">=</span> <span class="n">template_geo</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="n">coeff_um</span> <span class="o">=</span> <span class="n">coeff_m</span> <span class="o">/</span> <span class="n">UM</span>
+    <span class="n">geo_text</span> <span class="o">=</span> <span class="n">render_geo_template</span><span class="p">(</span><span class="n">template_text</span><span class="p">,</span> <span class="n">coeff_um</span><span class="p">)</span>
+    <span class="n">geo_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">geo_text</span><span class="p">)</span>
+
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;msh2&quot;</span> <span class="k">if</span> <span class="n">mshver</span> <span class="o">==</span> <span class="s2">&quot;2.2&quot;</span> <span class="k">else</span> <span class="s2">&quot;msh4&quot;</span>
+    <span class="n">run</span><span class="p">([</span><span class="n">gmsh_exec</span><span class="p">,</span> <span class="s2">&quot;-2&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">geo_path</span><span class="p">),</span> <span class="s2">&quot;-format&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">msh_path</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">msh_path</span></div>
+
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Diagnostics helpers</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="mesh_stats">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.mesh_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mesh_stats</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute basic statistics about the mesh, including the number of nodes, number of cells, and bounding box coordinates.</span>
+
+<span class="sd">    :param domain: The FEniCSx mesh domain object.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - stats (``dict``) -- A dictionary containing mesh statistics: number of nodes, number of cells, and bounding box coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">bbox_min</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bbox_max</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nc</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">size_local</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;nnodes&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">nn</span><span class="p">),</span>
+        <span class="s2">&quot;ncells&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">),</span>
+        <span class="s2">&quot;xmin&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">bbox_min</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">bbox_max</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="s2">&quot;ymin&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">bbox_min</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="s2">&quot;ymax&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">bbox_max</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="tag_counts">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.tag_counts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tag_counts</span><span class="p">(</span><span class="n">facet_tags</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Count the number of facets for each relevant tag (10, 11, 12, 20) in the facet_tags object.</span>
+
+<span class="sd">    :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - tags (``dict``) -- A dictionary containing the count of facets for each tag of interest (10, 11, 12, 20).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">n</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;n10&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="s2">&quot;n11&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="s2">&quot;n12&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="s2">&quot;n20&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">(</span><span class="mi">20</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="project_E_dg0">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.project_E_dg0">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">project_E_dg0</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Project the electric field E = -grad(phi) onto a discontinuous Galerkin (DG0) function space to compute the cell-wise average electric field magnitude, which is used for diagnostics.</span>
+
+<span class="sd">    :param domain: The FEniCSx mesh domain object.</span>
+<span class="sd">    :param phi: The electrostatic potential function defined on the mesh.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - Eh (``fem.Function``) -- A function in the DG0 space representing the projected electric field magnitude.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Vdg0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span><span class="p">,)))</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">Vdg0</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">Vdg0</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">})</span>
+    <span class="n">Eh</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+    <span class="n">Eh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;E&quot;</span>
+    <span class="k">return</span> <span class="n">Eh</span></div>
+
+
+
+<div class="viewcode-block" id="energy_and_cap">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.energy_and_cap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_and_cap</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Vdiff</span><span class="p">,</span> <span class="n">eps_r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps0</span><span class="o">=</span><span class="mf">8.8541878128e-12</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute the electrostatic energy `W` stored in the system and an effective capacitance `C=2W/Vdiff^2` based on the potential distribution `phi` and the voltage difference `Vdiff`.</span>
+
+<span class="sd">    :param domain: The FEniCSx mesh domain object.</span>
+<span class="sd">    :param phi: The electrostatic potential function defined on the mesh.</span>
+<span class="sd">    :param Vdiff: The voltage difference between the conductors :math:`(V_{\\text{lower}} - V_{\\text{upper}})`.</span>
+<span class="sd">    :param eps_r: Relative permittivity of the medium (default: 1.0).</span>
+<span class="sd">    :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - W (``float``) -- The computed electrostatic energy in joules.</span>
+<span class="sd">        - C (``float``) -- The computed effective capacitance in farads.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">eps0</span> <span class="o">*</span> <span class="n">eps_r</span>
+    <span class="n">W_form</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">W_form</span><span class="p">))</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">W</span> <span class="o">/</span> <span class="p">(</span><span class="n">Vdiff</span> <span class="o">*</span> <span class="n">Vdiff</span><span class="p">))</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Vdiff</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">C</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Electrostatics</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="solve_electrostatics_one">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.solve_electrostatics_one">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_electrostatics_one</span><span class="p">(</span>
+    <span class="n">msh_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">V_lower</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">V_upper</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">V_outer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># None -&gt; natural Neumann</span>
+    <span class="n">eps_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Solve the electrostatic potential distribution for a given mesh and boundary conditions. The mesh is read from the specified Gmsh file, and Dirichlet boundary conditions are applied on the lower, upper, and optionally outer boundaries. The function returns the FEniCSx domain, the computed potential function, and the facet tags for further processing.</span>
+
+<span class="sd">    :param msh_path: Path to the Gmsh mesh file to read.</span>
+<span class="sd">    :param V_lower: Voltage to apply on the lower conductor (tag 12).</span>
+<span class="sd">    :param V_upper: Voltage to apply on the upper conductor (tags 10 and 11, default: 0.0 V).</span>
+<span class="sd">    :param V_outer: Voltage to apply on the outer boundary (tag 20). If None, natural Neumann conditions are applied instead (default: None).</span>
+<span class="sd">    :param eps_r: Relative permittivity of the medium (default: 1.0).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - domain (``mesh.Mesh``) -- The FEniCSx domain object.</span>
+<span class="sd">        - phi (``fem.Function``) -- The computed electrostatic potential function.</span>
+<span class="sd">        - facet_tags (``mesh.MeshTags``) -- The facet tags for further processing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cell_tags</span><span class="p">,</span> <span class="n">facet_tags</span> <span class="o">=</span> <span class="n">gmshio</span><span class="o">.</span><span class="n">read_from_msh</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">msh_path</span><span class="p">),</span> <span class="n">comm</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Convert geometry coordinates from microns to meters (SI)</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">[:]</span> <span class="o">*=</span> <span class="n">UM</span>
+
+    <span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+    <span class="n">fdim</span> <span class="o">=</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
+
+    <span class="n">V</span> <span class="o">=</span> <span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">facets_upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">11</span><span class="p">)])</span>
+    <span class="n">facets_lower</span> <span class="o">=</span> <span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="n">dofs_upper</span> <span class="o">=</span> <span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">facets_upper</span><span class="p">)</span>
+    <span class="n">dofs_lower</span> <span class="o">=</span> <span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">facets_lower</span><span class="p">)</span>
+
+    <span class="n">bc_upper</span> <span class="o">=</span> <span class="n">dirichletbc</span><span class="p">(</span>
+        <span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">default_scalar_type</span><span class="p">(</span><span class="n">V_upper</span><span class="p">)),</span> <span class="n">dofs_upper</span><span class="p">,</span> <span class="n">V</span>
+    <span class="p">)</span>
+    <span class="n">bc_lower</span> <span class="o">=</span> <span class="n">dirichletbc</span><span class="p">(</span>
+        <span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">default_scalar_type</span><span class="p">(</span><span class="n">V_lower</span><span class="p">)),</span> <span class="n">dofs_lower</span><span class="p">,</span> <span class="n">V</span>
+    <span class="p">)</span>
+    <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">bc_upper</span><span class="p">,</span> <span class="n">bc_lower</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">V_outer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">facets_outer</span> <span class="o">=</span> <span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">facets_outer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">dofs_outer</span> <span class="o">=</span> <span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">facets_outer</span><span class="p">)</span>
+            <span class="n">bc_outer</span> <span class="o">=</span> <span class="n">dirichletbc</span><span class="p">(</span>
+                <span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">default_scalar_type</span><span class="p">(</span><span class="n">V_outer</span><span class="p">)),</span> <span class="n">dofs_outer</span><span class="p">,</span> <span class="n">V</span>
+            <span class="p">)</span>
+            <span class="n">bcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bc_outer</span><span class="p">)</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">default_scalar_type</span><span class="p">(</span><span class="n">eps_r</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">default_scalar_type</span><span class="p">(</span><span class="mf">0.0</span><span class="p">))</span> <span class="o">*</span> <span class="n">v</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+
+    <span class="n">problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+    <span class="n">phi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;phi&quot;</span>
+    <span class="k">return</span> <span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">facet_tags</span></div>
+
+
+
+<span class="c1"># ------------------------------</span>
+<span class="c1"># Mode shapes + force projection</span>
+<span class="c1"># ------------------------------</span>
+<div class="viewcode-block" id="cantilever_shape">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.cantilever_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cantilever_shape</span><span class="p">(</span>
+    <span class="n">xi</span><span class="p">:</span> <span class="n">ufl</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ufl</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">Expr</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute the cantilever mode shape function.</span>
+<span class="sd">        The mode shape is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\psi_i(\\xi) = \\cosh(\\beta_i \\xi) - \\cos(\\beta_i \\xi) - C_i \\left( \\sinh(\\beta_i \\xi) - \\sin(\\beta_i \\xi) \\right)</span>
+
+<span class="sd">        where</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            C_i = \\frac{\\cosh(\\beta_i L) + \\cos(\\beta_i L)}{\\sinh(\\beta_i L) + \\sin(\\beta_i L)}.</span>
+
+<span class="sd">    :param xi: The spatial coordinate along the beam, :math:`\\xi = x - x_{\\min}`.</span>
+<span class="sd">    :param beta: The mode parameter :math:`\\beta_i` for the *i*-th mode, related to the natural frequency.</span>
+<span class="sd">    :param L: The cantilever beam length.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - psi (``ufl.core.expr.Expr``) -- The computed mode shape function evaluated at xi.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">L</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">ufl</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">ufl</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">C</span> <span class="o">*</span> <span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">xi</span><span class="p">))</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="modal_forces_4">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.modal_forces_4">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">modal_forces_4</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">facet_tags</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">,</span>
+    <span class="n">betas</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># shape (4,) in 1/m</span>
+    <span class="n">xmin_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
+    <span class="n">L_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
+    <span class="n">thickness_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
+    <span class="n">eps_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.8541878128e-12</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute the modal forces :math:`F_i` for the first 4 modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            F_i = \\text{thickness} \\cdot \\int_{ds(10)} \\mathbf{t}_{\\text{beam}} \\cdot \\boldsymbol{\\psi}_i \\, ds, \\quad i=1..4 \\text{ with } \\boldsymbol{\\psi}_i = (0, \\text{mode}_i(x)).</span>
+
+<span class="sd">        The Maxwell traction is computed from the electric field :math:`\\mathbf{E} = -\\nabla \\phi` and the permittivity, and the mode shapes are evaluated at the spatial coordinate :math:`\\xi = x - x_{\\min}` along the beam.</span>
+
+<span class="sd">    :param domain: The FEniCSx mesh domain object.</span>
+<span class="sd">    :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.</span>
+<span class="sd">    :param phi: The electrostatic potential function defined on the mesh.</span>
+<span class="sd">    :param betas: Array of mode parameters (beta_i) for the first 4 modes, in units of 1/m.</span>
+<span class="sd">    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute xi).</span>
+<span class="sd">    :param L_m: The length of the cantilever beam in meters (used in the mode shape function).</span>
+<span class="sd">    :param thickness_m: The thickness of the beam in meters (used to scale the integrated force).</span>
+<span class="sd">    :param eps_r: Relative permittivity of the medium (default: 1.0).</span>
+<span class="sd">    :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">comm</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">comm</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facet_tags</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">SpatialCoordinate</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xmin_m</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">eps0</span> <span class="o">*</span> <span class="n">eps_r</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">*</span> <span class="n">I</span><span class="p">)</span>
+    <span class="n">t_beam</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># force on conductor</span>
+
+    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">mode_i</span> <span class="o">=</span> <span class="n">cantilever_shape</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">L_m</span><span class="p">)</span>
+        <span class="n">psi_i</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mode_i</span><span class="p">))</span>
+        <span class="n">Fi_form</span> <span class="o">=</span> <span class="n">thickness_m</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">t_beam</span><span class="p">,</span> <span class="n">psi_i</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">Fi</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">Fi_form</span><span class="p">))</span>
+        <span class="n">Fi</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">Fi</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+        <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Fi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">F</span></div>
+
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Newmark (vector, diagonal modal system)</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="newmark_step_diag">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.newmark_step_diag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">newmark_step_diag</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">qdd</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">            Perform one time step of the Newmark average acceleration method for a diagonal modal system, where M, C, K are arrays of modal masses, damping coefficients, and stiffnesses for each mode. The function updates the modal coordinates q, velocities qd, and accelerations qdd based on the applied forces F and the time step dt.</span>
+<span class="sd">            In particular, we have </span>
+<span class="sd">            </span>
+<span class="sd">            .. math:: M qdd + C qd + K q = F \quad \text{for each mode},</span>
+
+<span class="sd">            and the Newmark update equations are applied in a vectorized manner for all modes simultaneously.</span>
+
+<span class="sd">    :param M: Array of modal masses for each mode.</span>
+<span class="sd">    :param C: Array of modal damping coefficients for each mode.</span>
+<span class="sd">    :param K: Array of modal stiffnesses for each mode.</span>
+<span class="sd">    :param q: Array of modal coordinates at the current time step.</span>
+<span class="sd">    :param qd: Array of modal velocities at the current time step.</span>
+<span class="sd">    :param qdd: Array of modal accelerations at the current time step.</span>
+<span class="sd">    :param F: Array of modal forces applied at the current time step.</span>
+<span class="sd">    :param dt: Time step size for the integration.</span>
+<span class="sd">    :param beta: Newmark beta parameter (default: 0.25 for average acceleration).</span>
+<span class="sd">    :param gamma: Newmark gamma parameter (default: 0.5 for average acceleration).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - q_new (``np.ndarray``) -- Updated modal coordinates after the time step.</span>
+<span class="sd">        - qd_new (``np.ndarray``) -- Updated modal velocities after the time step.</span>
+<span class="sd">        - qdd_new (``np.ndarray``) -- Updated modal accelerations after the time step.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q_pred</span> <span class="o">=</span> <span class="n">q</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">qd</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">qdd</span>
+    <span class="n">qd_pred</span> <span class="o">=</span> <span class="n">qd</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="n">qdd</span>
+
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">M</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">K</span>
+    <span class="n">qdd_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">F</span> <span class="o">-</span> <span class="n">C</span> <span class="o">*</span> <span class="n">qd_pred</span> <span class="o">-</span> <span class="n">K</span> <span class="o">*</span> <span class="n">q_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+
+    <span class="n">q_new</span> <span class="o">=</span> <span class="n">q_pred</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">qdd_new</span>
+    <span class="n">qd_new</span> <span class="o">=</span> <span class="n">qd_pred</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">qdd_new</span>
+    <span class="k">return</span> <span class="n">q_new</span><span class="p">,</span> <span class="n">qd_new</span><span class="p">,</span> <span class="n">qdd_new</span></div>
+
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Voltage law</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="V_lower_time">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.V_lower_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">V_lower_time</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Vdc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Vac</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">freq_hz</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">            Compute the lower voltage as a function of time.</span>
+
+<span class="sd">    :param t: Time (s).</span>
+<span class="sd">    :param Vdc: DC voltage (V).</span>
+<span class="sd">    :param Vac: AC voltage amplitude (V).</span>
+<span class="sd">    :param freq_hz: Frequency (Hz).</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - V_lower (``float``) -- Lower voltage at time t (V).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Vdc</span> <span class="o">+</span> <span class="n">Vac</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq_hz</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ----------------------------</span>
+<span class="c1"># Main</span>
+<span class="c1"># ----------------------------</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../multi-physics.html#src.multi_physics.solver.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--template-geo&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--workdir&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;coupled_work&quot;</span><span class="p">))</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--gmsh&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;gmsh&quot;</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mshver&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;4.1&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2.2&quot;</span><span class="p">,</span> <span class="s2">&quot;4.1&quot;</span><span class="p">])</span>
+
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dt&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--nsteps&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xmin-um&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mf">50.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--L-um&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--thickness-um&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--Vupper&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--Vouter&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--no-outer-bc&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--epsr&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--Vdc&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--Vac&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--freq&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+
+    <span class="c1"># Mechanics (4 modes)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--omega&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;4 natural frequencies (rad/s).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--mass&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;4 modal masses (kg).&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--zeta&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;4 damping ratios (-).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Diagnostics controls</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--print-every&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fail-fast&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--min-nodes&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--min-cells&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">rank</span>
+
+    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gmsh</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;gmsh executable &#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">gmsh</span><span class="si">}</span><span class="s2">&#39; not found on PATH.&quot;</span><span class="p">)</span>
+
+    <span class="n">work_mesh</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">workdir</span> <span class="o">/</span> <span class="s2">&quot;meshes&quot;</span>
+    <span class="n">work_out</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">workdir</span> <span class="o">/</span> <span class="s2">&quot;results&quot;</span>
+    <span class="n">work_mesh</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">work_out</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">xmin_m</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">xmin_um</span> <span class="o">*</span> <span class="n">UM</span>
+    <span class="n">L_m</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_um</span> <span class="o">*</span> <span class="n">UM</span>
+    <span class="n">thickness_m</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">thickness_um</span> <span class="o">*</span> <span class="n">UM</span>
+
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1.875104068711961</span><span class="p">,</span> <span class="mf">4.694091132974174</span><span class="p">,</span> <span class="mf">7.854757438237612</span><span class="p">,</span> <span class="mf">10.995540734875466</span><span class="p">],</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">betas</span> <span class="o">=</span> <span class="n">roots</span> <span class="o">/</span> <span class="n">L_m</span>  <span class="c1"># 1/m</span>
+
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">zeta</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">K</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">omega</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">zeta</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">M</span>
+
+    <span class="c1"># State vectors (meters)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">qd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">qdd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">vtk_path</span> <span class="o">=</span> <span class="n">work_out</span> <span class="o">/</span> <span class="s2">&quot;electro_series.pvd&quot;</span>
+    <span class="n">csv_path</span> <span class="o">=</span> <span class="n">work_out</span> <span class="o">/</span> <span class="s2">&quot;modal_history.csv&quot;</span>
+
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fcsv</span> <span class="o">=</span> <span class="n">csv_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">fcsv</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;step&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;t_s&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Vlower_V&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;q1_m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;q2_m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;q3_m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;q4_m&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qd1_mps&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qd2_mps&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qd3_mps&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qd4_mps&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qdd1_mps2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qdd2_mps2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qdd3_mps2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qdd4_mps2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;F1_N&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;F2_N&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;F3_N&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;F4_N&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;phi_min_V&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;phi_max_V&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Emax_Vpm&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;energy_J&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;cap_like_F&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;nnodes&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ncells&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;n10&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;n11&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;n12&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;n20&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fcsv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">eps0</span> <span class="o">=</span> <span class="mf">8.8541878128e-12</span>
+
+    <span class="k">with</span> <span class="n">VTKFile</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">vtk_path</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vtk</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">nsteps</span><span class="p">):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">dt</span>
+
+            <span class="c1"># --- Remesh (rank 0) ---</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">coeff_m</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">msh_path</span> <span class="o">=</span> <span class="n">make_mesh_step</span><span class="p">(</span>
+                    <span class="n">template_geo</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">template_geo</span><span class="p">,</span>
+                    <span class="n">workdir</span><span class="o">=</span><span class="n">work_mesh</span><span class="p">,</span>
+                    <span class="n">step</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                    <span class="n">coeff_m</span><span class="o">=</span><span class="n">coeff_m</span><span class="p">,</span>
+                    <span class="n">gmsh_exec</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gmsh</span><span class="p">,</span>
+                    <span class="n">mshver</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">mshver</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msh_path</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">comm</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msh_path</span> <span class="o">=</span> <span class="n">work_mesh</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;step_</span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2">.msh&quot;</span>
+
+            <span class="c1"># --- Electrostatics ---</span>
+            <span class="n">Vlower</span> <span class="o">=</span> <span class="n">V_lower_time</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Vdc</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Vac</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+            <span class="n">Vouter</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">no_outer_bc</span> <span class="k">else</span> <span class="n">args</span><span class="o">.</span><span class="n">Vouter</span>
+            <span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">facet_tags</span> <span class="o">=</span> <span class="n">solve_electrostatics_one</span><span class="p">(</span>
+                <span class="n">msh_path</span><span class="o">=</span><span class="n">msh_path</span><span class="p">,</span>
+                <span class="n">V_lower</span><span class="o">=</span><span class="n">Vlower</span><span class="p">,</span>
+                <span class="n">V_upper</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">Vupper</span><span class="p">,</span>
+                <span class="n">V_outer</span><span class="o">=</span><span class="n">Vouter</span><span class="p">,</span>
+                <span class="n">eps_r</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">epsr</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># --- Diagnostics (mesh + tags) ---</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="n">mesh_stats</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+            <span class="n">tags</span> <span class="o">=</span> <span class="n">tag_counts</span><span class="p">(</span><span class="n">facet_tags</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">fail_fast</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;nnodes&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">min_nodes</span> <span class="ow">or</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;ncells&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">min_cells</span><span class="p">:</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n10&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n12&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FAIL-FAST at step </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: mesh/tags look broken&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  nodes=</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;nnodes&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cells=</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;ncells&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;  n10=</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n10&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> n11=</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n11&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> n12=</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n12&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> n20=</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n20&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;  bbox x[</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;xmin&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;xmax&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">] um&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot; y[</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;ymin&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;ymax&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">] um&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># --- Modal forces ---</span>
+            <span class="n">F</span> <span class="o">=</span> <span class="n">modal_forces_4</span><span class="p">(</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">facet_tags</span><span class="o">=</span><span class="n">facet_tags</span><span class="p">,</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span>
+                <span class="n">betas</span><span class="o">=</span><span class="n">betas</span><span class="p">,</span>
+                <span class="n">xmin_m</span><span class="o">=</span><span class="n">xmin_m</span><span class="p">,</span>
+                <span class="n">L_m</span><span class="o">=</span><span class="n">L_m</span><span class="p">,</span>
+                <span class="n">thickness_m</span><span class="o">=</span><span class="n">thickness_m</span><span class="p">,</span>
+                <span class="n">eps_r</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">epsr</span><span class="p">,</span>
+                <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># --- Field scale diagnostics ---</span>
+            <span class="n">phi_arr</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+            <span class="n">phi_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">phi_arr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">MIN</span><span class="p">))</span>
+            <span class="n">phi_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">phi_arr</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">MAX</span><span class="p">))</span>
+
+            <span class="c1"># E magnitude max (DG0 projection) — component-blocked layout</span>
+            <span class="n">Eh</span> <span class="o">=</span> <span class="n">project_E_dg0</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">Eh</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+            <span class="n">nc</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">size_local</span>
+            <span class="n">Ex</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">nc</span><span class="p">]</span>
+            <span class="n">Ey</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">nc</span> <span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nc</span><span class="p">]</span>
+            <span class="n">E2max_local</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Ex</span> <span class="o">*</span> <span class="n">Ex</span> <span class="o">+</span> <span class="n">Ey</span> <span class="o">*</span> <span class="n">Ey</span><span class="p">))</span> <span class="k">if</span> <span class="n">nc</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="n">E2max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">E2max_local</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">MAX</span><span class="p">))</span>
+            <span class="n">Emax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E2max</span><span class="p">))</span>
+
+            <span class="n">Vdiff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vlower</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">Vupper</span><span class="p">)</span>
+            <span class="n">W</span><span class="p">,</span> <span class="n">Cap</span> <span class="o">=</span> <span class="n">energy_and_cap</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Vdiff</span><span class="p">,</span> <span class="n">eps_r</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">epsr</span><span class="p">,</span> <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">)</span>
+
+            <span class="c1"># --- Mechanical update ---</span>
+            <span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">qdd</span> <span class="o">=</span> <span class="n">newmark_step_diag</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">qdd</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+            <span class="n">q_static</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">K</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">F</span> <span class="o">/</span> <span class="n">K</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+            <span class="c1"># --- Write ParaView time series ---</span>
+            <span class="n">vtk</span><span class="o">.</span><span class="n">write_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="n">vtk</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+            <span class="c1"># --- Print diagnostics ---</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">k</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">04d</span><span class="si">}</span><span class="s2">] t=</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> V=</span><span class="si">{</span><span class="n">Vlower</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;q(um)=[</span><span class="si">{</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">]  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;F(N)=[</span><span class="si">{</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">+.2e</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">+.2e</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">+.2e</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">+.2e</span><span class="si">}</span><span class="s2">]  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;F/K(um)=[</span><span class="si">{</span><span class="n">q_static</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q_static</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q_static</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">q_static</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="n">UM</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">]  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;phi=[</span><span class="si">{</span><span class="n">phi_min</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">phi_max</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">] Emax=</span><span class="si">{</span><span class="n">Emax</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> V/m  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;W=</span><span class="si">{</span><span class="n">W</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">J C~=</span><span class="si">{</span><span class="n">Cap</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">F  &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;nodes=</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;nnodes&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cells=</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;ncells&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;tags(10,11,12,20)=(</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n10&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n11&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n12&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;n20&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># --- Save CSV ---</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">k</span><span class="p">,</span>
+                        <span class="n">t</span><span class="p">,</span>
+                        <span class="n">Vlower</span><span class="p">,</span>
+                        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                        <span class="n">qd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">qd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">qd</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">qd</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                        <span class="n">qdd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">qdd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">qdd</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">qdd</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                        <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                        <span class="n">phi_min</span><span class="p">,</span>
+                        <span class="n">phi_max</span><span class="p">,</span>
+                        <span class="n">Emax</span><span class="p">,</span>
+                        <span class="n">W</span><span class="p">,</span>
+                        <span class="n">Cap</span><span class="p">,</span>
+                        <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;nnodes&quot;</span><span class="p">],</span>
+                        <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;ncells&quot;</span><span class="p">],</span>
+                        <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n10&quot;</span><span class="p">],</span>
+                        <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n11&quot;</span><span class="p">],</span>
+                        <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n12&quot;</span><span class="p">],</span>
+                        <span class="n">tags</span><span class="p">[</span><span class="s2">&quot;n20&quot;</span><span class="p">],</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fcsv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ParaView time series: </span><span class="si">{</span><span class="n">vtk_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modal history CSV:    </span><span class="si">{</span><span class="n">csv_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Alessandro Pedone, Marta Pignatelli
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

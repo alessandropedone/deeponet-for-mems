@@ -1,0 +1,1153 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Multi-physics package" href="multi-physics.html"><link rel="prev" title="Data package" href="data.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Surrogate package - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data package</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-physics.html">Multi-physics package</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/surrogate.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-src.surrogate">
+<span id="surrogate-package"></span><h1>Surrogate package<a class="headerlink" href="#module-src.surrogate" title="Link to this heading">¶</a></h1>
+<section id="module-src.surrogate.evaluate">
+<span id="src-surrogate-evaluate"></span><h2>src.surrogate.evaluate<a class="headerlink" href="#module-src.surrogate.evaluate" title="Link to this heading">¶</a></h2>
+<p>Evaluate a trained DeepONet surrogate model on a test dataset.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">surrogate</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">--</span><span class="n">folder</span> <span class="s2">&quot;test/test1&quot;</span> <span class="o">--</span><span class="n">model_path</span> <span class="s2">&quot;models/potential1.keras&quot;</span> <span class="o">--</span><span class="n">target</span> <span class="s2">&quot;potential&quot;</span>
+</pre></div>
+</div>
+<p>There are several optional arguments to customize the behavior:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--folder</span></code>: Path to the data folder (default: “test”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--model_path</span></code>: Path to the trained model file (default: “models/model.keras”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--splitting_seed</span></code>: Random seed for data splitting (default: <span class="math notranslate nohighlight">\(40\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--target</span></code>: Target quantity to predict, either “potential” or “normal_derivative” (default: “potential”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--prediction_seed</span></code>: Random seed for test sample selection (default: <span class="math notranslate nohighlight">\(40\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--using_training_set</span></code>: If set, divide the set into training, validation, and test sets as in the training script.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that the seeds used for splitting and prediction are consistent with those used during training for reproducibility.</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.evaluate.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.evaluate.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/evaluate.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.evaluate.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-src.surrogate.gpu">
+<span id="src-surrogate-gpu"></span><h2>src.surrogate.gpu<a class="headerlink" href="#module-src.surrogate.gpu" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.gpu.run_on_device">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.gpu.</span></span><span class="sig-name descname"><span class="pre">run_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/gpu.html#run_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.gpu.run_on_device" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>This function sets up TensorFlow to run on a GPU if available, otherwise falls back to CPU.
+It configures the necessary environment variables and TensorFlow settings to optimize GPU usage.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code></span>) – The function to be executed on the selected device.</p></li>
+<li><p><strong>args</strong> – Positional arguments to pass to the function.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to pass to the function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the function execution.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.surrogate.loader">
+<span id="src-surrogate-loader"></span><h2>src.surrogate.loader<a class="headerlink" href="#module-src.surrogate.loader" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.loader.load">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.loader.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/loader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.loader.load" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Load data from all <code class="docutils literal notranslate"><span class="pre">.h5</span></code> files in the specified data folder.
+The function reads the geometrical parameters from a <code class="docutils literal notranslate"><span class="pre">.csv</span></code>
+file and loads the corresponding solution data from <code class="docutils literal notranslate"><span class="pre">.h5</span></code> files.
+It pads the data arrays to ensure uniform lengths across all samples.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data_folder</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Path to the data folder.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>mu (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – Geometrical parameters.</p></li>
+<li><p>x (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – x-coordinates of the domain points.</p></li>
+<li><p>y (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – y-coordinates of the domain points.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified data folder does not exist.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If the results folder does not exist.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.surrogate.losses">
+<span id="src-surrogate-losses"></span><h2>src.surrogate.losses<a class="headerlink" href="#module-src.surrogate.losses" title="Link to this heading">¶</a></h2>
+<p>This module implements masked loss functions for handling NaN values in the target data.
+These loss functions can be used in TensorFlow/Keras models to ignore NaN values during training
+and evaluation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be very careful about precision, since here <code class="docutils literal notranslate"><span class="pre">tf.reduce_sum(mask)</span></code>
+can be very big if the number of points in a batch is large.
+Here we use <code class="docutils literal notranslate"><span class="pre">float32</span></code> globally to avoid issues,
+that ensure that we don’t get overflow in the summation
+when the number of points is less than <span class="math notranslate nohighlight">\(3.4 \cdot 10^{38}\)</span>.
+Using mixed precision with <code class="docutils literal notranslate"><span class="pre">float16</span></code> would lead to overflow
+when the number of points in batch is larger than <span class="math notranslate nohighlight">\(6 \cdot 10^{4}\)</span>.</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.losses.masked_mae">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/losses.html#masked_mae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.losses.masked_mae" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the masked mean absolute error (MAE) between the true and predicted values,
+ignoring NaN values in the true data.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – The ground truth values.</p></li>
+<li><p><strong>y_pred</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – The predicted values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>loss (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – The computed masked mean absolute error.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.losses.masked_mse">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/losses.html#masked_mse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.losses.masked_mse" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the masked mean squared error (MSE) between the true and predicted values,
+ignoring NaN values in the true data.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – The ground truth values.</p></li>
+<li><p><strong>y_pred</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – The predicted values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>loss (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – The computed masked mean squared error.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.surrogate.model">
+<span id="src-surrogate-model"></span><h2>src.surrogate.model<a class="headerlink" href="#module-src.surrogate.model" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DeepONet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trunk</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>A Deep Operator Network (DeepONet) model that combines a branch network and a trunk network
+to approximate operators mapping functions to functions.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>branch</strong> (<code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code>) – The branch network to generate expansion coefficients.</p></li>
+<li><p><strong>trunk</strong> (<code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code>) – The trunk network to generate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>branch</strong> (<code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code>) – The branch network to generate expansion coefficients.</p></li>
+<li><p><strong>trunk</strong> (<code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code>) – The trunk network to generate the basis functions.</p></li>
+<li><p><strong>history</strong> (<code class="docutils literal notranslate"><span class="pre">tf.keras.callbacks.History</span></code>) – Training history after model training.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the output dimensions of the branch and trunk networks do not match</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.build" title="Link to this definition">¶</a></dt>
+<dd><p>Builds the DeepONet model by initializing the branch and trunk networks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_shape</strong> – Shape of the input tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_branch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_trunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.call" title="Link to this definition">¶</a></dt>
+<dd><p>Forward pass through the DeepONet model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> – A tuple containing (mu, x) where:
+- mu: batch of parameters (dimension: B x p)
+- x: batch of spatial points (tensor whose last dimension is d)</p></li>
+<li><p><strong>return_branch</strong> – If True, returns the branch output instead of the full DeepONet output.</p></li>
+<li><p><strong>return_trunk</strong> – If True, returns the trunk output instead of the full DeepONet output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>output (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – The output of the DeepONet model or the branch/trunk outputs based on flags.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.from_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.from_config" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a model instance from the configuration dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Configuration dictionary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>model (<code class="docutils literal notranslate"><span class="pre">DeepONet</span></code>) – Model instance created from the configuration.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the configuration of the model for serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>config (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Configuration dictionary.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.plot_training_history">
+<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.plot_training_history" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the training and validation loss over epochs.
+This method should be called after training the model using <code class="docutils literal notranslate"><span class="pre">train_model</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the model has no training history.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.summary" title="Link to this definition">¶</a></dt>
+<dd><p>Prints a summary of the DeepONet model architecture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Additional keyword arguments to pass to the Keras summary method.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.train_model">
+<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.train_model" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the model on the provided dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The input data for training.</p></li>
+<li><p><strong>mu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The parameter data for training.</p></li>
+<li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The target data for training.</p></li>
+<li><p><strong>X_val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The input data for validation.</p></li>
+<li><p><strong>mu_val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The parameter data for validation.</p></li>
+<li><p><strong>y_val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The target data for validation.</p></li>
+<li><p><strong>learning_rate</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The learning rate for the optimizer.</p></li>
+<li><p><strong>epochs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The number of epochs for training.</p></li>
+<li><p><strong>batch_size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The size of the batches for training.</p></li>
+<li><p><strong>loss</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The loss function to be used during training.</p></li>
+<li><p><strong>validation_freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The frequency of validation during training.</p></li>
+<li><p><strong>lr_scheduler</strong> – A list of learning rate scheduler callbacks.</p></li>
+<li><p><strong>metrics</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span>) – List of metrics to be evaluated by the model during training and testing.</p></li>
+<li><p><strong>clipnorm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – Gradient clipping norm value. If None, no clipping is applied.</p></li>
+<li><p><strong>early_stopping_patience</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Number of epochs with no improvement after which training will be stopped. If None, early stopping is not used.</p></li>
+<li><p><strong>log</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to log training progress for TensorBoard.</p></li>
+<li><p><strong>optimizer</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The optimizer to be used for training. Options are ‘adam’, ‘sgd’, ‘rmsprop’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">tensorboard</span> <span class="pre">--logdir</span> <span class="pre">logs</span></code> to visualize logs (if log is set to True).</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DenseNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tanh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaky_relu_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_encoding_frequencies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>A class to build, train, and manage a neural network model using TensorFlow and Keras.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normalization_layer</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include a normalization layer at the input.</p></li>
+<li><p><strong>input_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of input neurons.</p></li>
+<li><p><strong>n_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">list</span></code>) – List specifying the number of neurons in each hidden layer.</p></li>
+<li><p><strong>activation</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Activation function for hidden layers.</p></li>
+<li><p><strong>output_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of output neurons.</p></li>
+<li><p><strong>output_activation</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Activation function for the output layer.</p></li>
+<li><p><strong>initializer</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Initializer for the weights of the layers.</p></li>
+<li><p><strong>l1_coeff</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – L1 regularization coefficient.</p></li>
+<li><p><strong>l2_coeff</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – L2 regularization coefficient.</p></li>
+<li><p><strong>batch_normalization</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include batch normalization layers after hidden layers.</p></li>
+<li><p><strong>dropout</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include dropout layers after hidden layers.</p></li>
+<li><p><strong>dropout_rate</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Dropout rate for dropout layers.</p></li>
+<li><p><strong>leaky_relu_alpha</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Alpha parameter for LeakyReLU activation. If None, standard activation is used.</p></li>
+<li><p><strong>layer_normalization</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include layer normalization after hidden layers.</p></li>
+<li><p><strong>positional_encoding_frequencies</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of frequencies for Fourier feature positional encoding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>normalization_layer</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include a normalization layer at the input.</p></li>
+<li><p><strong>norm_layer</strong> (<code class="docutils literal notranslate"><span class="pre">tf.keras.layers.Normalization</span></code>) – Keras Normalization layer.</p></li>
+<li><p><strong>input_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of input neurons.</p></li>
+<li><p><strong>n_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">list</span></code>) – List specifying the number of neurons in each hidden layer.</p></li>
+<li><p><strong>activation</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Activation function for hidden layers.</p></li>
+<li><p><strong>output_neurons</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of output neurons.</p></li>
+<li><p><strong>output_activation</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Activation function for the output layer.</p></li>
+<li><p><strong>initializer</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Initializer for the weights of the layers.</p></li>
+<li><p><strong>l1_coeff</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – L1 regularization coefficient.</p></li>
+<li><p><strong>l2_coeff</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – L2 regularization coefficient.</p></li>
+<li><p><strong>batch_normalization</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether</p></li>
+<li><p><strong>dropout</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include dropout layers after hidden layers.</p></li>
+<li><p><strong>dropout_rate</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Dropout rate for dropout layers.</p></li>
+<li><p><strong>leaky_relu_alpha</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Alpha parameter for LeakyReLU activation. If None, standard activation is used.</p></li>
+<li><p><strong>layer_normalization</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to include layer normalization after hidden layers.</p></li>
+<li><p><strong>positional_encoding_frequencies</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of frequencies for Fourier feature positional encoding.</p></li>
+<li><p><strong>all_layers</strong> (<code class="docutils literal notranslate"><span class="pre">list</span></code>) – List of all layers in the model.</p></li>
+<li><p><strong>history</strong> (<code class="docutils literal notranslate"><span class="pre">tf.keras.callbacks.History</span></code>) – Training history after model training.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If any of the input parameters are invalid.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.adapt">
+<span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.adapt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.adapt" title="Link to this definition">¶</a></dt>
+<dd><p>Adapts the normalization layer to the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Input data for adaptation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.build" title="Link to this definition">¶</a></dt>
+<dd><p>Builds the neural network architecture based on the provided configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_shape</strong> – Shape of the input tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.call" title="Link to this definition">¶</a></dt>
+<dd><p>Forward pass through the neural network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – Input tensor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>x (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – Output tensor after passing through the network.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.from_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.from_config" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a model instance from the configuration dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Configuration dictionary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>model (<code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code>) – Model instance created from the configuration.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the configuration of the model for serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>config (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Configuration dictionary.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.plot_training_history">
+<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.plot_training_history" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the training and validation loss over epochs.
+This method should be called after training the model using <code class="docutils literal notranslate"><span class="pre">train_model</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the model has no training history.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.train_model">
+<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.train_model" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the model on the provided dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The input data for training.</p></li>
+<li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The target data for training.</p></li>
+<li><p><strong>X_val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The input data for validation.</p></li>
+<li><p><strong>y_val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The target data for validation.</p></li>
+<li><p><strong>learning_rate</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The learning rate for the optimizer.</p></li>
+<li><p><strong>epochs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The number of epochs for training.</p></li>
+<li><p><strong>batch_size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The size of the batches for training.</p></li>
+<li><p><strong>loss</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The loss function to be used during training.</p></li>
+<li><p><strong>validation_freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The frequency of validation during training.</p></li>
+<li><p><strong>lr_scheduler</strong> – A list of learning rate scheduler callbacks.</p></li>
+<li><p><strong>metrics</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span>) – List of metrics to be evaluated by the model during training and testing.</p></li>
+<li><p><strong>clipnorm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – Gradient clipping norm value. If None, no clipping is applied.</p></li>
+<li><p><strong>early_stopping_patience</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Number of epochs with no improvement after which training will be stopped. If None, early stopping is not used.</p></li>
+<li><p><strong>log</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to log training progress for TensorBoard.</p></li>
+<li><p><strong>optimizer</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The optimizer to be used for training. Options are ‘adam’, ‘sgd’, ‘rmsprop’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">tensorboard</span> <span class="pre">--logdir</span> <span class="pre">logs</span></code> to visualize logs (if log is set to True).</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">EinsumLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ein_syntax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>A Keras Layer that performs Einstein summation on input tensors using a specified einsum syntax.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ein_syntax</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – The Einstein summation syntax string.</p>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ein_syntax</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – The Einstein summation syntax string.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer.call" title="Link to this definition">¶</a></dt>
+<dd><p>Performs Einstein summation on the input tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> – A list or tuple of input tensors to be summed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>result (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – The result of the Einstein summation.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer.get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the configuration of the layer for serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>config (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Configuration dictionary.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">FourierFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learnable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>A Keras Layer that applies Fourier Feature Mapping to the input.</p>
+<p>Fourier Feature Mapping is a technique used to embed inputs into a
+higher-dimensional space using sinusoidal functions. This layer can
+use either fixed or learnable frequencies.</p>
+<p>Given an input tensor <cite>x</cite> of shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">...,</span> <span class="pre">input_dim)</span></code>, it computes the Fourier features as follows:</p>
+<p>1. For each frequency <span class="math notranslate nohighlight">\(f_i\)</span> in the set of frequencies, compute <span class="math notranslate nohighlight">\(\sin(f_i x_j)\)</span> and <span class="math notranslate nohighlight">\(\cos(f_i x_j)\)</span>
+for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of the input.
+2. Concatenate all the sine and cosine features along the last dimension.</p>
+<p>Thus, the output tensor will have shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">...,</span> <span class="pre">input_dim</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">input_dim</span> <span class="pre">*</span> <span class="pre">num_frequencies)</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_frequencies</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of frequency bands used for encoding.</p></li>
+<li><p><strong>learnable</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether the frequencies are trainable.</p></li>
+<li><p><strong>initializer</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">tf.keras.initializers.Initializer</span></code>) – Initializer used for learnable frequencies.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>freqs</strong> (<code class="docutils literal notranslate"><span class="pre">tf.Variable</span></code> or <code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – Tensor containing the Fourier frequencies used for encoding.</p></li>
+<li><p><strong>num_frequencies</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of frequency bands used for encoding.</p></li>
+<li><p><strong>learnable</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – Whether the frequencies are trainable.</p></li>
+<li><p><strong>initializer</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">tf.keras.initializers.Initializer</span></code>) – Initializer used for learnable frequencies.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">num_frequencies</span></code> is not a positive integer.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.build" title="Link to this definition">¶</a></dt>
+<dd><p>Builds the layer by initializing frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_shape</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorShape</span></code></span>) – Shape of the input tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.call" title="Link to this definition">¶</a></dt>
+<dd><p>Applies Fourier Feature Mapping to the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – Input tensor of shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">...,</span> <span class="pre">input_dim)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>encoded (<code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code>) – The Fourier feature encoded tensor.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the configuration of the layer for serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>config (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Configuration dictionary.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.surrogate.model.LogUniformFreqInitializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">LogUniformFreqInitializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#LogUniformFreqInitializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.LogUniformFreqInitializer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Initializer</span></code></p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Initializer that generates frequencies sampled from a log-uniform distribution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_exp</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Minimum exponent for the log-uniform distribution.</p></li>
+<li><p><strong>max_exp</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Maximum exponent for the log-uniform distribution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>min_exp</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Minimum exponent for the log-uniform distribution.</p></li>
+<li><p><strong>max_exp</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Maximum exponent for the log-uniform distribution.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.surrogate.model.LogUniformFreqInitializer.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#LogUniformFreqInitializer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.LogUniformFreqInitializer.get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the configuration of the initializer for serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>config (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Configuration dictionary.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.surrogate.predict">
+<span id="src-surrogate-predict"></span><h2>src.surrogate.predict<a class="headerlink" href="#module-src.surrogate.predict" title="Link to this heading">¶</a></h2>
+<p>This script loads a trained DeepONet surrogate model and uses it to make predictions
+on a randomly selected test sample from a specified dataset. It saves the predictions
+to a <code class="docutils literal notranslate"><span class="pre">.h5</span></code> file and generates plots comparing the surrogate predictions with the full-order
+model (FOM) results.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you sample from the test set, ensure that the splitting seed matches that used during training.
+If you are using the model we trained just keep the default value of <span class="math notranslate nohighlight">\(40\)</span>.</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.predict._find_id">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">_find_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/predict.html#_find_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.predict._find_id" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Find the index of a test sample in the parameters <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file based on its geometrical parameters.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Geometrical parameters of the test sample.</p></li>
+<li><p><strong>data_folder</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Path to the data folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>test_sample_number (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – The index of the test sample in <code class="docutils literal notranslate"><span class="pre">parameters.csv</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the test sample mu is not found in <code class="docutils literal notranslate"><span class="pre">parameters.csv</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.predict.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/predict.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.predict.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-src.surrogate.summary">
+<span id="src-surrogate-summary"></span><h2>src.surrogate.summary<a class="headerlink" href="#module-src.surrogate.summary" title="Link to this heading">¶</a></h2>
+<p>A file to summarize the specified surrogate model.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">surrogate</span><span class="o">.</span><span class="n">summary</span> <span class="o">--</span><span class="n">model_path</span> <span class="s2">&quot;models/potential1.keras&quot;</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.summary.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.summary.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/summary.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.summary.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-src.surrogate.train">
+<span id="src-surrogate-train"></span><h2>src.surrogate.train<a class="headerlink" href="#module-src.surrogate.train" title="Link to this heading">¶</a></h2>
+<p>This module implements the training procedure for a DeepONet surrogate model
+that learns the mapping from geometrical parameters and spatial coordinates
+to the solution of a physical problem.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">surrogate</span><span class="o">.</span><span class="n">train</span> <span class="o">--</span><span class="n">folder</span> <span class="s2">&quot;test/test1&quot;</span> <span class="o">--</span><span class="n">model_path</span> <span class="s2">&quot;models/potential.keras&quot;</span> <span class="o">--</span><span class="n">target</span> <span class="s2">&quot;potential&quot;</span>
+</pre></div>
+</div>
+<p>There are several optional arguments to customize the behavior:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--folder</span></code>: Path to the data folder (default: “test”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--model_path</span></code>: Path to save the trained model (default: “models/model.keras”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--r</span></code>: Low-rank dimension of the DeepONet (default: <span class="math notranslate nohighlight">\(20\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--seed</span></code>: Random seed for data splitting (default: <span class="math notranslate nohighlight">\(40\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--target</span></code>: Target quantity to predict, either “potential” or “normal_derivative” (default: “potential”).</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.train.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.train.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/train.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.train.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.surrogate.train.train">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.train.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/train.html#train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.train.train" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Train a DeepONet surrogate model to learn the mapping from geometrical parameters
+and spatial coordinates to the solution of the physical problem.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Path to save the trained model.</p></li>
+<li><p><strong>r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Low-rank dimension of the DeepONet.</p></li>
+<li><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Input coordinates array of shape <code class="docutils literal notranslate"><span class="pre">(ns,</span> <span class="pre">nh,</span> <span class="pre">d)</span></code>.</p></li>
+<li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Output solution array of shape <code class="docutils literal notranslate"><span class="pre">(ns,</span> <span class="pre">nh)</span></code>.</p></li>
+<li><p><strong>mu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Geometrical parameters array of shape <code class="docutils literal notranslate"><span class="pre">(ns,</span> <span class="pre">p)</span></code>.</p></li>
+<li><p><strong>seed</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Random seed for data splitting.</p></li>
+<li><p><strong>batch_size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Batch size for training.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="multi-physics.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Multi-physics package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="data.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Data package</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Alessandro Pedone, Marta Pignatelli
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Surrogate package</a><ul>
+<li><a class="reference internal" href="#module-src.surrogate.evaluate">src.surrogate.evaluate</a><ul>
+<li><a class="reference internal" href="#src.surrogate.evaluate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.gpu">src.surrogate.gpu</a><ul>
+<li><a class="reference internal" href="#src.surrogate.gpu.run_on_device"><code class="docutils literal notranslate"><span class="pre">run_on_device()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.loader">src.surrogate.loader</a><ul>
+<li><a class="reference internal" href="#src.surrogate.loader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.losses">src.surrogate.losses</a><ul>
+<li><a class="reference internal" href="#src.surrogate.losses.masked_mae"><code class="docutils literal notranslate"><span class="pre">masked_mae()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.losses.masked_mse"><code class="docutils literal notranslate"><span class="pre">masked_mse()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.model">src.surrogate.model</a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet"><code class="docutils literal notranslate"><span class="pre">DeepONet</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.build"><code class="docutils literal notranslate"><span class="pre">DeepONet.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.call"><code class="docutils literal notranslate"><span class="pre">DeepONet.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.from_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.from_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.get_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DeepONet.plot_training_history()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.summary"><code class="docutils literal notranslate"><span class="pre">DeepONet.summary()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.train_model"><code class="docutils literal notranslate"><span class="pre">DeepONet.train_model()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork"><code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.adapt"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.adapt()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.build"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.call"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.from_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.from_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.get_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.plot_training_history()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.train_model"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.train_model()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer"><code class="docutils literal notranslate"><span class="pre">EinsumLayer</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer.call"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer.get_config"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.get_config()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures"><code class="docutils literal notranslate"><span class="pre">FourierFeatures</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.build"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.call"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.get_config"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.get_config()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#src.surrogate.model.LogUniformFreqInitializer"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.LogUniformFreqInitializer.get_config"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer.get_config()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.predict">src.surrogate.predict</a><ul>
+<li><a class="reference internal" href="#src.surrogate.predict._find_id"><code class="docutils literal notranslate"><span class="pre">_find_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.predict.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.summary">src.surrogate.summary</a><ul>
+<li><a class="reference internal" href="#src.surrogate.summary.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.surrogate.train">src.surrogate.train</a><ul>
+<li><a class="reference internal" href="#src.surrogate.train.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.train.train"><code class="docutils literal notranslate"><span class="pre">train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
