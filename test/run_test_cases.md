@@ -13,45 +13,45 @@ First you can create the __dataset__. Some plots of the domain and the (traditio
 If you want you can play with the number of __workers__ to make the generation faster. 
 
 ```bash
-python -m data.generate --folder "test/test1" --data_file "test/test1.csv" --geometry_input "geometries/cantilever1.geo" --workers 2
+python -m src.data.generate --folder "test/test1" --data_file "test/test1.csv" --geometry_input "geometries/cantilever1.geo" --workers 2
 ```
 
 > Note the real bottleneck of the process in this case is the mesh generation section, since the FOM (Full Order Model) is quite fast, since it's only a laplacian.
 
 Then you can __evaluate__ the model for the electrostatic potential we already trained on the test set you generated.
 ```bash
-python -m surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential" 
+python -m src.surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential" 
 ```
 
 > Since the process data splitting is random, we actually don't know if the model has already seen the data we are generating here. So this is an unbiased estimator of the real performance of the model.
 
 Now you can visualize with some plots the predictions that the model can make.
 ```bash
-python -m surrogate.predict --folder "test/test1" --model_path "models/potential1.keras"  --target "potential" 
+python -m src.surrogate.predict --folder "test/test1" --model_path "models/potential1.keras"  --target "potential" 
 ```
 
 You can do the same for with the model for the normal derivative of the potential on the boundary of the upper plate.
 ```bash
-python -m surrogate.evalutate --folder "test/test1" --model_path "models/derivative1.keras" --target "normal_derivative" 
+python -m src.surrogate.evalutate --folder "test/test1" --model_path "models/derivative1.keras" --target "normal_derivative" 
 ```
 ```bash
-python -m surrogate.predict --folder "test/test1" --model_path "models/derivative1.keras"  --target "normal_derivative" 
+python -m src.surrogate.predict --folder "test/test1" --model_path "models/derivative1.keras"  --target "normal_derivative" 
 ```
 
 
 If you want you can try training the model, with the dedicated module.
 ```bash
-python -m surrogate.train --folder "test/test1" --model_path "models/potential.keras" --target "potential"
+python -m src.surrogate.train --folder "test/test1" --model_path "models/potential.keras" --target "potential"
 ```
 
 ```bash
-python -m surrogate.train --folder "test/test1" --model_path "models/derivative.keras" --target "normal_derivative"
+python -m src.surrogate.train --folder "test/test1" --model_path "models/derivative.keras" --target "normal_derivative"
 ```
 
 You are also able exploit a GPU if you have one, but you need to fulfill the (CUDA) requirements by modifying the environment by yourself (which could not be a straightforward task). For example, you may want to run in the terminal something like:
 ```bash
-conda activate env-name
-conda install cuda-cudart cuda-version=12 -y
+mamba activate env-name
+mamba install cuda-cudart cuda-version=12 -y
 ```
 
 Logs of the training are available and you can open them in your browser using tensorboard:

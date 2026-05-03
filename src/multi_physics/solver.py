@@ -79,7 +79,7 @@ def render_geo_template(template_text: str, coeff_um: np.ndarray) -> str:
     """
     .. admonition:: Description
 
-        Replace `__COEFF1__`, ..., `__COEFF4__` in the template text with the given coefficients (in microns).
+        Replace `__COEFF1__`, `__COEFF2__`, `__COEFF3__`, `__COEFF4__` in the template text with the given coefficients (in microns).
 
     :param template_text: The Gmsh geometry template text.
     :param coeff_um: Array of coefficients in microns.
@@ -213,7 +213,7 @@ def energy_and_cap(
     """
     .. admonition:: Description
 
-        Compute the electrostatic energy W stored in the system and an effective capacitance :math:`C = \\frac{2W}{V_{\\text{diff}}^2}` based on the potential distribution phi and the voltage difference Vdiff.
+        Compute the electrostatic energy `W` stored in the system and an effective capacitance `C=2W/Vdiff^2` based on the potential distribution `phi` and the voltage difference `Vdiff`.
 
     :param domain: The FEniCSx mesh domain object.
     :param phi: The electrostatic potential function defined on the mesh.
@@ -309,9 +309,9 @@ def solve_electrostatics_one(
     return domain, phi, facet_tags
 
 
-# ----------------------------
-# Mode shapes + force projection (4 modes)
-# ----------------------------
+# ------------------------------
+# Mode shapes + force projection
+# ------------------------------
 def cantilever_shape(
     xi: ufl.core.expr.Expr, beta: float, L: float
 ) -> ufl.core.expr.Expr:
@@ -656,7 +656,7 @@ def main():
                         )
                     break
 
-            # --- Modal forces (4) ---
+            # --- Modal forces ---
             F = modal_forces_4(
                 domain=domain,
                 facet_tags=facet_tags,
@@ -687,7 +687,7 @@ def main():
             Vdiff = float(Vlower - args.Vupper)
             W, Cap = energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
 
-            # --- Mechanical update (4 modes) ---
+            # --- Mechanical update ---
             q, qd, qdd = newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
             q_static = np.where(K != 0, F / K, np.nan)
 
