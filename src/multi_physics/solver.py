@@ -79,7 +79,7 @@ def render_geo_template(template_text: str, coeff_um: np.ndarray) -> str:
     """
     .. admonition:: Description
 
-        Replace __COEFF1__..__COEFF4__ in the template text with the given coefficients (in microns).
+        Replace `__COEFF1__`, ..., `__COEFF4__` in the template text with the given coefficients (in microns).
 
     :param template_text: The Gmsh geometry template text.
     :param coeff_um: Array of coefficients in microns.
