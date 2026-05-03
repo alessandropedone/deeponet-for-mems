@@ -195,6 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="run_test_cases.html">Test cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -237,26 +238,27 @@
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
 <section id="strucutre-of-the-repository">
 <h2>Strucutre of the repository<a class="headerlink" href="#strucutre-of-the-repository" title="Link to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Geom-DeepONet
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deeponet-for-mems
 ├──<span class="w"> </span>README.md
-├──<span class="w"> </span>data<span class="w"> </span><span class="o">(</span>module<span class="o">)</span>
-├──<span class="w"> </span>surrogate<span class="w"> </span><span class="o">(</span>module<span class="o">)</span>
-├──<span class="w"> </span>docs<span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
-├──<span class="w"> </span>geometries<span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
-├──<span class="w"> </span>models<span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
-├──<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
 ├──<span class="w"> </span>build_docs.sh
-└──<span class="w"> </span>setup.sh
+├──<span class="w"> </span>data<span class="w"> </span><span class="o">(</span>module<span class="o">)</span>
+├──<span class="w"> </span>docs<span class="w"> </span>
+├──<span class="w"> </span>environment.yml
+├──<span class="w"> </span>geometries<span class="w"> </span>
+├──<span class="w"> </span>models<span class="w"> </span>
+├──<span class="w"> </span>multi-physics_solver
+├──<span class="w"> </span>surrogate<span class="w"> </span><span class="o">(</span>module<span class="o">)</span>
+└──<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 </section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">¶</a></h2>
-<p>You can run the script to setup the environment with the following command.</p>
 <blockquote>
-<div><p>Conda is required.</p>
+<div><p>Conda (or Mamba) is required.</p>
 </div></blockquote>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./setup.sh
+<p>Create the project environment by running this command (or the equivalent Conda command):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mamba<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yml
 </pre></div>
 </div>
 </section>
@@ -266,7 +268,7 @@
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
-<p>The documentation is present in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder in HTML format, and online <a class="reference external" href="https://deeponet-for-mems.netlify.app/">here</a>.
+<p>The documentation is present in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder in HTML format, and online <a class="reference external" href="https://alessandropedone.github.io/deeponet-for-mems/">here</a>.
 The deeper version with private functions is compiled,
 but if you want the more compact version with only the public functions,
 you can just run the following command, and select the right option, to generate a new version of the documentation.</p>

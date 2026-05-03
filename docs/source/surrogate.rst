@@ -2,72 +2,72 @@ Surrogate package
 =================
 
 
-.. automodule:: surrogate
+.. automodule:: src.surrogate
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-surrogate.evaluate
+src.surrogate.evaluate
 -------------------------
 
-.. automodule:: surrogate.evaluate
+.. automodule:: src.surrogate.evaluate
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.gpu
+src.surrogate.gpu
 --------------------
 
-.. automodule:: surrogate.gpu
+.. automodule:: src.surrogate.gpu
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.loader
+src.surrogate.loader
 ---------------------
 
-.. automodule:: surrogate.loader
+.. automodule:: src.surrogate.loader
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.losses
+src.surrogate.losses
 -----------------------
 
-.. automodule:: surrogate.losses
+.. automodule:: src.surrogate.losses
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.model
+src.surrogate.model
 ----------------------
 
-.. automodule:: surrogate.model
+.. automodule:: src.surrogate.model
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.predict
+src.surrogate.predict
 ------------------------
 
-.. automodule:: surrogate.predict
+.. automodule:: src.surrogate.predict
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.summary
+src.surrogate.summary
 ----------------------
 
-.. automodule:: surrogate.summary
+.. automodule:: src.surrogate.summary
    :members:
    :undoc-members:
    :show-inheritance:
 
-surrogate.train
+src.surrogate.train
 ----------------------
 
-.. automodule:: surrogate.train
+.. automodule:: src.surrogate.train
    :members:
    :undoc-members:
    :show-inheritance:

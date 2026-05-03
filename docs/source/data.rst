@@ -2,80 +2,80 @@ Data package
 ============
 
 
-.. automodule:: data
+.. automodule:: src.data
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-data.dataset
+src.data.dataset
 -------------------
 
-.. automodule:: data.dataset
+.. automodule:: src.data.dataset
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.delete
+src.data.delete
 ------------------
 
-.. automodule:: data.delete
+.. automodule:: src.data.delete
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.fom
+src.data.fom
 ---------------
 
-.. automodule:: data.fom
+.. automodule:: src.data.fom
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.generate
+src.data.generate
 --------------------
 
-.. automodule:: data.generate
+.. automodule:: src.data.generate
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.geometry
+src.data.geometry
 --------------------
 
-.. automodule:: data.geometry
+.. automodule:: src.data.geometry
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.mesh
+src.data.mesh
 ----------------
 
-.. automodule:: data.mesh
+.. automodule:: src.data.mesh
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.plot
+src.data.plot
 ----------------
 
-.. automodule:: data.plot
+.. automodule:: src.data.plot
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.remove\_msh
+src.data.remove\_msh
 -----------------------
 
-.. automodule:: data.remove_msh
+.. automodule:: src.data.remove_msh
    :members:
    :undoc-members:
    :show-inheritance:
 
-data.test
+src.data.test
 ----------------
 
-.. automodule:: data.test
+.. automodule:: src.data.test
    :members:
    :undoc-members:
    :show-inheritance:

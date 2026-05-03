@@ -43,3 +43,4 @@ Contents
    run_test_cases
    data
    surrogate
+   multi-physics

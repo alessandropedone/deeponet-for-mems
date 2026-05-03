@@ -1,3 +1,11 @@
+"""
+Solve electrostatics on a series of meshes (e.g. from a time-stepping `.geo`) and write XDMF for ParaView.
+
+Example usage::
+
+    python -m multi_physics.solve_electrostatics_series --mesh-dir path/to/meshes --pattern "step_*.msh" --outdir electro_out --Vlower 1.0 --Vupper 0.0 --Vouter 0.0 --epsr 1.0
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -26,11 +34,20 @@ def solve_one_mesh(
     """
     Solve electrostatics on one air-only mesh.
 
-    Expected facet tags from your .geo:
-      - 10: force_segment (subset of upper electrode boundary)
-      - 11: upper_plate (rest of upper electrode boundary)
-      - 12: lower_plate
-      - 20: outer boundary circle
+    .. admonition:: Description
+
+        Given a mesh with physical tags for the upper plate (tags 10+11), lower plate (tag 12), and optionally outer boundary (tag 20), solve the electrostatic potential distribution phi by applying Dirichlet boundary conditions on these tags. Then compute the electric field E = -grad(phi) and project it to a DG0 vector field for visualization. Finally, compute diagnostics such as the electrostatic energy stored in the system and an effective capacitance based on the potential distribution.
+
+    :param msh_path: Path to the input mesh file in .msh format.
+    :param V_lower: Dirichlet potential to apply on the lower plate (tag 12).
+    :param V_upper: Dirichlet potential to apply on the upper plate (tags 10+11).
+    :param V_outer: Dirichlet potential to apply on the outer boundary (tag 20). If None, no Dirichlet condition is applied on the outer boundary (natural Neumann).
+    :param eps_r: Relative permittivity of the medium (default: 1.0 for air).
+
+    :returns:
+        - phi_h (``fem.Function``) -- The computed electrostatic potential distribution on the mesh.
+        - E (``fem.Function``) -- The computed electric field vector projected to a DG0 function space for visualization.
+        - info (``dict``) -- A dictionary containing diagnostics such as electrostatic energy and effective capacitance.
     """
 
     comm = MPI.COMM_WORLD

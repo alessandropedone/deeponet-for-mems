@@ -141,7 +141,7 @@ def main():
 
     if target == "potential":
         import h5py
-        from data.plot import plot_potential
+        from src.data.plot import plot_potential
         import matplotlib.pyplot as plt
         fom_file = os.path.join(data_folder, "results", f"{idx}.h5")
         with h5py.File(fom_file, 'a') as file:
@@ -164,7 +164,7 @@ def main():
 
     elif target == "normal_derivative":
         import h5py
-        from data.plot import plot_normal_derivative
+        from src.data.plot import plot_normal_derivative
         import matplotlib.pyplot as plt
         fom_file = os.path.join(data_folder, "results", f"{idx}.h5")
         with h5py.File(fom_file, 'a') as file:

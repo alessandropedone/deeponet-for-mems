@@ -1,18 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
-        <link rel="canonical" href="https://alessandropedone.github.io/Geom-DeepONet/_modules/data/delete.html">
-        <link rel="prefetch" href="../../_static/_static/logo-light.svg" as="image">
-        <link rel="prefetch" href="../../_static/_static/logo-dark.svg" as="image">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>data.delete - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+        <title>src.surrogate.losses - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -164,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,25 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="../../_static/_static/logo-light.svg" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="../../_static/_static/logo-dark.svg" alt="Dark Logo"/>
-  </div>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -234,34 +227,70 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for data.delete</h1><div class="highlight"><pre>
+          <h1>Source code for src.surrogate.losses</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. admonition:: Description</span>
+<span class="sd">This module implements masked loss functions for handling NaN values in the target data.</span>
+<span class="sd">These loss functions can be used in TensorFlow/Keras models to ignore NaN values during training</span>
+<span class="sd">and evaluation.</span>
 
-<span class="sd">    This script provides a simple utility to delete a folder.</span>
-<span class="sd">    Part of the &#39;data&#39; module as a helper.</span>
-
-
-<span class="sd">Example of usage::</span>
-
-<span class="sd">    python -m data.delete --folder &lt;data_folder_path&gt;</span>
-
+<span class="sd">.. note::</span>
+<span class="sd">    </span>
+<span class="sd">    Be very careful about precision, since here ``tf.reduce_sum(mask)``</span>
+<span class="sd">    can be very big if the number of points in a batch is large.</span>
+<span class="sd">    Here we use ``float32`` globally to avoid issues, </span>
+<span class="sd">    that ensure that we don&#39;t get overflow in the summation </span>
+<span class="sd">    when the number of points is less than :math:`3.4 \cdot 10^{38}`.</span>
+<span class="sd">    Using mixed precision with ``float16`` would lead to overflow</span>
+<span class="sd">    when the number of points in batch is larger than :math:`6 \cdot 10^{4}`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
-
-<div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../data.html#data.delete.main">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--folder&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the data folder to delete.&quot;</span><span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_keras_serializable</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+<div class="viewcode-block" id="masked_mse">
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.losses.masked_mse">[docs]</a>
+<span class="nd">@register_keras_serializable</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">masked_mse</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute the masked mean squared error (MSE) between the true and predicted values,</span>
+<span class="sd">        ignoring NaN values in the true data.</span>
+<span class="sd">    </span>
+<span class="sd">    :param y_true: The ground truth values.</span>
+<span class="sd">    :param y_pred: The predicted values.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - loss (``tf.Tensor``) -- The computed masked mean squared error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="o">~</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">is_nan</span><span class="p">(</span><span class="n">y_true</span><span class="p">),</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">is_nan</span><span class="p">(</span><span class="n">y_true</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y_true</span><span class="p">)</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">mask</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">))</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="masked_mae">
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.losses.masked_mae">[docs]</a>
+<span class="nd">@register_keras_serializable</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">masked_mae</span><span class="p">(</span><span class="n">y_true</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. admonition:: Description</span>
+
+<span class="sd">        Compute the masked mean absolute error (MAE) between the true and predicted values,</span>
+<span class="sd">        ignoring NaN values in the true data.</span>
+<span class="sd">    </span>
+<span class="sd">    :param y_true: The ground truth values.</span>
+<span class="sd">    :param y_pred: The predicted values.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - loss (``tf.Tensor``) -- The computed masked mean absolute error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="o">~</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">is_nan</span><span class="p">(</span><span class="n">y_true</span><span class="p">),</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">is_nan</span><span class="p">(</span><span class="n">y_true</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y_true</span><span class="p">)</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">mask</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">))</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -294,9 +323,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

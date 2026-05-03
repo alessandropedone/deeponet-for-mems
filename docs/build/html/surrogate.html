@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Data package" href="data.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Multi-physics package" href="multi-physics.html"><link rel="prev" title="Data package" href="data.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>Surrogate package - deeponet-for-mems 0.1.0 documentation</title>
@@ -195,6 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="run_test_cases.html">Test cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data package</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -233,10 +234,10 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-surrogate">
-<span id="surrogate-package"></span><h1>Surrogate package<a class="headerlink" href="#module-surrogate" title="Link to this heading">¶</a></h1>
-<section id="module-surrogate.evaluate">
-<span id="surrogate-evaluate"></span><h2>surrogate.evaluate<a class="headerlink" href="#module-surrogate.evaluate" title="Link to this heading">¶</a></h2>
+          <section id="module-src.surrogate">
+<span id="surrogate-package"></span><h1>Surrogate package<a class="headerlink" href="#module-src.surrogate" title="Link to this heading">¶</a></h1>
+<section id="module-src.surrogate.evaluate">
+<span id="src-surrogate-evaluate"></span><h2>src.surrogate.evaluate<a class="headerlink" href="#module-src.surrogate.evaluate" title="Link to this heading">¶</a></h2>
 <p>Evaluate a trained DeepONet surrogate model on a test dataset.</p>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">surrogate</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">--</span><span class="n">folder</span> <span class="s2">&quot;test/test1&quot;</span> <span class="o">--</span><span class="n">model_path</span> <span class="s2">&quot;models/potential1.keras&quot;</span> <span class="o">--</span><span class="n">target</span> <span class="s2">&quot;potential&quot;</span>
@@ -256,16 +257,16 @@
 <p>Ensure that the seeds used for splitting and prediction are consistent with those used during training for reproducibility.</p>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.evaluate.main">
-<span class="sig-prename descclassname"><span class="pre">surrogate.evaluate.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/evaluate.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.evaluate.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.evaluate.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.evaluate.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/evaluate.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.evaluate.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-surrogate.gpu">
-<span id="surrogate-gpu"></span><h2>surrogate.gpu<a class="headerlink" href="#module-surrogate.gpu" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.gpu">
+<span id="src-surrogate-gpu"></span><h2>src.surrogate.gpu<a class="headerlink" href="#module-src.surrogate.gpu" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.gpu.run_on_device">
-<span class="sig-prename descclassname"><span class="pre">surrogate.gpu.</span></span><span class="sig-name descname"><span class="pre">run_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/gpu.html#run_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.gpu.run_on_device" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.gpu.run_on_device">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.gpu.</span></span><span class="sig-name descname"><span class="pre">run_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/gpu.html#run_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.gpu.run_on_device" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>This function sets up TensorFlow to run on a GPU if available, otherwise falls back to CPU.
@@ -286,11 +287,11 @@ It configures the necessary environment variables and TensorFlow settings to opt
 </dd></dl>
 
 </section>
-<section id="module-surrogate.loader">
-<span id="surrogate-loader"></span><h2>surrogate.loader<a class="headerlink" href="#module-surrogate.loader" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.loader">
+<span id="src-surrogate-loader"></span><h2>src.surrogate.loader<a class="headerlink" href="#module-src.surrogate.loader" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.loader.load">
-<span class="sig-prename descclassname"><span class="pre">surrogate.loader.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/loader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.loader.load" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.loader.load">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.loader.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/loader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.loader.load" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Load data from all <code class="docutils literal notranslate"><span class="pre">.h5</span></code> files in the specified data folder.
@@ -323,8 +324,8 @@ It pads the data arrays to ensure uniform lengths across all samples.</p>
 </dd></dl>
 
 </section>
-<section id="module-surrogate.losses">
-<span id="surrogate-losses"></span><h2>surrogate.losses<a class="headerlink" href="#module-surrogate.losses" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.losses">
+<span id="src-surrogate-losses"></span><h2>src.surrogate.losses<a class="headerlink" href="#module-src.surrogate.losses" title="Link to this heading">¶</a></h2>
 <p>This module implements masked loss functions for handling NaN values in the target data.
 These loss functions can be used in TensorFlow/Keras models to ignore NaN values during training
 and evaluation.</p>
@@ -339,8 +340,8 @@ Using mixed precision with <code class="docutils literal notranslate"><span clas
 when the number of points in batch is larger than <span class="math notranslate nohighlight">\(6 \cdot 10^{4}\)</span>.</p>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.losses.masked_mae">
-<span class="sig-prename descclassname"><span class="pre">surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/losses.html#masked_mae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.losses.masked_mae" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.losses.masked_mae">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/losses.html#masked_mae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.losses.masked_mae" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Compute the masked mean absolute error (MAE) between the true and predicted values,
@@ -366,8 +367,8 @@ ignoring NaN values in the true data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.losses.masked_mse">
-<span class="sig-prename descclassname"><span class="pre">surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/losses.html#masked_mse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.losses.masked_mse" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.losses.masked_mse">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.losses.</span></span><span class="sig-name descname"><span class="pre">masked_mse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/losses.html#masked_mse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.losses.masked_mse" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Compute the masked mean squared error (MSE) between the true and predicted values,
@@ -393,11 +394,11 @@ ignoring NaN values in the true data.</p>
 </dd></dl>
 
 </section>
-<section id="module-surrogate.model">
-<span id="surrogate-model"></span><h2>surrogate.model<a class="headerlink" href="#module-surrogate.model" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.model">
+<span id="src-surrogate-model"></span><h2>src.surrogate.model<a class="headerlink" href="#module-src.surrogate.model" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DeepONet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trunk</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DeepONet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trunk</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
@@ -423,8 +424,8 @@ to approximate operators mapping functions to functions.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.build" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.build" title="Link to this definition">¶</a></dt>
 <dd><p>Builds the DeepONet model by initializing the branch and trunk networks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -434,8 +435,8 @@ to approximate operators mapping functions to functions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_branch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_trunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_branch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_trunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.call" title="Link to this definition">¶</a></dt>
 <dd><p>Forward pass through the DeepONet model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -457,8 +458,8 @@ to approximate operators mapping functions to functions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.from_config">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.from_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.from_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a model instance from the configuration dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -474,8 +475,8 @@ to approximate operators mapping functions to functions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.get_config">
-<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.get_config" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the configuration of the model for serialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -488,8 +489,8 @@ to approximate operators mapping functions to functions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.plot_training_history">
-<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.plot_training_history" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.plot_training_history">
+<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.plot_training_history" title="Link to this definition">¶</a></dt>
 <dd><p>Plots the training and validation loss over epochs.
 This method should be called after training the model using <code class="docutils literal notranslate"><span class="pre">train_model</span></code>.</p>
 <dl class="field-list simple">
@@ -503,8 +504,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.summary" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.summary" title="Link to this definition">¶</a></dt>
 <dd><p>Prints a summary of the DeepONet model architecture.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -514,8 +515,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DeepONet.train_model">
-<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DeepONet.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DeepONet.train_model" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DeepONet.train_model">
+<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DeepONet.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DeepONet.train_model" title="Link to this definition">¶</a></dt>
 <dd><p>Trains the model on the provided dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -552,8 +553,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DenseNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tanh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaky_relu_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_encoding_frequencies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">DenseNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalization_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tanh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaky_relu_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_encoding_frequencies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
@@ -606,8 +607,8 @@ This method should be called after training the model using <code class="docutil
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.adapt">
-<span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.adapt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.adapt" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.adapt">
+<span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.adapt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.adapt" title="Link to this definition">¶</a></dt>
 <dd><p>Adapts the normalization layer to the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -617,8 +618,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.build" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.build" title="Link to this definition">¶</a></dt>
 <dd><p>Builds the neural network architecture based on the provided configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -628,8 +629,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.call" title="Link to this definition">¶</a></dt>
 <dd><p>Forward pass through the neural network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -645,8 +646,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.from_config">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.from_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.from_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a model instance from the configuration dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -662,8 +663,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.get_config">
-<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.get_config" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the configuration of the model for serialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -676,8 +677,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.plot_training_history">
-<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.plot_training_history" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.plot_training_history">
+<span class="sig-name descname"><span class="pre">plot_training_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.plot_training_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.plot_training_history" title="Link to this definition">¶</a></dt>
 <dd><p>Plots the training and validation loss over epochs.
 This method should be called after training the model using <code class="docutils literal notranslate"><span class="pre">train_model</span></code>.</p>
 <dl class="field-list simple">
@@ -691,8 +692,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.DenseNetwork.train_model">
-<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#DenseNetwork.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.DenseNetwork.train_model" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.DenseNetwork.train_model">
+<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean_squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mse']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#DenseNetwork.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.DenseNetwork.train_model" title="Link to this definition">¶</a></dt>
 <dd><p>Trains the model on the provided dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -727,8 +728,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="surrogate.model.EinsumLayer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">surrogate.model.</span></span><span class="sig-name descname"><span class="pre">EinsumLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ein_syntax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#EinsumLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.EinsumLayer" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">EinsumLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ein_syntax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></p>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
@@ -743,8 +744,8 @@ This method should be called after training the model using <code class="docutil
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.EinsumLayer.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#EinsumLayer.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.EinsumLayer.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer.call" title="Link to this definition">¶</a></dt>
 <dd><p>Performs Einstein summation on the input tensors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -760,8 +761,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.EinsumLayer.get_config">
-<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#EinsumLayer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.EinsumLayer.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.EinsumLayer.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#EinsumLayer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.EinsumLayer.get_config" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the configuration of the layer for serialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -776,8 +777,8 @@ This method should be called after training the model using <code class="docutil
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="surrogate.model.FourierFeatures">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">surrogate.model.</span></span><span class="sig-name descname"><span class="pre">FourierFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learnable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#FourierFeatures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.FourierFeatures" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">FourierFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learnable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></p>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
@@ -812,8 +813,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.FourierFeatures.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#FourierFeatures.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.FourierFeatures.build" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.build" title="Link to this definition">¶</a></dt>
 <dd><p>Builds the layer by initializing frequencies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -823,8 +824,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.FourierFeatures.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#FourierFeatures.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.FourierFeatures.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.call" title="Link to this definition">¶</a></dt>
 <dd><p>Applies Fourier Feature Mapping to the input tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -843,8 +844,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.FourierFeatures.get_config">
-<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#FourierFeatures.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.FourierFeatures.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.FourierFeatures.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#FourierFeatures.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.FourierFeatures.get_config" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the configuration of the layer for serialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -859,8 +860,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="surrogate.model.LogUniformFreqInitializer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">surrogate.model.</span></span><span class="sig-name descname"><span class="pre">LogUniformFreqInitializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#LogUniformFreqInitializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.LogUniformFreqInitializer" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.LogUniformFreqInitializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.surrogate.model.</span></span><span class="sig-name descname"><span class="pre">LogUniformFreqInitializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#LogUniformFreqInitializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.LogUniformFreqInitializer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Initializer</span></code></p>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
@@ -881,8 +882,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="surrogate.model.LogUniformFreqInitializer.get_config">
-<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/model.html#LogUniformFreqInitializer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.model.LogUniformFreqInitializer.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.model.LogUniformFreqInitializer.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/model.html#LogUniformFreqInitializer.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.model.LogUniformFreqInitializer.get_config" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the configuration of the initializer for serialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -897,8 +898,8 @@ for each dimension <span class="math notranslate nohighlight">\(x_j\)</span> of 
 </dd></dl>
 
 </section>
-<section id="module-surrogate.predict">
-<span id="surrogate-predict"></span><h2>surrogate.predict<a class="headerlink" href="#module-surrogate.predict" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.predict">
+<span id="src-surrogate-predict"></span><h2>src.surrogate.predict<a class="headerlink" href="#module-src.surrogate.predict" title="Link to this heading">¶</a></h2>
 <p>This script loads a trained DeepONet surrogate model and uses it to make predictions
 on a randomly selected test sample from a specified dataset. It saves the predictions
 to a <code class="docutils literal notranslate"><span class="pre">.h5</span></code> file and generates plots comparing the surrogate predictions with the full-order
@@ -909,8 +910,8 @@ model (FOM) results.</p>
 If you are using the model we trained just keep the default value of <span class="math notranslate nohighlight">\(40\)</span>.</p>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.predict._find_id">
-<span class="sig-prename descclassname"><span class="pre">surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">_find_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/predict.html#_find_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.predict._find_id" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.predict._find_id">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">_find_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/predict.html#_find_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.predict._find_id" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Find the index of a test sample in the parameters <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file based on its geometrical parameters.</p>
@@ -938,26 +939,26 @@ If you are using the model we trained just keep the default value of <span class
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.predict.main">
-<span class="sig-prename descclassname"><span class="pre">surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/predict.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.predict.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.predict.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.predict.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/predict.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.predict.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-surrogate.summary">
-<span id="surrogate-summary"></span><h2>surrogate.summary<a class="headerlink" href="#module-surrogate.summary" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.summary">
+<span id="src-surrogate-summary"></span><h2>src.surrogate.summary<a class="headerlink" href="#module-src.surrogate.summary" title="Link to this heading">¶</a></h2>
 <p>A file to summarize the specified surrogate model.</p>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">surrogate</span><span class="o">.</span><span class="n">summary</span> <span class="o">--</span><span class="n">model_path</span> <span class="s2">&quot;models/potential1.keras&quot;</span>
 </pre></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.summary.main">
-<span class="sig-prename descclassname"><span class="pre">surrogate.summary.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/summary.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.summary.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.summary.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.summary.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/summary.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.summary.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-surrogate.train">
-<span id="surrogate-train"></span><h2>surrogate.train<a class="headerlink" href="#module-surrogate.train" title="Link to this heading">¶</a></h2>
+<section id="module-src.surrogate.train">
+<span id="src-surrogate-train"></span><h2>src.surrogate.train<a class="headerlink" href="#module-src.surrogate.train" title="Link to this heading">¶</a></h2>
 <p>This module implements the training procedure for a DeepONet surrogate model
 that learns the mapping from geometrical parameters and spatial coordinates
 to the solution of a physical problem.</p>
@@ -974,13 +975,13 @@ to the solution of a physical problem.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">--target</span></code>: Target quantity to predict, either “potential” or “normal_derivative” (default: “potential”).</p></li>
 </ul>
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.train.main">
-<span class="sig-prename descclassname"><span class="pre">surrogate.train.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/train.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.train.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.train.main">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.train.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/train.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.train.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="surrogate.train.train">
-<span class="sig-prename descclassname"><span class="pre">surrogate.train.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/surrogate/train.html#train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#surrogate.train.train" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.surrogate.train.train">
+<span class="sig-prename descclassname"><span class="pre">src.surrogate.train.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/surrogate/train.html#train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.surrogate.train.train" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Train a DeepONet surrogate model to learn the mapping from geometrical parameters
@@ -995,6 +996,7 @@ and spatial coordinates to the solution of the physical problem.</p>
 <li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Output solution array of shape <code class="docutils literal notranslate"><span class="pre">(ns,</span> <span class="pre">nh)</span></code>.</p></li>
 <li><p><strong>mu</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Geometrical parameters array of shape <code class="docutils literal notranslate"><span class="pre">(ns,</span> <span class="pre">p)</span></code>.</p></li>
 <li><p><strong>seed</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Random seed for data splitting.</p></li>
+<li><p><strong>batch_size</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Batch size for training.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1011,7 +1013,15 @@ and spatial coordinates to the solution of the physical problem.</p>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="multi-physics.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Multi-physics package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="data.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
@@ -1054,73 +1064,73 @@ and spatial coordinates to the solution of the physical problem.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Surrogate package</a><ul>
-<li><a class="reference internal" href="#module-surrogate.evaluate">surrogate.evaluate</a><ul>
-<li><a class="reference internal" href="#surrogate.evaluate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.evaluate">src.surrogate.evaluate</a><ul>
+<li><a class="reference internal" href="#src.surrogate.evaluate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.gpu">surrogate.gpu</a><ul>
-<li><a class="reference internal" href="#surrogate.gpu.run_on_device"><code class="docutils literal notranslate"><span class="pre">run_on_device()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.gpu">src.surrogate.gpu</a><ul>
+<li><a class="reference internal" href="#src.surrogate.gpu.run_on_device"><code class="docutils literal notranslate"><span class="pre">run_on_device()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.loader">surrogate.loader</a><ul>
-<li><a class="reference internal" href="#surrogate.loader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.loader">src.surrogate.loader</a><ul>
+<li><a class="reference internal" href="#src.surrogate.loader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.losses">surrogate.losses</a><ul>
-<li><a class="reference internal" href="#surrogate.losses.masked_mae"><code class="docutils literal notranslate"><span class="pre">masked_mae()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.losses.masked_mse"><code class="docutils literal notranslate"><span class="pre">masked_mse()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.losses">src.surrogate.losses</a><ul>
+<li><a class="reference internal" href="#src.surrogate.losses.masked_mae"><code class="docutils literal notranslate"><span class="pre">masked_mae()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.losses.masked_mse"><code class="docutils literal notranslate"><span class="pre">masked_mse()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.model">surrogate.model</a><ul>
-<li><a class="reference internal" href="#surrogate.model.DeepONet"><code class="docutils literal notranslate"><span class="pre">DeepONet</span></code></a><ul>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.build"><code class="docutils literal notranslate"><span class="pre">DeepONet.build()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.call"><code class="docutils literal notranslate"><span class="pre">DeepONet.call()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.from_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.from_config()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.get_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.get_config()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DeepONet.plot_training_history()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.summary"><code class="docutils literal notranslate"><span class="pre">DeepONet.summary()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DeepONet.train_model"><code class="docutils literal notranslate"><span class="pre">DeepONet.train_model()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.model">src.surrogate.model</a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet"><code class="docutils literal notranslate"><span class="pre">DeepONet</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.build"><code class="docutils literal notranslate"><span class="pre">DeepONet.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.call"><code class="docutils literal notranslate"><span class="pre">DeepONet.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.from_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.from_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.get_config"><code class="docutils literal notranslate"><span class="pre">DeepONet.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DeepONet.plot_training_history()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.summary"><code class="docutils literal notranslate"><span class="pre">DeepONet.summary()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DeepONet.train_model"><code class="docutils literal notranslate"><span class="pre">DeepONet.train_model()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork"><code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code></a><ul>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.adapt"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.adapt()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.build"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.build()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.call"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.call()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.from_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.from_config()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.get_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.get_config()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.plot_training_history()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.DenseNetwork.train_model"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.train_model()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork"><code class="docutils literal notranslate"><span class="pre">DenseNetwork</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.adapt"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.adapt()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.build"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.call"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.from_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.from_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.get_config"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.plot_training_history"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.plot_training_history()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.DenseNetwork.train_model"><code class="docutils literal notranslate"><span class="pre">DenseNetwork.train_model()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#surrogate.model.EinsumLayer"><code class="docutils literal notranslate"><span class="pre">EinsumLayer</span></code></a><ul>
-<li><a class="reference internal" href="#surrogate.model.EinsumLayer.call"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.call()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.EinsumLayer.get_config"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer"><code class="docutils literal notranslate"><span class="pre">EinsumLayer</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer.call"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.EinsumLayer.get_config"><code class="docutils literal notranslate"><span class="pre">EinsumLayer.get_config()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#surrogate.model.FourierFeatures"><code class="docutils literal notranslate"><span class="pre">FourierFeatures</span></code></a><ul>
-<li><a class="reference internal" href="#surrogate.model.FourierFeatures.build"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.build()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.FourierFeatures.call"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.call()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.model.FourierFeatures.get_config"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures"><code class="docutils literal notranslate"><span class="pre">FourierFeatures</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.build"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.build()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.call"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.call()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.FourierFeatures.get_config"><code class="docutils literal notranslate"><span class="pre">FourierFeatures.get_config()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#surrogate.model.LogUniformFreqInitializer"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer</span></code></a><ul>
-<li><a class="reference internal" href="#surrogate.model.LogUniformFreqInitializer.get_config"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.model.LogUniformFreqInitializer"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer</span></code></a><ul>
+<li><a class="reference internal" href="#src.surrogate.model.LogUniformFreqInitializer.get_config"><code class="docutils literal notranslate"><span class="pre">LogUniformFreqInitializer.get_config()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.predict">surrogate.predict</a><ul>
-<li><a class="reference internal" href="#surrogate.predict._find_id"><code class="docutils literal notranslate"><span class="pre">_find_id()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.predict.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.predict">src.surrogate.predict</a><ul>
+<li><a class="reference internal" href="#src.surrogate.predict._find_id"><code class="docutils literal notranslate"><span class="pre">_find_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.predict.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.summary">surrogate.summary</a><ul>
-<li><a class="reference internal" href="#surrogate.summary.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.summary">src.surrogate.summary</a><ul>
+<li><a class="reference internal" href="#src.surrogate.summary.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-surrogate.train">surrogate.train</a><ul>
-<li><a class="reference internal" href="#surrogate.train.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li><a class="reference internal" href="#surrogate.train.train"><code class="docutils literal notranslate"><span class="pre">train()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.surrogate.train">src.surrogate.train</a><ul>
+<li><a class="reference internal" href="#src.surrogate.train.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#src.surrogate.train.train"><code class="docutils literal notranslate"><span class="pre">train()</span></code></a></li>
 </ul>
 </li>
 </ul>

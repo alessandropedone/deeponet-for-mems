@@ -195,6 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="run_test_cases.html">Test cases</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Data package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -233,15 +234,15 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-data">
-<span id="data-package"></span><h1>Data package<a class="headerlink" href="#module-data" title="Link to this heading">¶</a></h1>
+          <section id="module-src.data">
+<span id="data-package"></span><h1>Data package<a class="headerlink" href="#module-src.data" title="Link to this heading">¶</a></h1>
 <p>The <strong>Data</strong> module provides utilities for managing project data.
 It includes functions for generating geometries, meshes, datasets, and deleting data folders.</p>
-<section id="module-data.dataset">
-<span id="data-dataset"></span><h2>data.dataset<a class="headerlink" href="#module-data.dataset" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.dataset">
+<span id="src-data-dataset"></span><h2>src.data.dataset<a class="headerlink" href="#module-src.data.dataset" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.dataset._reset_results">
-<span class="sig-prename descclassname"><span class="pre">data.dataset.</span></span><span class="sig-name descname"><span class="pre">_reset_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/dataset.html#_reset_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.dataset._reset_results" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.dataset._reset_results">
+<span class="sig-prename descclassname"><span class="pre">src.data.dataset.</span></span><span class="sig-name descname"><span class="pre">_reset_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/dataset.html#_reset_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.dataset._reset_results" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Empty the results folder by removing all files inside it.</p>
@@ -257,8 +258,8 @@ It includes functions for generating geometries, meshes, datasets, and deleting 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.dataset.generate_datasets">
-<span class="sig-prename descclassname"><span class="pre">data.dataset.</span></span><span class="sig-name descname"><span class="pre">generate_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_results_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/dataset.html#generate_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.dataset.generate_datasets" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.dataset.generate_datasets">
+<span class="sig-prename descclassname"><span class="pre">src.data.dataset.</span></span><span class="sig-name descname"><span class="pre">generate_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_results_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/dataset.html#generate_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.dataset.generate_datasets" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate datasets by processing all mesh files in parallel and saving the results.</p>
@@ -280,8 +281,8 @@ It includes functions for generating geometries, meshes, datasets, and deleting 
 </dd></dl>
 
 </section>
-<section id="module-data.delete">
-<span id="data-delete"></span><h2>data.delete<a class="headerlink" href="#module-data.delete" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.delete">
+<span id="src-data-delete"></span><h2>src.data.delete<a class="headerlink" href="#module-src.data.delete" title="Link to this heading">¶</a></h2>
 <div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>This script provides a simple utility to delete a folder.
@@ -292,16 +293,16 @@ Part of the ‘data’ module as a helper.</p>
 </pre></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.delete.main">
-<span class="sig-prename descclassname"><span class="pre">data.delete.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/delete.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.delete.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.delete.main">
+<span class="sig-prename descclassname"><span class="pre">src.data.delete.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/delete.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.delete.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-data.fom">
-<span id="data-fom"></span><h2>data.fom<a class="headerlink" href="#module-data.fom" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.fom">
+<span id="src-data-fom"></span><h2>src.data.fom<a class="headerlink" href="#module-src.data.fom" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.fom._compute_boundary_normals_and_midpoints">
-<span class="sig-prename descclassname"><span class="pre">data.fom.</span></span><span class="sig-name descname"><span class="pre">_compute_boundary_normals_and_midpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_facets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/fom.html#_compute_boundary_normals_and_midpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.fom._compute_boundary_normals_and_midpoints" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.fom._compute_boundary_normals_and_midpoints">
+<span class="sig-prename descclassname"><span class="pre">src.data.fom.</span></span><span class="sig-name descname"><span class="pre">_compute_boundary_normals_and_midpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_facets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/fom.html#_compute_boundary_normals_and_midpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.fom._compute_boundary_normals_and_midpoints" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Compute boundary normals and midpoints for the facets of the upper plate (tags 10 and 11).</p>
@@ -327,8 +328,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.fom._get_domain_from_mesh">
-<span class="sig-prename descclassname"><span class="pre">data.fom.</span></span><span class="sig-name descname"><span class="pre">_get_domain_from_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/fom.html#_get_domain_from_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.fom._get_domain_from_mesh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.fom._get_domain_from_mesh">
+<span class="sig-prename descclassname"><span class="pre">src.data.fom.</span></span><span class="sig-name descname"><span class="pre">_get_domain_from_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/fom.html#_get_domain_from_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.fom._get_domain_from_mesh" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Read the mesh from the .msh file and return the computational domain.</p>
@@ -347,8 +348,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.fom.fom">
-<span class="sig-prename descclassname"><span class="pre">data.fom.</span></span><span class="sig-name descname"><span class="pre">fom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_lower_plate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_upper_plate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/fom.html#fom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.fom.fom" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.fom.fom">
+<span class="sig-prename descclassname"><span class="pre">src.data.fom.</span></span><span class="sig-name descname"><span class="pre">fom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_lower_plate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_upper_plate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/fom.html#fom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.fom.fom" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Full order model that solves the PDE with given boundary conditions and computes the solutions and its gradient.</p>
@@ -386,8 +387,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.fom.solvensave">
-<span class="sig-prename descclassname"><span class="pre">data.fom.</span></span><span class="sig-name descname"><span class="pre">solvensave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/fom.html#solvensave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.fom.solvensave" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.fom.solvensave">
+<span class="sig-prename descclassname"><span class="pre">src.data.fom.</span></span><span class="sig-name descname"><span class="pre">solvensave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/fom.html#solvensave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.fom.solvensave" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Full order model that solves the PDE and saves the output in an .h5 file.</p>
@@ -406,8 +407,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 </section>
-<section id="module-data.generate">
-<span id="data-generate"></span><h2>data.generate<a class="headerlink" href="#module-data.generate" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.generate">
+<span id="src-data-generate"></span><h2>src.data.generate<a class="headerlink" href="#module-src.data.generate" title="Link to this heading">¶</a></h2>
 <p>Script to generate meshes, run simulations, and save results based on geometry parameters.</p>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">data</span><span class="o">.</span><span class="n">generate</span> <span class="o">--</span><span class="n">folder</span> <span class="s2">&quot;test/test1&quot;</span> <span class="o">--</span><span class="n">data_file</span> <span class="s2">&quot;test/test1.csv&quot;</span> <span class="o">--</span><span class="n">geometry_input</span> <span class="s2">&quot;geometries/cantilever1.geo&quot;</span> <span class="o">--</span><span class="n">workers</span> <span class="mi">2</span>
@@ -425,16 +426,16 @@ Part of the ‘data’ module as a helper.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">--workers</span></code>: Number of worker processes to use for parallel mesh generation (default: 1).</p></li>
 </ul>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.generate.main">
-<span class="sig-prename descclassname"><span class="pre">data.generate.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/generate.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.generate.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.generate.main">
+<span class="sig-prename descclassname"><span class="pre">src.data.generate.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/generate.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.generate.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-data.geometry">
-<span id="data-geometry"></span><h2>data.geometry<a class="headerlink" href="#module-data.geometry" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.geometry">
+<span id="src-data-geometry"></span><h2>src.data.geometry<a class="headerlink" href="#module-src.data.geometry" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.geometry._generate_single_geometry">
-<span class="sig-prename descclassname"><span class="pre">data.geometry.</span></span><span class="sig-name descname"><span class="pre">_generate_single_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/geometry.html#_generate_single_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.geometry._generate_single_geometry" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.geometry._generate_single_geometry">
+<span class="sig-prename descclassname"><span class="pre">src.data.geometry.</span></span><span class="sig-name descname"><span class="pre">_generate_single_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/geometry.html#_generate_single_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.geometry._generate_single_geometry" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate a single geometry and return the CSV row string.</p>
@@ -459,8 +460,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.geometry._modify_quantity">
-<span class="sig-prename descclassname"><span class="pre">data.geometry.</span></span><span class="sig-name descname"><span class="pre">_modify_quantity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/geometry.html#_modify_quantity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.geometry._modify_quantity" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.geometry._modify_quantity">
+<span class="sig-prename descclassname"><span class="pre">src.data.geometry.</span></span><span class="sig-name descname"><span class="pre">_modify_quantity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/geometry.html#_modify_quantity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.geometry._modify_quantity" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Modify the geometry file to change the distance between the plates.</p>
@@ -482,8 +483,8 @@ Part of the ‘data’ module as a helper.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.geometry._setup_data">
-<span class="sig-prename descclassname"><span class="pre">data.geometry.</span></span><span class="sig-name descname"><span class="pre">_setup_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters_head</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/geometry.html#_setup_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.geometry._setup_data" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.geometry._setup_data">
+<span class="sig-prename descclassname"><span class="pre">src.data.geometry.</span></span><span class="sig-name descname"><span class="pre">_setup_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters_head</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/geometry.html#_setup_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.geometry._setup_data" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>This function resets the data folder by either deleting all its contents
@@ -516,8 +517,8 @@ and parameters file are set up.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.geometry.generate_geometries">
-<span class="sig-prename descclassname"><span class="pre">data.geometry.</span></span><span class="sig-name descname"><span class="pre">generate_geometries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'parameters.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/geometry.html#generate_geometries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.geometry.generate_geometries" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.geometry.generate_geometries">
+<span class="sig-prename descclassname"><span class="pre">src.data.geometry.</span></span><span class="sig-name descname"><span class="pre">generate_geometries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'parameters.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/geometry.html#generate_geometries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.geometry.generate_geometries" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate geometries by modifying the list of quantities over specified ranges.
@@ -553,8 +554,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.geometry.read_data_file">
-<span class="sig-prename descclassname"><span class="pre">data.geometry.</span></span><span class="sig-name descname"><span class="pre">read_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/geometry.html#read_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.geometry.read_data_file" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.geometry.read_data_file">
+<span class="sig-prename descclassname"><span class="pre">src.data.geometry.</span></span><span class="sig-name descname"><span class="pre">read_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/geometry.html#read_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.geometry.read_data_file" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Read a data file and extract variable metadata.</p>
@@ -581,11 +582,11 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 </section>
-<section id="module-data.mesh">
-<span id="data-mesh"></span><h2>data.mesh<a class="headerlink" href="#module-data.mesh" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.mesh">
+<span id="src-data-mesh"></span><h2>src.data.mesh<a class="headerlink" href="#module-src.data.mesh" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.mesh._generate_mesh">
-<span class="sig-prename descclassname"><span class="pre">data.mesh.</span></span><span class="sig-name descname"><span class="pre">_generate_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/mesh.html#_generate_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.mesh._generate_mesh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.mesh._generate_mesh">
+<span class="sig-prename descclassname"><span class="pre">src.data.mesh.</span></span><span class="sig-name descname"><span class="pre">_generate_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/mesh.html#_generate_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.mesh._generate_mesh" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate a mesh for a given geometry index.</p>
@@ -604,8 +605,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.mesh._generate_mesh_from_geo">
-<span class="sig-prename descclassname"><span class="pre">data.mesh.</span></span><span class="sig-name descname"><span class="pre">_generate_mesh_from_geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/mesh.html#_generate_mesh_from_geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.mesh._generate_mesh_from_geo" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.mesh._generate_mesh_from_geo">
+<span class="sig-prename descclassname"><span class="pre">src.data.mesh.</span></span><span class="sig-name descname"><span class="pre">_generate_mesh_from_geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/mesh.html#_generate_mesh_from_geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.mesh._generate_mesh_from_geo" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate a mesh from a .geo file using gmsh.</p>
@@ -624,8 +625,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.mesh.generate_meshes">
-<span class="sig-prename descclassname"><span class="pre">data.mesh.</span></span><span class="sig-name descname"><span class="pre">generate_meshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_mesh_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/mesh.html#generate_meshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.mesh.generate_meshes" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.mesh.generate_meshes">
+<span class="sig-prename descclassname"><span class="pre">src.data.mesh.</span></span><span class="sig-name descname"><span class="pre">generate_meshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_mesh_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/mesh.html#generate_meshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.mesh.generate_meshes" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Generate meshes for all geometries present in the specified directory using a variable number of workers.</p>
@@ -645,8 +646,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.mesh.remove_msh_files">
-<span class="sig-prename descclassname"><span class="pre">data.mesh.</span></span><span class="sig-name descname"><span class="pre">remove_msh_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/mesh.html#remove_msh_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.mesh.remove_msh_files" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.mesh.remove_msh_files">
+<span class="sig-prename descclassname"><span class="pre">src.data.mesh.</span></span><span class="sig-name descname"><span class="pre">remove_msh_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/mesh.html#remove_msh_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.mesh.remove_msh_files" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Remove all .msh files from the msh folder.</p>
@@ -662,11 +663,11 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 </section>
-<section id="module-data.plot">
-<span id="data-plot"></span><h2>data.plot<a class="headerlink" href="#module-data.plot" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.plot">
+<span id="src-data-plot"></span><h2>src.data.plot<a class="headerlink" href="#module-src.data.plot" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot._cells_plot">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">_cells_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#_cells_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot._cells_plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot._cells_plot">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">_cells_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#_cells_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot._cells_plot" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the provided solution over the domain using cell-based data.</p>
@@ -696,8 +697,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot._vertices_plot">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">_vertices_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#_vertices_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot._vertices_plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot._vertices_plot">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">_vertices_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#_vertices_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot._vertices_plot" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the specified solution over the domain using vertex-based data.</p>
@@ -727,8 +728,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot._zoom_around">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">_zoom_around</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#_zoom_around"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot._zoom_around" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot._zoom_around">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">_zoom_around</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#_zoom_around"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot._zoom_around" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It zooms the given axes around the specified center point.</p>
@@ -749,8 +750,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.domain_plot">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">domain_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#domain_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.domain_plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.domain_plot">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">domain_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#domain_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.domain_plot" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots only the domain and the mesh.</p>
@@ -775,8 +776,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.plot">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.plot">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharp_color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outside_sharpness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_triangulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.plot" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the provided solution over the domain.</p>
@@ -810,8 +811,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.plot_domain">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#plot_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.plot_domain" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.plot_domain">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#plot_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.plot_domain" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the domain and the mesh.</p>
@@ -832,8 +833,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.plot_grad">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#plot_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.plot_grad" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.plot_grad">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#plot_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.plot_grad" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the x component of the gradient of the electrostatic potential.</p>
@@ -852,8 +853,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.plot_normal_derivative">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_normal_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#plot_normal_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.plot_normal_derivative" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.plot_normal_derivative">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_normal_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#plot_normal_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.plot_normal_derivative" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the normal derivative of the potential on the upper plate as arrows.</p>
@@ -876,8 +877,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.plot_potential">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'se'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#plot_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.plot_potential" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.plot_potential">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">plot_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postpone_show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'se'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#plot_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.plot_potential" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It plots the electrostatic potential over the domain.</p>
@@ -901,8 +902,8 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="data.plot.summary_plot">
-<span class="sig-prename descclassname"><span class="pre">data.plot.</span></span><span class="sig-name descname"><span class="pre">summary_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/plot.html#summary_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.plot.summary_plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.plot.summary_plot">
+<span class="sig-prename descclassname"><span class="pre">src.data.plot.</span></span><span class="sig-name descname"><span class="pre">summary_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/plot.html#summary_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.plot.summary_plot" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>It creates a summary plot with all relevant plots.</p>
@@ -918,24 +919,24 @@ in that folder avoid touching every file except the “geo” subfolder the para
 </dd></dl>
 
 </section>
-<section id="module-data.remove_msh">
-<span id="data-remove-msh"></span><h2>data.remove_msh<a class="headerlink" href="#module-data.remove_msh" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.remove_msh">
+<span id="src-data-remove-msh"></span><h2>src.data.remove_msh<a class="headerlink" href="#module-src.data.remove_msh" title="Link to this heading">¶</a></h2>
 <p>Script to remove all .msh files from a specified data folder.
 Example of usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">data</span><span class="o">.</span><span class="n">remove_msh</span> <span class="o">--</span><span class="n">folder</span> <span class="o">&lt;</span><span class="n">data_folder_path</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.remove_msh.main">
-<span class="sig-prename descclassname"><span class="pre">data.remove_msh.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/remove_msh.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.remove_msh.main" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.remove_msh.main">
+<span class="sig-prename descclassname"><span class="pre">src.data.remove_msh.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/remove_msh.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.remove_msh.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
-<section id="module-data.test">
-<span id="data-test"></span><h2>data.test<a class="headerlink" href="#module-data.test" title="Link to this heading">¶</a></h2>
+<section id="module-src.data.test">
+<span id="src-data-test"></span><h2>src.data.test<a class="headerlink" href="#module-src.data.test" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="data.test.test">
-<span class="sig-prename descclassname"><span class="pre">data.test.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'parameters.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_old_mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_old_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/data/test.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data.test.test" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.data.test.test">
+<span class="sig-prename descclassname"><span class="pre">src.data.test.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'parameters.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_old_mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_old_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data/test.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data.test.test" title="Link to this definition">¶</a></dt>
 <dd><div class="admonition-description admonition">
 <p class="admonition-title">Description</p>
 <p>Test function to generate geometries, meshes, and datasets, and optionally plot a specific solution.
@@ -1028,60 +1029,60 @@ It orchestrates the entire process by calling the relevant functions from other 
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Data package</a><ul>
-<li><a class="reference internal" href="#module-data.dataset">data.dataset</a><ul>
-<li><a class="reference internal" href="#data.dataset._reset_results"><code class="docutils literal notranslate"><span class="pre">_reset_results()</span></code></a></li>
-<li><a class="reference internal" href="#data.dataset.generate_datasets"><code class="docutils literal notranslate"><span class="pre">generate_datasets()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.dataset">src.data.dataset</a><ul>
+<li><a class="reference internal" href="#src.data.dataset._reset_results"><code class="docutils literal notranslate"><span class="pre">_reset_results()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.dataset.generate_datasets"><code class="docutils literal notranslate"><span class="pre">generate_datasets()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.delete">data.delete</a><ul>
-<li><a class="reference internal" href="#data.delete.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.delete">src.data.delete</a><ul>
+<li><a class="reference internal" href="#src.data.delete.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.fom">data.fom</a><ul>
-<li><a class="reference internal" href="#data.fom._compute_boundary_normals_and_midpoints"><code class="docutils literal notranslate"><span class="pre">_compute_boundary_normals_and_midpoints()</span></code></a></li>
-<li><a class="reference internal" href="#data.fom._get_domain_from_mesh"><code class="docutils literal notranslate"><span class="pre">_get_domain_from_mesh()</span></code></a></li>
-<li><a class="reference internal" href="#data.fom.fom"><code class="docutils literal notranslate"><span class="pre">fom()</span></code></a></li>
-<li><a class="reference internal" href="#data.fom.solvensave"><code class="docutils literal notranslate"><span class="pre">solvensave()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.fom">src.data.fom</a><ul>
+<li><a class="reference internal" href="#src.data.fom._compute_boundary_normals_and_midpoints"><code class="docutils literal notranslate"><span class="pre">_compute_boundary_normals_and_midpoints()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.fom._get_domain_from_mesh"><code class="docutils literal notranslate"><span class="pre">_get_domain_from_mesh()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.fom.fom"><code class="docutils literal notranslate"><span class="pre">fom()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.fom.solvensave"><code class="docutils literal notranslate"><span class="pre">solvensave()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.generate">data.generate</a><ul>
-<li><a class="reference internal" href="#data.generate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.generate">src.data.generate</a><ul>
+<li><a class="reference internal" href="#src.data.generate.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.geometry">data.geometry</a><ul>
-<li><a class="reference internal" href="#data.geometry._generate_single_geometry"><code class="docutils literal notranslate"><span class="pre">_generate_single_geometry()</span></code></a></li>
-<li><a class="reference internal" href="#data.geometry._modify_quantity"><code class="docutils literal notranslate"><span class="pre">_modify_quantity()</span></code></a></li>
-<li><a class="reference internal" href="#data.geometry._setup_data"><code class="docutils literal notranslate"><span class="pre">_setup_data()</span></code></a></li>
-<li><a class="reference internal" href="#data.geometry.generate_geometries"><code class="docutils literal notranslate"><span class="pre">generate_geometries()</span></code></a></li>
-<li><a class="reference internal" href="#data.geometry.read_data_file"><code class="docutils literal notranslate"><span class="pre">read_data_file()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.geometry">src.data.geometry</a><ul>
+<li><a class="reference internal" href="#src.data.geometry._generate_single_geometry"><code class="docutils literal notranslate"><span class="pre">_generate_single_geometry()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.geometry._modify_quantity"><code class="docutils literal notranslate"><span class="pre">_modify_quantity()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.geometry._setup_data"><code class="docutils literal notranslate"><span class="pre">_setup_data()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.geometry.generate_geometries"><code class="docutils literal notranslate"><span class="pre">generate_geometries()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.geometry.read_data_file"><code class="docutils literal notranslate"><span class="pre">read_data_file()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.mesh">data.mesh</a><ul>
-<li><a class="reference internal" href="#data.mesh._generate_mesh"><code class="docutils literal notranslate"><span class="pre">_generate_mesh()</span></code></a></li>
-<li><a class="reference internal" href="#data.mesh._generate_mesh_from_geo"><code class="docutils literal notranslate"><span class="pre">_generate_mesh_from_geo()</span></code></a></li>
-<li><a class="reference internal" href="#data.mesh.generate_meshes"><code class="docutils literal notranslate"><span class="pre">generate_meshes()</span></code></a></li>
-<li><a class="reference internal" href="#data.mesh.remove_msh_files"><code class="docutils literal notranslate"><span class="pre">remove_msh_files()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.mesh">src.data.mesh</a><ul>
+<li><a class="reference internal" href="#src.data.mesh._generate_mesh"><code class="docutils literal notranslate"><span class="pre">_generate_mesh()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.mesh._generate_mesh_from_geo"><code class="docutils literal notranslate"><span class="pre">_generate_mesh_from_geo()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.mesh.generate_meshes"><code class="docutils literal notranslate"><span class="pre">generate_meshes()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.mesh.remove_msh_files"><code class="docutils literal notranslate"><span class="pre">remove_msh_files()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.plot">data.plot</a><ul>
-<li><a class="reference internal" href="#data.plot._cells_plot"><code class="docutils literal notranslate"><span class="pre">_cells_plot()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot._vertices_plot"><code class="docutils literal notranslate"><span class="pre">_vertices_plot()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot._zoom_around"><code class="docutils literal notranslate"><span class="pre">_zoom_around()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.domain_plot"><code class="docutils literal notranslate"><span class="pre">domain_plot()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.plot_domain"><code class="docutils literal notranslate"><span class="pre">plot_domain()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.plot_grad"><code class="docutils literal notranslate"><span class="pre">plot_grad()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.plot_normal_derivative"><code class="docutils literal notranslate"><span class="pre">plot_normal_derivative()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.plot_potential"><code class="docutils literal notranslate"><span class="pre">plot_potential()</span></code></a></li>
-<li><a class="reference internal" href="#data.plot.summary_plot"><code class="docutils literal notranslate"><span class="pre">summary_plot()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.plot">src.data.plot</a><ul>
+<li><a class="reference internal" href="#src.data.plot._cells_plot"><code class="docutils literal notranslate"><span class="pre">_cells_plot()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot._vertices_plot"><code class="docutils literal notranslate"><span class="pre">_vertices_plot()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot._zoom_around"><code class="docutils literal notranslate"><span class="pre">_zoom_around()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.domain_plot"><code class="docutils literal notranslate"><span class="pre">domain_plot()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.plot_domain"><code class="docutils literal notranslate"><span class="pre">plot_domain()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.plot_grad"><code class="docutils literal notranslate"><span class="pre">plot_grad()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.plot_normal_derivative"><code class="docutils literal notranslate"><span class="pre">plot_normal_derivative()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.plot_potential"><code class="docutils literal notranslate"><span class="pre">plot_potential()</span></code></a></li>
+<li><a class="reference internal" href="#src.data.plot.summary_plot"><code class="docutils literal notranslate"><span class="pre">summary_plot()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.remove_msh">data.remove_msh</a><ul>
-<li><a class="reference internal" href="#data.remove_msh.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.remove_msh">src.data.remove_msh</a><ul>
+<li><a class="reference internal" href="#src.data.remove_msh.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-data.test">data.test</a><ul>
-<li><a class="reference internal" href="#data.test.test"><code class="docutils literal notranslate"><span class="pre">test()</span></code></a></li>
+<li><a class="reference internal" href="#module-src.data.test">src.data.test</a><ul>
+<li><a class="reference internal" href="#src.data.test.test"><code class="docutils literal notranslate"><span class="pre">test()</span></code></a></li>
 </ul>
 </li>
 </ul>

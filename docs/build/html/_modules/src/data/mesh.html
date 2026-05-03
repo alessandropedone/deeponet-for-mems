@@ -1,18 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
-        <link rel="canonical" href="https://alessandropedone.github.io/Geom-DeepONet/_modules/data/mesh.html">
-        <link rel="prefetch" href="../../_static/_static/logo-light.svg" as="image">
-        <link rel="prefetch" href="../../_static/_static/logo-dark.svg" as="image">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>data.mesh - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+        <title>src.data.mesh - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -164,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,25 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="../../_static/_static/logo-light.svg" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="../../_static/_static/logo-dark.svg" alt="Dark Logo"/>
-  </div>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -234,7 +227,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for data.mesh</h1><div class="highlight"><pre>
+          <h1>Source code for src.data.mesh</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -243,7 +236,7 @@
 
 
 <div class="viewcode-block" id="remove_msh_files">
-<a class="viewcode-back" href="../../data.html#data.mesh.remove_msh_files">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.mesh.remove_msh_files">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_msh_files</span><span class="p">(</span><span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -268,7 +261,7 @@
 
 
 <div class="viewcode-block" id="_generate_mesh_from_geo">
-<a class="viewcode-back" href="../../data.html#data.mesh._generate_mesh_from_geo">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.mesh._generate_mesh_from_geo">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_generate_mesh_from_geo</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -306,7 +299,7 @@
 
 
 <div class="viewcode-block" id="_generate_mesh">
-<a class="viewcode-back" href="../../data.html#data.mesh._generate_mesh">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.mesh._generate_mesh">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_generate_mesh</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -323,7 +316,7 @@
 
 
 <div class="viewcode-block" id="generate_meshes">
-<a class="viewcode-back" href="../../data.html#data.mesh.generate_meshes">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.mesh.generate_meshes">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_meshes</span><span class="p">(</span><span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">empty_mesh_folder</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -396,9 +389,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

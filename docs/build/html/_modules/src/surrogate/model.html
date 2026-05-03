@@ -1,18 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
-        <link rel="canonical" href="https://alessandropedone.github.io/Geom-DeepONet/_modules/surrogate/model.html">
-        <link rel="prefetch" href="../../_static/_static/logo-light.svg" as="image">
-        <link rel="prefetch" href="../../_static/_static/logo-dark.svg" as="image">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>surrogate.model - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+        <title>src.surrogate.model - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -164,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,25 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="../../_static/_static/logo-light.svg" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="../../_static/_static/logo-dark.svg" alt="Dark Logo"/>
-  </div>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -234,7 +227,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for surrogate.model</h1><div class="highlight"><pre>
+          <h1>Source code for src.surrogate.model</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -242,7 +235,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras.saving</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_keras_serializable</span>
     
 <div class="viewcode-block" id="FourierFeatures">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.FourierFeatures">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.FourierFeatures">[docs]</a>
 <span class="nd">@register_keras_serializable</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">FourierFeatures</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -287,7 +280,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span> <span class="o">=</span> <span class="n">initializer</span>
 
 <div class="viewcode-block" id="FourierFeatures.build">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.FourierFeatures.build">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.FourierFeatures.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">TensorShape</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds the layer by initializing frequencies.</span>
@@ -304,7 +297,7 @@
 
 
 <div class="viewcode-block" id="FourierFeatures.call">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.FourierFeatures.call">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.FourierFeatures.call">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies Fourier Feature Mapping to the input tensor.</span>
@@ -329,7 +322,7 @@
 
     
 <div class="viewcode-block" id="FourierFeatures.get_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.FourierFeatures.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.FourierFeatures.get_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the configuration of the layer for serialization.</span>
@@ -350,7 +343,7 @@
     
 
 <div class="viewcode-block" id="LogUniformFreqInitializer">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.LogUniformFreqInitializer">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.LogUniformFreqInitializer">[docs]</a>
 <span class="nd">@register_keras_serializable</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">LogUniformFreqInitializer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">Initializer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -377,7 +370,7 @@
         <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">exponents</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LogUniformFreqInitializer.get_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.LogUniformFreqInitializer.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.LogUniformFreqInitializer.get_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the configuration of the initializer for serialization.</span>
@@ -391,7 +384,7 @@
 
 
 <div class="viewcode-block" id="DenseNetwork">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork">[docs]</a>
 <span class="nd">@register_keras_serializable</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">DenseNetwork</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -512,7 +505,7 @@
 
 
 <div class="viewcode-block" id="DenseNetwork.build">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.build">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds the neural network architecture based on the provided configuration.</span>
@@ -598,7 +591,7 @@
 
 
 <div class="viewcode-block" id="DenseNetwork.call">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.call">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.call">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Forward pass through the neural network.</span>
@@ -613,7 +606,7 @@
 
     
 <div class="viewcode-block" id="DenseNetwork.adapt">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.adapt">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.adapt">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">adapt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adapts the normalization layer to the data.</span>
@@ -628,7 +621,7 @@
 
     
 <div class="viewcode-block" id="DenseNetwork.get_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.get_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the configuration of the model for serialization.</span>
@@ -659,7 +652,7 @@
 
     
 <div class="viewcode-block" id="DenseNetwork.from_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.from_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.from_config">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -673,7 +666,7 @@
 
         
 <div class="viewcode-block" id="DenseNetwork.train_model">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.train_model">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.train_model">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">train_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                     <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
                     <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
@@ -767,7 +760,7 @@
 
     <span class="c1">##</span>
 <div class="viewcode-block" id="DenseNetwork.plot_training_history">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DenseNetwork.plot_training_history">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DenseNetwork.plot_training_history">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_training_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the training and validation loss over epochs.</span>
@@ -795,7 +788,7 @@
 
 
 <div class="viewcode-block" id="EinsumLayer">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.EinsumLayer">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.EinsumLayer">[docs]</a>
 <span class="nd">@register_keras_serializable</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">EinsumLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -813,7 +806,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ein_syntax</span> <span class="o">=</span> <span class="n">ein_syntax</span>
 
 <div class="viewcode-block" id="EinsumLayer.call">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.EinsumLayer.call">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.EinsumLayer.call">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs Einstein summation on the input tensors.</span>
@@ -827,7 +820,7 @@
 
     
 <div class="viewcode-block" id="EinsumLayer.get_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.EinsumLayer.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.EinsumLayer.get_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the configuration of the layer for serialization.</span>
@@ -844,7 +837,7 @@
 
     
 <div class="viewcode-block" id="DeepONet">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet">[docs]</a>
 <span class="nd">@register_keras_serializable</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeepONet</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -881,7 +874,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="DeepONet.call">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.call">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.call">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">return_branch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_trunk</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Forward pass through the DeepONet model.</span>
@@ -926,7 +919,7 @@
 
 
 <div class="viewcode-block" id="DeepONet.build">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.build">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds the DeepONet model by initializing the branch and trunk networks.</span>
@@ -940,7 +933,7 @@
 
     
 <div class="viewcode-block" id="DeepONet.get_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.get_config">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the configuration of the model for serialization.</span>
@@ -958,7 +951,7 @@
 
 
 <div class="viewcode-block" id="DeepONet.from_config">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.from_config">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.from_config">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -977,7 +970,7 @@
     
 
 <div class="viewcode-block" id="DeepONet.train_model">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.train_model">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.train_model">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">train_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                     <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                     <span class="n">mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -1075,7 +1068,7 @@
 
     <span class="c1">##</span>
 <div class="viewcode-block" id="DeepONet.plot_training_history">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.plot_training_history">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.plot_training_history">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_training_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the training and validation loss over epochs.</span>
@@ -1102,7 +1095,7 @@
 
 
 <div class="viewcode-block" id="DeepONet.summary">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.model.DeepONet.summary">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.model.DeepONet.summary">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints a summary of the DeepONet model architecture.</span>
@@ -1154,9 +1147,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

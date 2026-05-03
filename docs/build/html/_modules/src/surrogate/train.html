@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>surrogate.train - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+        <title>src.surrogate.train - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,21 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -226,7 +227,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for surrogate.train</h1><div class="highlight"><pre>
+          <h1>Source code for src.surrogate.train</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module implements the training procedure for a DeepONet surrogate model</span>
 <span class="sd">that learns the mapping from geometrical parameters and spatial coordinates</span>
@@ -260,15 +261,15 @@
 
 
 
-
 <div class="viewcode-block" id="train">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.train.train">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.train.train">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
           <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
           <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
           <span class="n">y</span><span class="p">:</span>  <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
           <span class="n">mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-          <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+          <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
 
@@ -281,6 +282,7 @@
 <span class="sd">    :param y: Output solution array of shape ``(ns, nh)``.</span>
 <span class="sd">    :param mu: Geometrical parameters array of shape ``(ns, p)``.</span>
 <span class="sd">    :param seed: Random seed for data splitting.</span>
+<span class="sd">    :param batch_size: Batch size for training.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Hyperparameters setup ----------------------------------------------------------</span>
     <span class="n">r</span>    <span class="o">=</span> <span class="n">r</span>             <span class="c1"># low-rank dimension</span>
@@ -289,6 +291,7 @@
     <span class="n">ns</span>   <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># number of samples = number of meshes</span>
     <span class="n">nh</span>   <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>    <span class="c1"># max number of dofs = x-coordinates available for each mesh</span>
     <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>          <span class="c1"># random seed for data splitting</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>  <span class="c1"># batch size for training</span>
     <span class="c1"># --------------------------------------------------------------------------------</span>
 
     <span class="c1"># Print shapes</span>
@@ -314,7 +317,6 @@
     <span class="c1"># Mixed Precision Setup</span>
     <span class="n">policy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">mixed_precision</span><span class="o">.</span><span class="n">Policy</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
     <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">mixed_precision</span><span class="o">.</span><span class="n">set_global_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-
 
     <span class="n">branch</span> <span class="o">=</span> <span class="n">DenseNetwork</span><span class="p">(</span>
         <span class="n">normalization_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -386,7 +388,7 @@
         <span class="n">y_val</span> <span class="o">=</span> <span class="n">y_val</span><span class="p">,</span>
         <span class="n">learning_rate</span><span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> 
         <span class="n">epochs</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> 
-        <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> 
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span> 
         <span class="n">loss</span> <span class="o">=</span> <span class="n">masked_mse</span><span class="p">,</span> 
         <span class="n">validation_freq</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> 
         <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> 
@@ -410,7 +412,7 @@
 
 
 <div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.train.main">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.train.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Read input arguments</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -419,6 +421,7 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--r&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Low-rank dimension of the DeepONet.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--seed&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Random seed for data splitting.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--target&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;potential&quot;</span><span class="p">,</span> <span class="s2">&quot;normal_derivative&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;potential&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Target quantity to predict.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Batch size for training.&quot;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">data_folder</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">folder</span>
     <span class="n">model_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model_path</span>
@@ -438,7 +441,7 @@
 
     <span class="c1"># Train the model</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.gpu</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_on_device</span>
-    <span class="n">run_on_device</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span></div>
+    <span class="n">run_on_device</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -475,9 +478,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

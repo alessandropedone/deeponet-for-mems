@@ -1,18 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
-        <link rel="canonical" href="https://alessandropedone.github.io/Geom-DeepONet/_modules/surrogate/predict.html">
-        <link rel="prefetch" href="../../_static/_static/logo-light.svg" as="image">
-        <link rel="prefetch" href="../../_static/_static/logo-dark.svg" as="image">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>surrogate.predict - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+        <title>src.surrogate.predict - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -164,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,25 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="../../_static/_static/logo-light.svg" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="../../_static/_static/logo-dark.svg" alt="Dark Logo"/>
-  </div>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -234,7 +227,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for surrogate.predict</h1><div class="highlight"><pre>
+          <h1>Source code for src.surrogate.predict</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This script loads a trained DeepONet surrogate model and uses it to make predictions</span>
 <span class="sd">on a randomly selected test sample from a specified dataset. It saves the predictions</span>
@@ -255,7 +248,7 @@
 
 
 <div class="viewcode-block" id="_find_id">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.predict._find_id">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.predict._find_id">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_find_id</span><span class="p">(</span><span class="n">mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
             <span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -294,7 +287,7 @@
 
 
 <div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../surrogate.html#surrogate.predict.main">[docs]</a>
+<a class="viewcode-back" href="../../../surrogate.html#src.surrogate.predict.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Read input arguments    </span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -324,30 +317,19 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">x_plate</span><span class="p">,</span> <span class="n">y_plate</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normal_derivatives_plate</span><span class="p">)</span>
 
+    <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">use_test_set</span><span class="p">:</span>
         <span class="c1"># Split the dataset into training, validation, and test sets as in the training script</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
         <span class="n">ns</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>
         <span class="n">idx_trainval</span><span class="p">,</span> <span class="n">idx_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
-        <span class="c1"># Split train+val indices into train and val sets</span>
-        <span class="n">idx_train</span><span class="p">,</span> <span class="n">idx_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">idx_trainval</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
-        <span class="c1"># Use indices to split the arrays along the first dimension</span>
-        <span class="n">mu_train</span><span class="p">,</span> <span class="n">mu_val</span><span class="p">,</span> <span class="n">mu_test</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx_train</span><span class="p">],</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx_val</span><span class="p">],</span> <span class="n">mu</span><span class="p">[</span><span class="n">idx_test</span><span class="p">]</span>
-        <span class="n">x_train</span><span class="p">,</span> <span class="n">x_val</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx_train</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx_val</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">idx_test</span><span class="p">]</span>
-        <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_train</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_val</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_test</span><span class="p">]</span>
         <span class="c1"># Identify the index of a random test sample</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed2</span><span class="p">)</span>
         <span class="n">test_sample_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">idx_test</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Use the entire dataset for choosing the test sample</span>
-        <span class="n">x_test</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span>
-        <span class="n">mu_test</span> <span class="o">=</span> <span class="n">mu</span>
         <span class="c1"># Identify the index of a random sample from the entire dataset</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed2</span><span class="p">)</span>
         <span class="n">test_sample_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Extract the corresponding input and output data</span>
@@ -383,11 +365,8 @@
     <span class="n">trunk_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="n">mu_sample</span><span class="p">,</span> <span class="n">x_sample</span><span class="p">],</span> <span class="n">return_trunk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Trunk output shape: &quot;</span><span class="p">,</span> <span class="n">trunk_output</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-    <span class="c1"># Save y_pred to a .h5 file with the same structure as the FOM results</span>
-    <span class="c1"># Find the number of the file corresponding to the test sample</span>
-    <span class="c1"># Open parameters.csv to find the index of the test sample that has the corresponding mu</span>
+    <span class="c1"># Find the index of the test sample in parameters.csv</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">_find_id</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">mu_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_folder</span><span class="o">=</span><span class="n">data_folder</span><span class="p">)</span>
-
 
     <span class="c1"># Read the corresponding .h5 file in data_folder/results and plot the error</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[38;2;0;175;6m</span><span class="se">\n\n</span><span class="s2">Saving prediction and plotting results for test sample index </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">.</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
@@ -395,10 +374,9 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[38;2;0;175;6m</span><span class="se">\n\n</span><span class="s2">Plotting prediction and error in the case mu = </span><span class="si">{</span><span class="n">mu_sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
     <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;potential&quot;</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">data.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_potential</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">src.data.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_potential</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
         <span class="n">fom_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">.h5&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fom_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -421,7 +399,7 @@
 
     <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;normal_derivative&quot;</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">data.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_normal_derivative</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">src.data.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_normal_derivative</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
         <span class="n">fom_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">.h5&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fom_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -477,9 +455,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

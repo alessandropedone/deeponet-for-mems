@@ -1,0 +1,762 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Surrogate package" href="surrogate.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Multi-physics package - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Multi-physics package</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/multi-physics.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-src.multi_physics">
+<span id="multi-physics-package"></span><h1>Multi-physics package<a class="headerlink" href="#module-src.multi_physics" title="Link to this heading">¶</a></h1>
+<section id="module-src.multi_physics.solver">
+<span id="src-multi-physics-solver"></span><h2>src.multi_physics.solver<a class="headerlink" href="#module-src.multi_physics.solver" title="Link to this heading">¶</a></h2>
+<p>Coupled multi-physics solver for electrostatic actuation of a cantilever beam (air electrostatics coupled to modal mechanics), implemented in FEniCSx with remeshing at each time step.</p>
+<ul>
+<li><p>Mesh template: it uses MICRONS as the unit, then mesh coordinates are converted to meters in the code for SI consistency.</p></li>
+<li><p>Electrostatic force: given number of mode shapes, Maxwell traction is projected onto the first cantilever mode shapes (transverse-only) on tag=10 (<cite>force_segment</cite>).</p></li>
+<li><p>Mechanics (diagonal modal system):</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[m_i \ddot{q}_i + c_i \dot{q}_i + k_i q_i = F_i, \quad i = 1 \ldots 4,\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(k_i = m_i \omega_i^2\)</span> and <span class="math notranslate nohighlight">\(c_i = 2 \zeta_i \sqrt{m_i k_i}\)</span>,
+integrated with Newmark average acceleration <span class="math notranslate nohighlight">\((\beta = 1/4,\ \gamma = 1/2)\)</span>.</p>
+</li>
+</ul>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">coupled_modal_electro</span> <span class="o">--</span><span class="n">template</span><span class="o">-</span><span class="n">geo</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geo</span> <span class="o">--</span><span class="n">dt</span> <span class="mf">1e-5</span> <span class="o">--</span><span class="n">nsteps</span> <span class="mi">200</span> <span class="o">--</span><span class="n">Vdc</span> <span class="mi">0</span> <span class="o">--</span><span class="n">Vac</span> <span class="mi">5</span> <span class="o">--</span><span class="n">freq</span> <span class="mf">2.5e3</span> <span class="o">--</span><span class="n">Vupper</span> <span class="mi">0</span> <span class="o">--</span><span class="n">Vouter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">omega</span> <span class="mf">6.3e5</span> <span class="mf">3.9e6</span> <span class="mf">1.1e7</span> <span class="mf">2.1e7</span> <span class="o">--</span><span class="n">mass</span> <span class="mf">1e-12</span> <span class="mf">1e-12</span> <span class="mf">1e-12</span> <span class="mf">1e-12</span> <span class="o">--</span><span class="n">zeta</span> <span class="mf">0.01</span> <span class="mf">0.01</span> <span class="mf">0.01</span> <span class="mf">0.01</span> <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">every</span> <span class="mi">1</span> <span class="o">--</span><span class="n">fail</span><span class="o">-</span><span class="n">fast</span>
+</pre></div>
+</div>
+<p>There are several optional arguments to customize the behavior:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--template-geo</span></code>: Path to the Gmsh geometry template file (required). This file should contain placeholders <code class="docutils literal notranslate"><span class="pre">__COEFF1__</span></code>, <code class="docutils literal notranslate"><span class="pre">__COEFF2__</span></code>, <code class="docutils literal notranslate"><span class="pre">__COEFF3__</span></code>, and <code class="docutils literal notranslate"><span class="pre">__COEFF4__</span></code> which will be replaced by the current modal coefficients (in microns) at each time step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--workdir</span></code>: Base directory for output files (default: “coupled_work”). Meshes will be saved in <code class="docutils literal notranslate"><span class="pre">workdir/meshes</span></code> and results in <code class="docutils literal notranslate"><span class="pre">workdir/results</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gmsh</span></code>: Path to the Gmsh executable (default: “gmsh”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mshver</span></code>: Gmsh mesh format version to use (“2.2” or “4.1”, default: “4.1”). Note that the code currently expects physical tags to be integers, which is the case in both versions, but the internal handling of tags differs between versions. Version 4.1 is recommended for better performance and support for larger meshes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dt</span></code>: Time step size for the Newmark integration (default: 1e-6 seconds).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--nsteps</span></code>: Total number of time steps to simulate (default: 200).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--xmin-um</span></code>, <code class="docutils literal notranslate"><span class="pre">--L-um</span></code>, <code class="docutils literal notranslate"><span class="pre">--thickness-um</span></code>: Geometric parameters of the cantilever beam in microns (default: -50, 100, 10).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--Vupper</span></code>, <code class="docutils literal notranslate"><span class="pre">--Vouter</span></code>: Voltages for the upper conductor and outer boundary (default: 0.0 V). Use <code class="docutils literal notranslate"><span class="pre">--no-outer-bc</span></code> to apply natural Neumann conditions on the outer boundary instead of a Dirichlet condition.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--epsr</span></code>: Relative permittivity of the medium (default: 1.0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--Vdc</span></code>, <code class="docutils literal notranslate"><span class="pre">--Vac</span></code>, <code class="docutils literal notranslate"><span class="pre">--freq</span></code>: Parameters for the time-varying voltage applied to the lower conductor: DC offset, AC amplitude, and frequency in Hz (default: 0 V, 20 V, 1e5 Hz).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--omega</span></code>, <code class="docutils literal notranslate"><span class="pre">--mass</span></code>, <code class="docutils literal notranslate"><span class="pre">--zeta</span></code>: Mechanical parameters for the 4 modes: natural frequencies (rad/s), modal masses (kg), and damping ratios (default: 0.01 for all modes).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--print-every</span></code>: Frequency of printing diagnostics to the console (default: every step).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fail-fast</span></code>: If set, the simulation will check for basic mesh quality and tag presence at each step and will abort if the mesh looks broken (e.g., too few nodes/cells or missing critical tags). This can help catch issues early in the remeshing process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--min-nodes</span></code>, <code class="docutils literal notranslate"><span class="pre">--min-cells</span></code>: Thresholds for the minimum number of nodes and cells in the mesh when <code class="docutils literal notranslate"><span class="pre">--fail-fast</span></code> is enabled (default: 2000 each).</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.V_lower_time">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">V_lower_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vdc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#V_lower_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.V_lower_time" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the lower voltage as a function of time.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Time (s).</p></li>
+<li><p><strong>Vdc</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – DC voltage (V).</p></li>
+<li><p><strong>Vac</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – AC voltage amplitude (V).</p></li>
+<li><p><strong>freq_hz</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Frequency (Hz).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>V_lower (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Lower voltage at time t (V).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.cantilever_shape">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">cantilever_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#cantilever_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.cantilever_shape" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the cantilever mode shape function.
+The mode shape is given by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\psi_i(\xi) = \cosh(\beta_i \xi) - \cos(\beta_i \xi) - C_i \left( \sinh(\beta_i \xi) - \sin(\beta_i \xi) \right)\]</div>
+</div>
+<p>where</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[C_i = \frac{\cosh(\beta_i L) + \cos(\beta_i L)}{\sinh(\beta_i L) + \sin(\beta_i L)}.\]</div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></span>) – The spatial coordinate along the beam, <span class="math notranslate nohighlight">\(\xi = x - x_{\min}\)</span>.</p></li>
+<li><p><strong>beta</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The mode parameter <span class="math notranslate nohighlight">\(\beta_i\)</span> for the <em>i</em>-th mode, related to the natural frequency.</p></li>
+<li><p><strong>L</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The cantilever beam length.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>psi (<code class="docutils literal notranslate"><span class="pre">ufl.core.expr.Expr</span></code>) – The computed mode shape function evaluated at xi.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.energy_and_cap">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">energy_and_cap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vdiff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.8541878128e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#energy_and_cap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.energy_and_cap" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the electrostatic energy W stored in the system and an effective capacitance <span class="math notranslate nohighlight">\(C = \frac{2W}{V_{\text{diff}}^2}\)</span> based on the potential distribution phi and the voltage difference Vdiff.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – The FEniCSx mesh domain object.</p></li>
+<li><p><strong>phi</strong> – The electrostatic potential function defined on the mesh.</p></li>
+<li><p><strong>Vdiff</strong> – The voltage difference between the conductors <span class="math notranslate nohighlight">\((V_{\text{lower}} - V_{\text{upper}})\)</span>.</p></li>
+<li><p><strong>eps_r</strong> – Relative permittivity of the medium (default: 1.0).</p></li>
+<li><p><strong>eps0</strong> – Vacuum permittivity (default: 8.8541878128e-12 F/m).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>W (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – The computed electrostatic energy in joules.</p></li>
+<li><p>C (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – The computed effective capacitance in farads.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.main">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.make_mesh_step">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">make_mesh_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmsh_exec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gmsh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mshver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4.1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#make_mesh_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.make_mesh_step" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Generate a Gmsh mesh for the given time step by rendering the geometry template with the current modal coefficients and running Gmsh to produce a mesh file.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_geo</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Path to the Gmsh geometry template file.</p></li>
+<li><p><strong>workdir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Directory where the generated mesh file will be saved.</p></li>
+<li><p><strong>step</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Current time step index (used for naming the output files).</p></li>
+<li><p><strong>coeff_m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Array of modal coefficients in meters (shape (4,)) to substitute into the geometry template.</p></li>
+<li><p><strong>gmsh_exec</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name or path of the Gmsh executable to run (default: “gmsh”).</p></li>
+<li><p><strong>mshver</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Gmsh mesh format version to use (“2.2” or “4.1”, default: “4.1”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>msh_path (<code class="docutils literal notranslate"><span class="pre">Path</span></code>) – Path to the generated Gmsh mesh file for this time step.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.mesh_stats">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">mesh_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#mesh_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.mesh_stats" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute basic statistics about the mesh, including the number of nodes, number of cells, and bounding box coordinates.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>domain</strong> – The FEniCSx mesh domain object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>stats (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary containing mesh statistics: number of nodes, number of cells, and bounding box coordinates.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.modal_forces_4">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">modal_forces_4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_tags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.8541878128e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#modal_forces_4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.modal_forces_4" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Compute the modal forces <span class="math notranslate nohighlight">\(F_i\)</span> for the first 4 modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[F_i = \text{thickness} \cdot \int_{ds(10)} \mathbf{t}_{\text{beam}} \cdot \boldsymbol{\psi}_i \, ds, \quad i=1..4 \text{ with } \boldsymbol{\psi}_i = (0, \text{mode}_i(x)).\]</div>
+</div>
+<p>The Maxwell traction is computed from the electric field <span class="math notranslate nohighlight">\(\mathbf{E} = -\nabla \phi\)</span> and the permittivity, and the mode shapes are evaluated at the spatial coordinate <span class="math notranslate nohighlight">\(\xi = x - x_{\min}\)</span> along the beam.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – The FEniCSx mesh domain object.</p></li>
+<li><p><strong>facet_tags</strong> – The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.</p></li>
+<li><p><strong>phi</strong> – The electrostatic potential function defined on the mesh.</p></li>
+<li><p><strong>betas</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Array of mode parameters (beta_i) for the first 4 modes, in units of 1/m.</p></li>
+<li><p><strong>xmin_m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The minimum x-coordinate of the beam in meters (used to compute xi).</p></li>
+<li><p><strong>L_m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The length of the cantilever beam in meters (used in the mode shape function).</p></li>
+<li><p><strong>thickness_m</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The thickness of the beam in meters (used to scale the integrated force).</p></li>
+<li><p><strong>eps_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Relative permittivity of the medium (default: 1.0).</p></li>
+<li><p><strong>eps0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Vacuum permittivity (default: 8.8541878128e-12 F/m).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>F (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – Array of modal forces for the first 4 modes.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.newmark_step_diag">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">newmark_step_diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qdd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#newmark_step_diag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.newmark_step_diag" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Perform one time step of the Newmark average acceleration method for a diagonal modal system, where M, C, K are arrays of modal masses, damping coefficients, and stiffnesses for each mode. The function updates the modal coordinates q, velocities qd, and accelerations qdd based on the applied forces F and the time step dt.
+In particular, we have</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[M qdd + C qd + K q = F \quad      ext{for each mode},\]</div>
+</div>
+<p>and the Newmark update equations are applied in a vectorized manner for all modes simultaneously.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – Array of modal masses for each mode.</p></li>
+<li><p><strong>C</strong> – Array of modal damping coefficients for each mode.</p></li>
+<li><p><strong>K</strong> – Array of modal stiffnesses for each mode.</p></li>
+<li><p><strong>q</strong> – Array of modal coordinates at the current time step.</p></li>
+<li><p><strong>qd</strong> – Array of modal velocities at the current time step.</p></li>
+<li><p><strong>qdd</strong> – Array of modal accelerations at the current time step.</p></li>
+<li><p><strong>F</strong> – Array of modal forces applied at the current time step.</p></li>
+<li><p><strong>dt</strong> – Time step size for the integration.</p></li>
+<li><p><strong>beta</strong> – Newmark beta parameter (default: 0.25 for average acceleration).</p></li>
+<li><p><strong>gamma</strong> – Newmark gamma parameter (default: 0.5 for average acceleration).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>q_new (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – Updated modal coordinates after the time step.</p></li>
+<li><p>qd_new (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – Updated modal velocities after the time step.</p></li>
+<li><p>qdd_new (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>) – Updated modal accelerations after the time step.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.project_E_dg0">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">project_E_dg0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#project_E_dg0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.project_E_dg0" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Project the electric field E = -grad(phi) onto a discontinuous Galerkin (DG0) function space to compute the cell-wise average electric field magnitude, which is used for diagnostics.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – The FEniCSx mesh domain object.</p></li>
+<li><p><strong>phi</strong> – The electrostatic potential function defined on the mesh.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Eh (<code class="docutils literal notranslate"><span class="pre">fem.Function</span></code>) – A function in the DG0 space representing the projected electric field magnitude.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.render_geo_template">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">render_geo_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_um</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#render_geo_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.render_geo_template" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Replace __COEFF1__..__COEFF4__ in the template text with the given coefficients (in microns).</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_text</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The Gmsh geometry template text.</p></li>
+<li><p><strong>coeff_um</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Array of coefficients in microns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>geo_text (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – The rendered Gmsh geometry text with coefficients substituted.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.run">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.run" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Run a subprocess command and raise an error if it fails, including the output in the error message.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – List of command arguments to run (e.g., [“gmsh”, “-2”, “mesh.geo”, “-o”, “mesh.msh”]).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.solve_electrostatics_one">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">solve_electrostatics_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msh_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_outer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#solve_electrostatics_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.solve_electrostatics_one" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Solve the electrostatic potential distribution for a given mesh and boundary conditions. The mesh is read from the specified Gmsh file, and Dirichlet boundary conditions are applied on the lower, upper, and optionally outer boundaries. The function returns the FEniCSx domain, the computed potential function, and the facet tags for further processing.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msh_path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Path to the Gmsh mesh file to read.</p></li>
+<li><p><strong>V_lower</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Voltage to apply on the lower conductor (tag 12).</p></li>
+<li><p><strong>V_upper</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Voltage to apply on the upper conductor (tags 10 and 11, default: 0.0 V).</p></li>
+<li><p><strong>V_outer</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – Voltage to apply on the outer boundary (tag 20). If None, natural Neumann conditions are applied instead (default: None).</p></li>
+<li><p><strong>eps_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Relative permittivity of the medium (default: 1.0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>domain (<code class="docutils literal notranslate"><span class="pre">mesh.Mesh</span></code>) – The FEniCSx domain object.</p></li>
+<li><p>phi (<code class="docutils literal notranslate"><span class="pre">fem.Function</span></code>) – The computed electrostatic potential function.</p></li>
+<li><p>facet_tags (<code class="docutils literal notranslate"><span class="pre">mesh.MeshTags</span></code>) – The facet tags for further processing.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solver.tag_counts">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solver.</span></span><span class="sig-name descname"><span class="pre">tag_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facet_tags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solver.html#tag_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solver.tag_counts" title="Link to this definition">¶</a></dt>
+<dd><div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Count the number of facets for each relevant tag (10, 11, 12, 20) in the facet_tags object.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>facet_tags</strong> – The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>tags (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary containing the count of facets for each tag of interest (10, 11, 12, 20).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.multi_physics.solve_electrostatics_series">
+<span id="src-multi-physics-solve-electrostatics-series"></span><h2>src.multi_physics.solve_electrostatics_series<a class="headerlink" href="#module-src.multi_physics.solve_electrostatics_series" title="Link to this heading">¶</a></h2>
+<p>Solve electrostatics on a series of meshes (e.g. from a time-stepping <cite>.geo</cite>) and write XDMF for ParaView.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">multi_physics</span><span class="o">.</span><span class="n">solve_electrostatics_series</span> <span class="o">--</span><span class="n">mesh</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">meshes</span> <span class="o">--</span><span class="n">pattern</span> <span class="s2">&quot;step_*.msh&quot;</span> <span class="o">--</span><span class="n">outdir</span> <span class="n">electro_out</span> <span class="o">--</span><span class="n">Vlower</span> <span class="mf">1.0</span> <span class="o">--</span><span class="n">Vupper</span> <span class="mf">0.0</span> <span class="o">--</span><span class="n">Vouter</span> <span class="mf">0.0</span> <span class="o">--</span><span class="n">epsr</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solve_electrostatics_series.main">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solve_electrostatics_series.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solve_electrostatics_series.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solve_electrostatics_series.main" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.multi_physics.solve_electrostatics_series.solve_one_mesh">
+<span class="sig-prename descclassname"><span class="pre">src.multi_physics.solve_electrostatics_series.</span></span><span class="sig-name descname"><span class="pre">solve_one_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msh_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_outer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solve_electrostatics_series.html#solve_one_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solve_electrostatics_series.solve_one_mesh" title="Link to this definition">¶</a></dt>
+<dd><p>Solve electrostatics on one air-only mesh.</p>
+<div class="admonition-description admonition">
+<p class="admonition-title">Description</p>
+<p>Given a mesh with physical tags for the upper plate (tags 10+11), lower plate (tag 12), and optionally outer boundary (tag 20), solve the electrostatic potential distribution phi by applying Dirichlet boundary conditions on these tags. Then compute the electric field E = -grad(phi) and project it to a DG0 vector field for visualization. Finally, compute diagnostics such as the electrostatic energy stored in the system and an effective capacitance based on the potential distribution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msh_path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Path to the input mesh file in .msh format.</p></li>
+<li><p><strong>V_lower</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Dirichlet potential to apply on the lower plate (tag 12).</p></li>
+<li><p><strong>V_upper</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Dirichlet potential to apply on the upper plate (tags 10+11).</p></li>
+<li><p><strong>V_outer</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Dirichlet potential to apply on the outer boundary (tag 20). If None, no Dirichlet condition is applied on the outer boundary (natural Neumann).</p></li>
+<li><p><strong>eps_r</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Relative permittivity of the medium (default: 1.0 for air).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>phi_h (<code class="docutils literal notranslate"><span class="pre">fem.Function</span></code>) – The computed electrostatic potential distribution on the mesh.</p></li>
+<li><p>E (<code class="docutils literal notranslate"><span class="pre">fem.Function</span></code>) – The computed electric field vector projected to a DG0 function space for visualization.</p></li>
+<li><p>info (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – A dictionary containing diagnostics such as electrostatic energy and effective capacitance.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="surrogate.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Surrogate package</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Alessandro Pedone, Marta Pignatelli
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Multi-physics package</a><ul>
+<li><a class="reference internal" href="#module-src.multi_physics.solver">src.multi_physics.solver</a><ul>
+<li><a class="reference internal" href="#src.multi_physics.solver.V_lower_time"><code class="docutils literal notranslate"><span class="pre">V_lower_time()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.cantilever_shape"><code class="docutils literal notranslate"><span class="pre">cantilever_shape()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.energy_and_cap"><code class="docutils literal notranslate"><span class="pre">energy_and_cap()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.make_mesh_step"><code class="docutils literal notranslate"><span class="pre">make_mesh_step()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.mesh_stats"><code class="docutils literal notranslate"><span class="pre">mesh_stats()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.modal_forces_4"><code class="docutils literal notranslate"><span class="pre">modal_forces_4()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.newmark_step_diag"><code class="docutils literal notranslate"><span class="pre">newmark_step_diag()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.project_E_dg0"><code class="docutils literal notranslate"><span class="pre">project_E_dg0()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.render_geo_template"><code class="docutils literal notranslate"><span class="pre">render_geo_template()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.solve_electrostatics_one"><code class="docutils literal notranslate"><span class="pre">solve_electrostatics_one()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solver.tag_counts"><code class="docutils literal notranslate"><span class="pre">tag_counts()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.multi_physics.solve_electrostatics_series">src.multi_physics.solve_electrostatics_series</a><ul>
+<li><a class="reference internal" href="#src.multi_physics.solve_electrostatics_series.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#src.multi_physics.solve_electrostatics_series.solve_one_mesh"><code class="docutils literal notranslate"><span class="pre">solve_one_mesh()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

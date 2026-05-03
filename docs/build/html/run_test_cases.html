@@ -195,6 +195,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Test cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -276,7 +277,7 @@ If you want you can play with the number of <strong>workers</strong> to make the
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>surrogate.train<span class="w"> </span>--folder<span class="w"> </span><span class="s2">&quot;test/test1&quot;</span><span class="w"> </span>--model_path<span class="w"> </span><span class="s2">&quot;models/potential.keras&quot;</span><span class="w"> </span>--target<span class="w"> </span><span class="s2">&quot;potential&quot;</span>
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>surrogate.train<span class="w"> </span>--folder<span class="w"> </span><span class="s2">&quot;test/test1&quot;</span><span class="w"> </span>--model_path<span class="w"> </span><span class="s2">&quot;models/potential.keras&quot;</span><span class="w"> </span>--target<span class="w"> </span><span class="s2">&quot;normal_derivative&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>surrogate.train<span class="w"> </span>--folder<span class="w"> </span><span class="s2">&quot;test/test1&quot;</span><span class="w"> </span>--model_path<span class="w"> </span><span class="s2">&quot;models/derivative.keras&quot;</span><span class="w"> </span>--target<span class="w"> </span><span class="s2">&quot;normal_derivative&quot;</span>
 </pre></div>
 </div>
 <p>You are also able exploit a GPU if you have one, but you need to fulfill the (CUDA) requirements by modifying the environment by yourself (which could not be a straightforward task). For example, you may want to run in the terminal something like:</p>

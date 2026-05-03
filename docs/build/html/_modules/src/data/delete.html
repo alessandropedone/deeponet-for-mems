@@ -1,18 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
-        <link rel="canonical" href="https://alessandropedone.github.io/Geom-DeepONet/_modules/data/generate.html">
-        <link rel="prefetch" href="../../_static/_static/logo-light.svg" as="image">
-        <link rel="prefetch" href="../../_static/_static/logo-dark.svg" as="image">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>data.generate - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+        <title>src.data.delete - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -164,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,25 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
-  <div class="sidebar-logo-container">
-    <img class="sidebar-logo only-light" src="../../_static/_static/logo-light.svg" alt="Light Logo"/>
-    <img class="sidebar-logo only-dark" src="../../_static/_static/logo-dark.svg" alt="Dark Logo"/>
-  </div>
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -234,75 +227,34 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for data.generate</h1><div class="highlight"><pre>
+          <h1>Source code for src.data.delete</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Script to generate meshes, run simulations, and save results based on geometry parameters.</span>
+<span class="sd">.. admonition:: Description</span>
 
-<span class="sd">Example usage::</span>
+<span class="sd">    This script provides a simple utility to delete a folder.</span>
+<span class="sd">    Part of the &#39;data&#39; module as a helper.</span>
 
-<span class="sd">    python -m data.generate --folder &quot;test/test1&quot; --data_file &quot;test/test1.csv&quot; --geometry_input &quot;geometries/cantilever1.geo&quot; --workers 2</span>
 
-<span class="sd">There are several optional arguments to customize the behavior:</span>
+<span class="sd">Example of usage::</span>
 
-<span class="sd">- ``--folder``: Path to the data folder (default: &quot;test&quot;).</span>
-<span class="sd">- ``--keep_old_mesh``: If set, the old meshes folder will not be emptied before generating new meshes.</span>
-<span class="sd">- ``--keep_old_results``: If set, the old results folder will not be emptied before generating new results.</span>
-<span class="sd">- ``--data_file``: Path to the data file containing geometry parameter specifications (default: &quot;test.csv&quot;).</span>
-<span class="sd">- ``--parameters_file_name``: Name of the parameters file to save the generated parameters (default: &quot;parameters.csv&quot;).</span>
-<span class="sd">- ``--geometry_input``: Path to the input geometry file (default: &quot;geometry.geo&quot;).</span>
-<span class="sd">- ``--plot_number``: Number of the solution to plot (default: 1).</span>
-<span class="sd">- ``--workers``: Number of worker processes to use for parallel mesh generation (default: 1).</span>
+<span class="sd">    python -m data.delete --folder &lt;data_folder_path&gt;</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 
 <div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../data.html#data.generate.main">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.delete.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-
-
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--folder&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the data folder to delete.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--keep_old_mesh&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to empty the old meshes folder before generating new meshes.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--keep_old_results&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to empty the old results folder before generating new results.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--data_file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the data file containing geometry parameter specifications.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--parameters_file_name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;parameters.csv&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the parameters file to save the generated parameters.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--geometry_input&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;geometry.geo&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the input geometry file.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--plot_number&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of the solution to plot.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--workers&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of worker processes to use for parallel mesh generation.&quot;</span><span class="p">)</span>
-
-    <span class="n">data_folder</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">folder</span>
-    <span class="n">empty_old_mesh</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">keep_old_mesh</span>
-    <span class="n">empty_old_results</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">keep_old_results</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">data_file</span>
-    <span class="n">parameters_file_name</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">parameters_file_name</span>
-    <span class="n">geometry_input</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">geometry_input</span>
-    <span class="n">plot_number</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">plot_number</span>
-    <span class="n">workers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span><span class="o">.</span><span class="n">workers</span>
-
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_data_file</span>
-    <span class="n">names</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">num_points</span> <span class="o">=</span> <span class="n">read_data_file</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">test</span>
-    <span class="n">test</span><span class="p">(</span>
-        <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span>
-        <span class="n">ranges</span><span class="o">=</span><span class="n">ranges</span><span class="p">,</span>
-        <span class="n">num_points</span><span class="o">=</span><span class="n">num_points</span><span class="p">,</span>
-        <span class="n">geometry_input</span><span class="o">=</span><span class="n">geometry_input</span><span class="p">,</span>
-        <span class="n">parameters_file_name</span><span class="o">=</span><span class="n">parameters_file_name</span><span class="p">,</span>
-        <span class="n">data_folder</span><span class="o">=</span><span class="n">data_folder</span><span class="p">,</span>
-        <span class="n">plot_number</span><span class="o">=</span><span class="n">plot_number</span><span class="p">,</span>
-        <span class="n">empty_old_mesh</span><span class="o">=</span><span class="n">empty_old_mesh</span><span class="p">,</span>
-        <span class="n">empty_old_results</span><span class="o">=</span><span class="n">empty_old_results</span><span class="p">,</span>
-        <span class="n">workers</span><span class="o">=</span><span class="n">workers</span><span class="p">,</span>
-    <span class="p">)</span></div>
-
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
-
-
 </pre></div>
         </article>
       </div>
@@ -335,9 +287,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

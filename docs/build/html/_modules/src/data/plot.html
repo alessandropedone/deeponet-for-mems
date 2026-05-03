@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>data.plot - Geom-DeepONet 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+        <title>src.data.plot - deeponet-for-mems 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Geom-DeepONet 0.1.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">deeponet-for-mems 0.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,21 +179,22 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">Geom-DeepONet 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">deeponet-for-mems 0.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run_test_cases.html">Test cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../run_test_cases.html">Test cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data.html">Data package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surrogate.html">Surrogate package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../multi-physics.html">Multi-physics package</a></li>
 </ul>
 
 </div>
@@ -226,7 +227,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for data.plot</h1><div class="highlight"><pre>
+          <h1>Source code for src.data.plot</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.tri</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tri</span>
@@ -236,7 +237,7 @@
 
 
 <div class="viewcode-block" id="_cells_plot">
-<a class="viewcode-back" href="../../data.html#data.plot._cells_plot">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot._cells_plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_cells_plot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
                <span class="n">cells</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
@@ -309,7 +310,7 @@
 
 
 <div class="viewcode-block" id="_vertices_plot">
-<a class="viewcode-back" href="../../data.html#data.plot._vertices_plot">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot._vertices_plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_vertices_plot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
                   <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                   <span class="n">cells</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -380,7 +381,7 @@
 
 
 <div class="viewcode-block" id="domain_plot">
-<a class="viewcode-back" href="../../data.html#data.plot.domain_plot">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.domain_plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">domain_plot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
             <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">cells</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -438,7 +439,7 @@
 
 
 <div class="viewcode-block" id="plot">
-<a class="viewcode-back" href="../../data.html#data.plot.plot">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
          <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
          <span class="n">cells</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
@@ -503,7 +504,7 @@
 
 
 <div class="viewcode-block" id="_zoom_around">
-<a class="viewcode-back" href="../../data.html#data.plot._zoom_around">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot._zoom_around">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_zoom_around</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">zoom</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -527,7 +528,7 @@
 
 
 <div class="viewcode-block" id="plot_domain">
-<a class="viewcode-back" href="../../data.html#data.plot.plot_domain">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.plot_domain">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_domain</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> 
                 <span class="n">postpone_show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
                 <span class="n">zoom</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
@@ -586,7 +587,7 @@
     
 
 <div class="viewcode-block" id="plot_potential">
-<a class="viewcode-back" href="../../data.html#data.plot.plot_potential">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.plot_potential">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_potential</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> 
                    <span class="n">postpone_show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
                    <span class="n">zoom</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
@@ -720,7 +721,7 @@
 
     
 <div class="viewcode-block" id="plot_grad">
-<a class="viewcode-back" href="../../data.html#data.plot.plot_grad">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.plot_grad">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_grad</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> 
               <span class="n">postpone_show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
               <span class="n">zoom</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
@@ -794,7 +795,7 @@
    
 
 <div class="viewcode-block" id="plot_normal_derivative">
-<a class="viewcode-back" href="../../data.html#data.plot.plot_normal_derivative">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.plot_normal_derivative">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_normal_derivative</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">postpone_show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">zoom</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">center_points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>   
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -849,7 +850,7 @@
         <span class="k">if</span> <span class="n">pred</span><span class="p">:</span>
             <span class="n">normal_derivative</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivative_pred&quot;</span><span class="p">][:]</span>
         <span class="k">elif</span> <span class="n">error</span><span class="p">:</span>
-            <span class="n">normal_derivative</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivative_pred&quot;</span><span class="p">][:]</span> <span class="o">-</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivatives_plate&quot;</span><span class="p">][:]</span>
+            <span class="n">normal_derivative</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivative_pred&quot;</span><span class="p">][:]</span> <span class="o">-</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivatives_plate&quot;</span><span class="p">][:])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivatives_plate&quot;</span><span class="p">][:]</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">normal_derivative</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;normal_derivatives_plate&quot;</span><span class="p">][:]</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;midpoints_plate&quot;</span><span class="p">][:]</span>
@@ -877,7 +878,7 @@
         <span class="k">if</span> <span class="n">pred</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predicted normal derivative (zoom </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoom</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">zoom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Predicted normal derivative&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">error</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Normal derivative error (zoom </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoom</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">zoom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Normal derivative error&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Normal derivative error rescaled (zoom </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoom</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">zoom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Normal derivative error rescaled&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Normal derivative (zoom </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoom</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">zoom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Normal derivative&quot;</span><span class="p">)</span>
 
@@ -888,7 +889,7 @@
 
 
 <div class="viewcode-block" id="summary_plot">
-<a class="viewcode-back" href="../../data.html#data.plot.summary_plot">[docs]</a>
+<a class="viewcode-back" href="../../../data.html#src.data.plot.summary_plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">summary_plot</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
@@ -936,9 +937,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>
