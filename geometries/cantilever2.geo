@@ -26,19 +26,19 @@ L = 100 - overetch;
 n = 4; 
 
 // 1st mode coefficient
-coeff(1) = -2.5;
+coeff(1) = __COEFF1__;
 beta(1) = 0.596864 * 3.1415926535 / L;
 
 // 2nd mode coefficient
-coeff(2) = -2.5;
+coeff(2) = __COEFF2__;
 beta(2) = 1.49418 * 3.1415926535 / L;
 
 // 3rd mode coefficient
-coeff(3) = -2.5;
+coeff(3) = __COEFF3__;
 beta(3) = 2.50025 * 3.1415926535 / L;
 
 // 4th mode coefficient
-coeff(4) = -2.5;
+coeff(4) = __COEFF4__;
 beta(4) = 3.49999 * 3.1415926535 / L;
 
 
@@ -70,7 +70,7 @@ For i In {1:nx}
     y_bottom = distance / 2 + overetch;
     For j In {1:n}
         C = (Cosh(beta(j)*L) + Cos(beta(j)*L)) / (Sinh(beta(j)*L) + Sin(beta(j)*L));
-        y_bottom  = y_bottom + coeff(j) * (Cosh(beta(j)*(x+50)) - Cos(beta(j)*(x+50)) - C * (Sinh(beta(j)*(x+50)) - Sin(beta(j)*(x+50))));
+        y_bottom  = y_bottom + coeff(j) * (Cosh(beta(j)*(x-xmin)) - Cos(beta(j)*(x-xmin)) - C * (Sinh(beta(j)*(x-xmin)) - Sin(beta(j)*(x-xmin))));
     EndFor
 
     y_top = y_bottom + yheight;
@@ -126,15 +126,16 @@ Plane Surface(2) = {2};
 
 
 //---------------------------------------
-// Outer (fictious) boundary
+// Outer boundary
 //---------------------------------------
 
 // Points
-Point(1005) = {0, 0, 0};       // Center
-Point(1006) = {200, 0, 0};     // Start point
-Point(1007) = {0, 200, 0};     // 90 degrees
-Point(1008) = {-200, 0, 0};    // 180 degrees
-Point(1009) = {0, -200, 0};    // 270 degrees
+R = 200;
+Point(1005) = {0, 0, 0};
+Point(1006) = {R, 0, 0};
+Point(1007) = {0,  R, 0};
+Point(1008) = {-R, 0, 0};
+Point(1009) = {0, -R, 0};
 
 // Circle arcs (each needs start, center, end)
 Circle(9) = {1006, 1005, 1007};
@@ -144,16 +145,12 @@ Circle(12) = {1009, 1005, 1006};
 
 // Plane surface for the entire domain
 Curve Loop(3) = {9, 10, 11, 12};
-Surface(3) = {3};
-
-// Subtract the plates from the whole domain to obtain the actual domain where we want to solve the equations
-BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; }
-
+Plane Surface(3) = {3};
 
 
 
 //---------------------------------------
-// Transfinite Lines/Curves
+// Transfinite Curves
 //---------------------------------------
 
 // Set the number of points on the boundaries
@@ -161,17 +158,19 @@ r = 3;
 d = 0.15;
 
 // Plates
-Transfinite Curve {1} = 50*r/2 Using Progression 1;
-Transfinite Line {2} = 50*r Using Progression 1;
-Transfinite Curve {3, 4} = 2*r Using Progression 1+d;
-Transfinite Line {5} = 50*r  Using Progression 1;
-Transfinite Line {7} = 50*r/4 Using Progression 1;
-Transfinite Line {6} = 2*r Using Progression 1+d;
-Transfinite Line {8} = 2*r Using Progression 1-d;
+Transfinite Curve {1}    = 50*r/4   Using Progression 1;
+Transfinite Curve {2}    = 50*r     Using Progression 1;
+Transfinite Curve {3, 4} = 2*r      Using Progression 1+d;
+Transfinite Curve {5}    = 50*r     Using Progression 1;
+Transfinite Curve {7}    = 50*r/4   Using Progression 1;
+Transfinite Curve {6}    = 2*r      Using Progression 1+d;
+Transfinite Curve {8}    = 2*r      Using Progression 1-d;
 
 // Outer boundary
-Transfinite Line {9, 10, 11, 12} = 20 Using Progression 1;
+Transfinite Curve {9, 10, 11, 12} = 20 Using Progression 1;
 
+// Subtract the plates from the whole domain to obtain the actual domain where we want to solve the equations
+air[] = BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; };
 
 
 //---------------------------------------
@@ -179,13 +178,13 @@ Transfinite Line {9, 10, 11, 12} = 20 Using Progression 1;
 //---------------------------------------                
 
 // Physical curves (boundaries)
-Physical Line("force_segment", 10) = {2};
-Physical Line("upper_plate", 11) = {1, 3, 4};
-Physical Line("lower_plate", 12) = {5, 6, 7, 8};
-Physical Line("boundary", 20) = {9, 10, 11, 12};
+Physical Line("force_segment",  10) = {2};
+Physical Line("upper_plate",    11) = {1, 3, 4};
+Physical Line("lower_plate",    12) = {5, 6, 7, 8};
+Physical Line("boundary",       20) = {9, 10, 11, 12};
 
 // Physical Surfaces
-Physical Surface("space", 30) = {3};
+Physical Surface("air",         30) = {air[]};
 
 
 
@@ -194,4 +193,8 @@ Physical Surface("space", 30) = {3};
 //---------------------------------------
 
 // 2D mesh generation
-Mesh 2;  
+Mesh.Algorithm = 6;
+Mesh.Optimize = 1;
+Mesh.OptimizeNetgen = 1;
+
+Mesh 2;
