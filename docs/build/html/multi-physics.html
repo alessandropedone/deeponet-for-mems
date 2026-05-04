@@ -633,6 +633,22 @@ In particular, we have</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">multi_physics</span><span class="o">.</span><span class="n">solve_electrostatics_series</span> <span class="o">--</span><span class="n">mesh</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">meshes</span> <span class="o">--</span><span class="n">pattern</span> <span class="s2">&quot;step_*.msh&quot;</span> <span class="o">--</span><span class="n">outdir</span> <span class="n">electro_out</span> <span class="o">--</span><span class="n">Vlower</span> <span class="mf">1.0</span> <span class="o">--</span><span class="n">Vupper</span> <span class="mf">0.0</span> <span class="o">--</span><span class="n">Vouter</span> <span class="mf">0.0</span> <span class="o">--</span><span class="n">epsr</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
+<p>There are several optional arguments to customize the behavior:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--mesh-dir</span></code>: Path to the folder containing the input .msh files (default: current directory).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--pattern</span></code>: Glob pattern to match the mesh files (default: “step_*.msh”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--outdir</span></code>: Output folder where the XDMF files and summary CSV will be saved (default: “electro_out”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--Vlower</span></code>: Dirichlet potential to apply on the lower plate (tag 12) (default: 1.0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--Vupper</span></code>: Dirichlet potential to apply on the upper plate (tags 10+11) (default: 0.0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--Vouter</span></code>: Dirichlet potential to apply on the outer boundary (tag 20) (default: 0.0). Use <code class="docutils literal notranslate"><span class="pre">--no-outer-bc</span></code> to apply natural Neumann instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-outer-bc</span></code>: If set, do not apply a Dirichlet condition on the outer boundary (tag 20) and use natural Neumann instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--epsr</span></code>: Relative permittivity of the medium (default: 1.0 for air).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dt</span></code>: Time step to use for the ParaView time series (default: 1.0). This is only for visualization purposes in ParaView and does not affect the physics of the problem.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It outputs both individual XDMF files for each mesh (e.g. step_0.xdmf, step_1.xdmf, …) and a single PVD time series (electro_series.pvd) that can be opened in ParaView to visualize the evolution of the electrostatic potential and field across the series of meshes. It also writes a summary CSV with diagnostics like energy and effective capacitance for each step.</p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.multi_physics.solve_electrostatics_series.main">
 <span class="sig-prename descclassname"><span class="pre">src.multi_physics.solve_electrostatics_series.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/multi_physics/solve_electrostatics_series.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.multi_physics.solve_electrostatics_series.main" title="Link to this definition">¶</a></dt>

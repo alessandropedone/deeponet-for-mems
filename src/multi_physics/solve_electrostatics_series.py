@@ -4,6 +4,22 @@ Solve electrostatics on a series of meshes (e.g. from a time-stepping `.geo`) an
 Example usage::
 
     python -m multi_physics.solve_electrostatics_series --mesh-dir path/to/meshes --pattern "step_*.msh" --outdir electro_out --Vlower 1.0 --Vupper 0.0 --Vouter 0.0 --epsr 1.0
+
+There are several optional arguments to customize the behavior:
+
+- ``--mesh-dir``: Path to the folder containing the input .msh files (default: current directory).
+- ``--pattern``: Glob pattern to match the mesh files (default: "step_*.msh").
+- ``--outdir``: Output folder where the XDMF files and summary CSV will be saved (default: "electro_out").
+- ``--Vlower``: Dirichlet potential to apply on the lower plate (tag 12) (default: 1.0).
+- ``--Vupper``: Dirichlet potential to apply on the upper plate (tags 10+11) (default: 0.0).
+- ``--Vouter``: Dirichlet potential to apply on the outer boundary (tag 20) (default: 0.0). Use ``--no-outer-bc`` to apply natural Neumann instead.
+- ``--no-outer-bc``: If set, do not apply a Dirichlet condition on the outer boundary (tag 20) and use natural Neumann instead.
+- ``--epsr``: Relative permittivity of the medium (default: 1.0 for air).
+- ``--dt``: Time step to use for the ParaView time series (default: 1.0). This is only for visualization purposes in ParaView and does not affect the physics of the problem. 
+
+.. note::
+    
+    It outputs both individual XDMF files for each mesh (e.g. step_0.xdmf, step_1.xdmf, ...) and a single PVD time series (electro_series.pvd) that can be opened in ParaView to visualize the evolution of the electrostatic potential and field across the series of meshes. It also writes a summary CSV with diagnostics like energy and effective capacitance for each step.
 """
 
 from __future__ import annotations

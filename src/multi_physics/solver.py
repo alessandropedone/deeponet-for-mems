@@ -416,8 +416,8 @@ def newmark_step_diag(M, C, K, q, qd, qdd, F, dt, beta=0.25, gamma=0.5):
     .. admonition:: Description
 
             Perform one time step of the Newmark average acceleration method for a diagonal modal system, where M, C, K are arrays of modal masses, damping coefficients, and stiffnesses for each mode. The function updates the modal coordinates q, velocities qd, and accelerations qdd based on the applied forces F and the time step dt.
-            In particular, we have 
-            
+            In particular, we have
+
             .. math:: M qdd + C qd + K q = F \quad \text{for each mode},
 
             and the Newmark update equations are applied in a vectorized manner for all modes simultaneously.
@@ -476,6 +476,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--template-geo", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, default=Path("coupled_work"))
+
+    if ap.parse_known_args()[0].workdir.exists():
+        response = input(
+            f"Working directory '{ap.parse_known_args()[0].workdir}' already exists. Do you want to delete it and continue? [y/N] "
+        )
+        if response.lower() != "y":
+            print("Aborting.")
+            return
+        shutil.rmtree(ap.parse_known_args()[0].workdir)
+
     ap.add_argument("--gmsh", type=str, default="gmsh")
     ap.add_argument("--mshver", type=str, default="4.1", choices=["2.2", "4.1"])
 

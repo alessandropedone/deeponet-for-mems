@@ -678,8 +678,8 @@
 <span class="sd">    .. admonition:: Description</span>
 
 <span class="sd">            Perform one time step of the Newmark average acceleration method for a diagonal modal system, where M, C, K are arrays of modal masses, damping coefficients, and stiffnesses for each mode. The function updates the modal coordinates q, velocities qd, and accelerations qdd based on the applied forces F and the time step dt.</span>
-<span class="sd">            In particular, we have </span>
-<span class="sd">            </span>
+<span class="sd">            In particular, we have</span>
+
 <span class="sd">            .. math:: M qdd + C qd + K q = F \quad \text{for each mode},</span>
 
 <span class="sd">            and the Newmark update equations are applied in a vectorized manner for all modes simultaneously.</span>
@@ -744,6 +744,16 @@
     <span class="n">ap</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--template-geo&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--workdir&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;coupled_work&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Working directory &#39;</span><span class="si">{</span><span class="n">ap</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">&#39; already exists. Do you want to delete it and continue? [y/N] &quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">ap</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
+
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--gmsh&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;gmsh&quot;</span><span class="p">)</span>
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mshver&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;4.1&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2.2&quot;</span><span class="p">,</span> <span class="s2">&quot;4.1&quot;</span><span class="p">])</span>
 

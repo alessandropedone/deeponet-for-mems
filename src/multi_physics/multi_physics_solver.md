@@ -290,8 +290,7 @@ $$
 
 ## To launch the code
 ```bash
-cd multi-physics_solver
-python coupled_modal_electro.py --template-geo geometry.geo --dt 1e-5 --nsteps 200 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast
+python -m src.multi_physics.solver --template-geo geometries/cantilever1.geo --dt 1e-5 --nsteps 200 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast
 ```
 
 ### References:
