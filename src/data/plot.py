@@ -645,8 +645,3 @@ def summary_plot(file: h5py.File) -> None:
     plot_grad(file, postpone_show=True, zoom=[1, 4, 15], center_points=[(0,0), (0,0), (-50,0)], component="y")
     plot_normal_derivative(file, postpone_show=True, zoom=[4], center_points=[(0,0)])
     plt.show()
-
-if __name__ == "__main__":
-    path = "temp/test1/results/1.h5"
-    with h5py.File(path, "r") as file:
-        summary_plot(file)

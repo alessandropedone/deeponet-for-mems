@@ -47,6 +47,7 @@ import shutil
 import subprocess
 import csv
 import numpy as np
+import time
 
 from mpi4py import MPI
 from dolfinx.io import gmshio, VTKFile
@@ -401,7 +402,7 @@ def modal_forces_4(
     n = ufl.FacetNormal(domain)
     eps = eps0 * eps_r
 
-    if dphidn is None:
+    if dphidn_vals is None:
         dphidn = ufl.dot(ufl.grad(phi), n)
     else:
         # Boundary scalar field storing dphidn values on tag 10, zero elsewhere
@@ -596,7 +597,8 @@ def main():
     qdd = np.zeros(4, dtype=float)
 
     vtk_path = work_out / "electro_series.pvd"
-    csv_path = work_out / "modal_history.csv"
+    csv_path = args.workdir / "modal_history.csv"
+    execution_time_path = args.workdir / "execution_time.txt"
 
     if rank == 0:
         fcsv = csv_path.open("w", newline="")
@@ -640,6 +642,8 @@ def main():
         writer = None
 
     eps0 = 8.8541878128e-12
+
+    start = time.perf_counter()
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
         for k in range(args.nsteps):
@@ -788,10 +792,15 @@ def main():
                     ]
                 )
 
+    end = time.perf_counter()
+    with open(execution_time_path, "w") as f:
+        f.write(f"{end - start:.6f}\n")
+
     if rank == 0:
         fcsv.close()
         print(f"\nParaView time series: {vtk_path}")
         print(f"Modal history CSV:    {csv_path}")
+        print(f"Total runtime: {end - start:.2f} seconds")
 
 
 if __name__ == "__main__":
