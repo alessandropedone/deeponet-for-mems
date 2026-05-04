@@ -20,10 +20,12 @@ There are several optional arguments to customize the behavior:
 
 - ``--template-geo``: Path to the Gmsh geometry template file (required). This file should contain placeholders ``__COEFF1__``, ``__COEFF2__``, ``__COEFF3__``, and ``__COEFF4__`` which will be replaced by the current modal coefficients (in microns) at each time step.
 - ``--workdir``: Base directory for output files (default: "coupled_work"). Meshes will be saved in ``workdir/meshes`` and results in ``workdir/results``.
+- ``--nn-path``: Optional path to a neural network model that can be used to predict the normal derivative of the potential on the force segment (tag 10) instead of computing it from the gradient. If provided, the code will call the model at each time step with appropriate input features to get the predicted dphi/dn values for use in the force computation.
 - ``--gmsh``: Path to the Gmsh executable (default: "gmsh").
 - ``--mshver``: Gmsh mesh format version to use ("2.2" or "4.1", default: "4.1"). Note that the code currently expects physical tags to be integers, which is the case in both versions, but the internal handling of tags differs between versions. Version 4.1 is recommended for better performance and support for larger meshes.
 - ``--dt``: Time step size for the Newmark integration (default: 1e-6 seconds).
 - ``--nsteps``: Total number of time steps to simulate (default: 200).
+- ``--nmodes``: Number of modes to compute and include in the simulation (default: 4). The current implementation supports up to 4 modes, and the mode shapes are hardcoded for a cantilever beam. If you want to use more modes or different geometries, the code would need to be generalized.
 - ``--xmin-um``, ``--L-um``, ``--thickness-um``: Geometric parameters of the cantilever beam in microns (default: -50, 100, 10).
 - ``--Vupper``, ``--Vouter``: Voltages for the upper conductor and outer boundary (default: 0.0 V). Use ``--no-outer-bc`` to apply natural Neumann conditions on the outer boundary instead of a Dirichlet condition.
 - ``--epsr``: Relative permittivity of the medium (default: 1.0).
@@ -46,6 +48,7 @@ import argparse
 import shutil
 import subprocess
 import csv
+from matplotlib.pyplot import plot
 import numpy as np
 import time
 
@@ -56,6 +59,8 @@ from dolfinx.fem import functionspace, Constant, dirichletbc, locate_dofs_topolo
 from dolfinx.fem.petsc import LinearProblem
 from dolfinx import default_scalar_type
 import ufl
+
+from src.data.fom import compute_boundary_normals_and_midpoints
 
 UM = 1e-6  # micron -> meter
 
@@ -402,9 +407,9 @@ def modal_forces_4(
     n = ufl.FacetNormal(domain)
     eps = eps0 * eps_r
 
-    if dphidn_vals is None:
+    if phi is not None:
         dphidn = ufl.dot(ufl.grad(phi), n)
-    else:
+    if dphidn_vals is not None:
         # Boundary scalar field storing dphidn values on tag 10, zero elsewhere
         Q = fem.functionspace(domain, ("DG", 0))
         dphidn = fem.Function(Q)
@@ -414,7 +419,30 @@ def modal_forces_4(
             raise ValueError(
                 "Output size of the network does not match number of facets on tag 10."
             )
-        dphidn.x.array[boundary_facets] = dphidn_vals
+        fdim = domain.topology.dim - 1
+        tdim = domain.topology.dim
+        domain.topology.create_connectivity(fdim, tdim)
+        facet_to_cell = domain.topology.connectivity(fdim, tdim)
+        boundary_cells = np.unique(
+            np.hstack([facet_to_cell.links(f) for f in boundary_facets])
+        )
+        dphidn.x.array[boundary_cells] = dphidn_vals
+
+    if phi is not None and dphidn_vals is not None:
+        # Check if they are equal
+        dphidn_diff = fem.assemble_scalar(
+            fem.form(
+                ufl.inner(
+                    dphidn - ufl.dot(ufl.grad(phi), n),
+                    dphidn - ufl.dot(ufl.grad(phi), n),
+                )
+                * ds(10)
+            )
+        )
+        dphidn_diff = comm.allreduce(dphidn_diff, op=MPI.SUM)
+        print(
+            f"Difference between provided dphidn and gradient-based dphidn on tag 10: {dphidn_diff:e}"
+        )
 
     t_beam = -0.5 * eps * dphidn**2 * n
 
@@ -503,6 +531,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--template-geo", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, default=Path("coupled_work"))
+    ap.add_argument(
+        "--nn-path", type=Path, help="Path to the neural network model.", default=None
+    )
 
     if ap.parse_known_args()[0].workdir.exists():
         response = input(
@@ -643,6 +674,32 @@ def main():
 
     eps0 = 8.8541878128e-12
 
+    if args.nn_path is not None:
+        import tensorflow as tf
+        from src.surrogate.model import (
+            DenseNetwork,
+            FourierFeatures,
+            LogUniformFreqInitializer,
+            EinsumLayer,
+            DeepONet,
+        )
+        from src.surrogate.losses import masked_mse, masked_mae
+
+        dphidn_nn = tf.keras.models.load_model(
+            "{}".format(args.nn_path),
+            custom_objects={
+                "DenseNetwork": DenseNetwork,
+                "FourierFeatures": FourierFeatures,
+                "LogUniformFreqInitializer": LogUniformFreqInitializer,
+                "EinsumLayer": EinsumLayer,
+                "DeepONet": DeepONet,
+                "masked_mse": masked_mse,
+                "masked_mae": masked_mae,
+            },
+        )
+        print("\033[38;2;0;175;6m\n\nLoaded surrogate model summary.\033[0m")
+        dphidn_nn.summary()
+
     start = time.perf_counter()
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
@@ -701,20 +758,47 @@ def main():
                         )
                     break
 
-            # --- Modal forces ---
-            F = modal_forces_4(
-                domain=domain,
-                facet_tags=facet_tags,
-                nmodes=args.nmodes,
-                betas=betas,
-                xmin_m=xmin_m,
-                L_m=L_m,
-                thickness_m=thickness_m,
-                phi=phi,
-                dphidn_vals=None,
-                eps_r=args.epsr,
-                eps0=eps0,
+            normals, midpoints = compute_boundary_normals_and_midpoints(
+                domain, facet_tags.find(10)
             )
+
+            # --- Modal forces ---
+            if args.nn_path is not None:
+                F = modal_forces_4(
+                    domain=domain,
+                    facet_tags=facet_tags,
+                    nmodes=args.nmodes,
+                    betas=betas,
+                    xmin_m=xmin_m,
+                    L_m=L_m,
+                    thickness_m=thickness_m,
+                    phi=phi,
+                    dphidn_vals=Vlower
+                    * dphidn_nn(
+                        [
+                            np.concatenate([np.array([0.0, 1.5]), q / UM]),
+                            midpoints[np.newaxis, :, :]/UM,
+                        ]
+                    )
+                    .numpy()
+                    .squeeze()/UM,
+                    eps_r=args.epsr,
+                    eps0=eps0,
+                )
+            else:
+                F = modal_forces_4(
+                    domain=domain,
+                    facet_tags=facet_tags,
+                    nmodes=args.nmodes,
+                    betas=betas,
+                    xmin_m=xmin_m,
+                    L_m=L_m,
+                    thickness_m=thickness_m,
+                    phi=phi,
+                    dphidn_vals=None,
+                    eps_r=args.epsr,
+                    eps0=eps0,
+                )
 
             # --- Field scale diagnostics ---
             phi_arr = phi.x.array

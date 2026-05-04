@@ -34,7 +34,7 @@ def _get_domain_from_mesh(mesh_path: str):
     return domain
 
 
-def _compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
     .. admonition:: Description
         
@@ -223,7 +223,7 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         # plot(x, y, cells, grad_y, title="Gradient Y Component", colorbar_label="Gradient Y", sharp_color_range=(-0.7, -0.5))
 
         # Extract the normal vectors the upper plate boundary with corresponding midpoints
-        normal_vectors_plate, midpoints_plate = _compute_boundary_normals_and_midpoints(domain, boundary_facets)
+        normal_vectors_plate, midpoints_plate = compute_boundary_normals_and_midpoints(domain, boundary_facets)
 
         # Compute the normal derivative on the plate
         normal_derivatives_plate = grad_x_plate * normal_vectors_plate[:,0] + grad_y_plate * normal_vectors_plate[:,1]
