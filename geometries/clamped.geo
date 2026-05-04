@@ -147,6 +147,8 @@ Circle(12) = {1009, 1005, 1006};
 Curve Loop(3) = {9, 10, 11, 12};
 Plane Surface(3) = {3};
 
+// Subtract the plates from the whole domain to obtain the actual domain where we want to solve the equations
+air[] = BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; };
 
 
 //---------------------------------------
@@ -168,9 +170,6 @@ Transfinite Curve {8}    = 2*r      Using Progression 1-d;
 
 // Outer boundary
 Transfinite Curve {9, 10, 11, 12} = 20 Using Progression 1;
-
-// Subtract the plates from the whole domain to obtain the actual domain where we want to solve the equations
-air[] = BooleanDifference{ Surface{3}; Delete; }{ Surface{1}; Surface{2}; Delete; };
 
 
 //---------------------------------------

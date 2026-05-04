@@ -610,38 +610,47 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">modal_forces_4</span><span class="p">(</span>
     <span class="n">domain</span><span class="p">,</span>
     <span class="n">facet_tags</span><span class="p">,</span>
-    <span class="n">phi</span><span class="p">,</span>
-    <span class="n">betas</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># shape (4,) in 1/m</span>
-    <span class="n">xmin_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
-    <span class="n">L_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
-    <span class="n">thickness_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># m</span>
+    <span class="n">nmodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">betas</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">xmin_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">L_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">thickness_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dphidn_vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">eps_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.8541878128e-12</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. admonition:: Description</span>
 
-<span class="sd">        Compute the modal forces :math:`F_i` for the first 4 modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:</span>
+<span class="sd">        Compute the modal forces :math:`F_i` for the first :math:`n\\leq 4` modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:</span>
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">            F_i = \\text{thickness} \\cdot \\int_{ds(10)} \\mathbf{t}_{\\text{beam}} \\cdot \\boldsymbol{\\psi}_i \\, ds, \\quad i=1..4 \\text{ with } \\boldsymbol{\\psi}_i = (0, \\text{mode}_i(x)).</span>
+<span class="sd">            F_i = \\text{thickness} \\cdot \\int_{ds(10)} \\mathbf{t}_{\\text{beam}} \\cdot \\boldsymbol{\\psi}_i \\, ds, \\quad i=1..n \\text{ with } \\boldsymbol{\\psi}_i = (0, \\text{mode}_i(x)).</span>
 
 <span class="sd">        The Maxwell traction is computed from the electric field :math:`\\mathbf{E} = -\\nabla \\phi` and the permittivity, and the mode shapes are evaluated at the spatial coordinate :math:`\\xi = x - x_{\\min}` along the beam.</span>
 
 <span class="sd">    :param domain: The FEniCSx mesh domain object.</span>
 <span class="sd">    :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.</span>
-<span class="sd">    :param phi: The electrostatic potential function defined on the mesh.</span>
-<span class="sd">    :param betas: Array of mode parameters (beta_i) for the first 4 modes, in units of 1/m.</span>
-<span class="sd">    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute xi).</span>
+<span class="sd">    :param nmodes: The number of modes to compute (shouldn&#39;t be greater than 4 for this function).</span>
+<span class="sd">    :param betas: Array of mode parameters (:math:`\\beta_i`) for the first :math:`n` modes, in units of 1/m.</span>
+<span class="sd">    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute :math:`\\xi`).</span>
 <span class="sd">    :param L_m: The length of the cantilever beam in meters (used in the mode shape function).</span>
 <span class="sd">    :param thickness_m: The thickness of the beam in meters (used to scale the integrated force).</span>
+<span class="sd">    :param phi: The electrostatic potential function defined on the mesh.</span>
+<span class="sd">    :param dphidn_vals: Optional array of precomputed normal derivatives of phi on the force segment (tag 10) to use instead of computing them from the gradient. If provided, this should be an array of shape (n10,) containing the values of ∂phi/∂n at each facet on tag 10. If None, the normal derivative will be computed from the gradient of phi.</span>
 <span class="sd">    :param eps_r: Relative permittivity of the medium (default: 1.0).</span>
 <span class="sd">    :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).</span>
 
 <span class="sd">    :returns:</span>
 <span class="sd">        - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nmodes</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;This function is designed for up to 4 modes. For more modes, a generalization is needed.&quot;</span>
+        <span class="p">)</span>
+
     <span class="n">comm</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">comm</span>
     <span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facet_tags</span><span class="p">)</span>
 
@@ -649,15 +658,32 @@
     <span class="n">xi</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xmin_m</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
-    <span class="n">E</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-
     <span class="n">eps</span> <span class="o">=</span> <span class="n">eps0</span> <span class="o">*</span> <span class="n">eps_r</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">*</span> <span class="n">I</span><span class="p">)</span>
-    <span class="n">t_beam</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># force on conductor</span>
+
+    <span class="k">if</span> <span class="n">dphidn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dphidn</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Boundary scalar field storing dphidn values on tag 10, zero elsewhere</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">dphidn</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+        <span class="c1"># Facets on tag 10</span>
+        <span class="n">boundary_facets</span> <span class="o">=</span> <span class="n">facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dphidn_vals</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">boundary_facets</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Output size of the network does not match number of facets on tag 10.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">dphidn</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">boundary_facets</span><span class="p">]</span> <span class="o">=</span> <span class="n">dphidn_vals</span>
+
+    <span class="n">t_beam</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">dphidn</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span>
+
+    <span class="c1"># Since we only need the normal component for the force on the beam,  we can use the normal derivative directly as shown above.</span>
+    <span class="c1"># The commented-out code below shows the more general approach using the Maxwell stress tensor.</span>
+    <span class="c1"># I = ufl.Identity(domain.geometry.dim)</span>
+    <span class="c1"># T = eps * (ufl.outer(E, E) - 0.5 * ufl.dot(E, E) * I)</span>
+    <span class="c1"># t_beam = -ufl.dot(T, n)  # force on conductor</span>
 
     <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
         <span class="n">mode_i</span> <span class="o">=</span> <span class="n">cantilever_shape</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">L_m</span><span class="p">)</span>
         <span class="n">psi_i</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mode_i</span><span class="p">))</span>
         <span class="n">Fi_form</span> <span class="o">=</span> <span class="n">thickness_m</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">t_beam</span><span class="p">,</span> <span class="n">psi_i</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -759,6 +785,11 @@
 
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dt&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--nsteps&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--nmodes&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">nmodes</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">ap</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;The current implementation supports up to 4 modes. Please set --nmodes to 4 or less.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xmin-um&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mf">50.0</span><span class="p">)</span>
     <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--L-um&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
@@ -938,11 +969,13 @@
             <span class="n">F</span> <span class="o">=</span> <span class="n">modal_forces_4</span><span class="p">(</span>
                 <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
                 <span class="n">facet_tags</span><span class="o">=</span><span class="n">facet_tags</span><span class="p">,</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span>
+                <span class="n">nmodes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">nmodes</span><span class="p">,</span>
                 <span class="n">betas</span><span class="o">=</span><span class="n">betas</span><span class="p">,</span>
                 <span class="n">xmin_m</span><span class="o">=</span><span class="n">xmin_m</span><span class="p">,</span>
                 <span class="n">L_m</span><span class="o">=</span><span class="n">L_m</span><span class="p">,</span>
                 <span class="n">thickness_m</span><span class="o">=</span><span class="n">thickness_m</span><span class="p">,</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span>
+                <span class="n">dphidn_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">eps_r</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">epsr</span><span class="p">,</span>
                 <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
             <span class="p">)</span>

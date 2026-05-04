@@ -620,11 +620,11 @@ def plot_normal_derivative(file, postpone_show=False, pred=False, error=False, z
         ax = plt.gca()
         plt.colorbar(sm, ax=ax, label="Derivative modulus")
         if pred:
-            ax.set_title("Predicted normal derivative (zoom {})".format(zoom[i]) if zoom is not None else "Predicted normal derivative")
+            ax.set_title(rf"Predicted $\frac{{\partial V}}{{\partial n}}$ (zoom {zoom[i]})" if zoom is not None else rf"Predicted $\\frac{{\\partial V}}{{\\partial n}}$")
         elif error:
-            ax.set_title("Normal derivative error rescaled (zoom {})".format(zoom[i]) if zoom is not None else "Normal derivative error rescaled")
+            ax.set_title("Relative error (zoom {}) (RMSE = {:.0e})".format(zoom[i], np.sqrt(np.mean((file['normal_derivative_pred'][:] - file['normal_derivatives_plate'][:])**2))) if zoom is not None else "Relative error (RMSE = {:.0e})".format(np.sqrt(np.mean((file['normal_derivative_pred'][:] - file['normal_derivatives_plate'][:])**2))))
         else:
-            ax.set_title("Normal derivative (zoom {})".format(zoom[i]) if zoom is not None else "Normal derivative")
+            ax.set_title(rf"$\frac{{\partial V}}{{\partial n}}$ (zoom {zoom[i]})" if zoom is not None else rf"$\\frac{{\\partial V}}{{\\partial n}}$")
 
     plt.tight_layout()
     if not postpone_show:
@@ -645,3 +645,8 @@ def summary_plot(file: h5py.File) -> None:
     plot_grad(file, postpone_show=True, zoom=[1, 4, 15], center_points=[(0,0), (0,0), (-50,0)], component="y")
     plot_normal_derivative(file, postpone_show=True, zoom=[4], center_points=[(0,0)])
     plt.show()
+
+if __name__ == "__main__":
+    path = "temp/test1/results/1.h5"
+    with h5py.File(path, "r") as file:
+        summary_plot(file)

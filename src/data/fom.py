@@ -1,6 +1,4 @@
 from pathlib import Path
-import alphashape
-from shapely import Point
 import numpy as np
 
 from mpi4py import MPI
@@ -40,7 +38,7 @@ def _compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray)
     """
     .. admonition:: Description
         
-        Compute boundary normals and midpoints for the facets of the upper plate (tags 10 and 11).
+        Compute boundary normals and midpoints for the facets of the upper plate (tag 10).
 
     :param domain: The computational domain containing mesh information.
     :param boundary_facets: The boundary facets associated with the domain.
@@ -73,15 +71,8 @@ def _compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray)
     normals = np.array(normals)
     midpoints = np.array(midpoints)[:, :2]  # only x and y coordinates
     
-    # Create polygon and point objects
-    polygon = alphashape.alphashape(midpoints, alpha=0.1)  # tune alpha
-    eps = 1e-6
-    p = np.zeros_like(midpoints)
-    for n, mp in zip(normals, midpoints):
-        p = mp + eps * n  
-        point = Point(p) 
-        if polygon.contains(point):
-            n *= -1
+    # Flip normals to point downwards (towards the exterior of the domain)
+    normals[(normals[:, 1] > 0)] *= -1
 
     return normals, midpoints
 
@@ -198,8 +189,7 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         dofs_uh = np.arange(V.dofmap.index_map.size_local)
 
         # Find the dofs of the upper plate
-        boundary_facets = facets_rect1
-        dofs1011 = locate_dofs_topological(V, fdim, boundary_facets)
+        boundary_facets = facet_tags.find(10)
 
         # Extract all x and y coordinates
         dofs_c = V.tabulate_dof_coordinates()[dofs_uh]
