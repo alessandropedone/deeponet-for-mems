@@ -351,12 +351,13 @@ def cantilever_shape(
 def modal_forces_4(
     domain,
     facet_tags,
-    phi,
     nmodes: int,
-    betas: np.ndarray,  # shape (n,) in 1/m
-    xmin_m: float,  # m
-    L_m: float,  # m
-    thickness_m: float,  # m
+    betas: np.ndarray,
+    xmin_m: float,
+    L_m: float,
+    thickness_m: float,
+    phi: fem.Function | None = None,
+    dphidn_vals: np.ndarray | None = None,
     eps_r: float = 1.0,
     eps0: float = 8.8541878128e-12,
 ) -> np.ndarray:
@@ -373,12 +374,13 @@ def modal_forces_4(
 
     :param domain: The FEniCSx mesh domain object.
     :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.
-    :param phi: The electrostatic potential function defined on the mesh.
     :param nmodes: The number of modes to compute (shouldn't be greater than 4 for this function).
     :param betas: Array of mode parameters (:math:`\\beta_i`) for the first :math:`n` modes, in units of 1/m.
     :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute :math:`\\xi`).
     :param L_m: The length of the cantilever beam in meters (used in the mode shape function).
     :param thickness_m: The thickness of the beam in meters (used to scale the integrated force).
+    :param phi: The electrostatic potential function defined on the mesh.
+    :param dphidn_vals: Optional array of precomputed normal derivatives of phi on the force segment (tag 10) to use instead of computing them from the gradient. If provided, this should be an array of shape (n10,) containing the values of ∂phi/∂n at each facet on tag 10. If None, the normal derivative will be computed from the gradient of phi.
     :param eps_r: Relative permittivity of the medium (default: 1.0).
     :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).
 
@@ -386,8 +388,10 @@ def modal_forces_4(
         - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.
     """
     if nmodes > 4:
-        raise ValueError("This function is designed for up to 4 modes. For more modes, a generalization is needed.")
-    
+        raise ValueError(
+            "This function is designed for up to 4 modes. For more modes, a generalization is needed."
+        )
+
     comm = domain.comm
     ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tags)
 
@@ -395,12 +399,29 @@ def modal_forces_4(
     xi = x[0] - xmin_m
 
     n = ufl.FacetNormal(domain)
-    E = -ufl.grad(phi)
-    I = ufl.Identity(domain.geometry.dim)
-
     eps = eps0 * eps_r
-    T = eps * (ufl.outer(E, E) - 0.5 * ufl.dot(E, E) * I)
-    t_beam = -ufl.dot(T, n)  # force on conductor
+
+    if dphidn is None:
+        dphidn = ufl.dot(ufl.grad(phi), n)
+    else:
+        # Boundary scalar field storing dphidn values on tag 10, zero elsewhere
+        Q = fem.functionspace(domain, ("DG", 0))
+        dphidn = fem.Function(Q)
+        # Facets on tag 10
+        boundary_facets = facet_tags.find(10)
+        if len(dphidn_vals) != len(boundary_facets):
+            raise ValueError(
+                "Output size of the network does not match number of facets on tag 10."
+            )
+        dphidn.x.array[boundary_facets] = dphidn_vals
+
+    t_beam = -0.5 * eps * dphidn**2 * n
+
+    # Since we only need the normal component for the force on the beam,  we can use the normal derivative directly as shown above.
+    # The commented-out code below shows the more general approach using the Maxwell stress tensor.
+    # I = ufl.Identity(domain.geometry.dim)
+    # T = eps * (ufl.outer(E, E) - 0.5 * ufl.dot(E, E) * I)
+    # t_beam = -ufl.dot(T, n)  # force on conductor
 
     F = np.zeros(4, dtype=float)
     for i in range(nmodes):
@@ -498,7 +519,9 @@ def main():
     ap.add_argument("--nsteps", type=int, default=200)
     ap.add_argument("--nmodes", type=int, default=4)
     if ap.parse_known_args()[0].nmodes > 4:
-        ap.error("The current implementation supports up to 4 modes. Please set --nmodes to 4 or less.")
+        ap.error(
+            "The current implementation supports up to 4 modes. Please set --nmodes to 4 or less."
+        )
 
     ap.add_argument("--xmin-um", type=float, default=-50.0)
     ap.add_argument("--L-um", type=float, default=100.0)
@@ -678,12 +701,13 @@ def main():
             F = modal_forces_4(
                 domain=domain,
                 facet_tags=facet_tags,
-                phi=phi,
-                nmodes = args.nmodes,
+                nmodes=args.nmodes,
                 betas=betas,
                 xmin_m=xmin_m,
                 L_m=L_m,
                 thickness_m=thickness_m,
+                phi=phi,
+                dphidn_vals=None,
                 eps_r=args.epsr,
                 eps0=eps0,
             )
