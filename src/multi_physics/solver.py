@@ -352,7 +352,8 @@ def modal_forces_4(
     domain,
     facet_tags,
     phi,
-    betas: np.ndarray,  # shape (4,) in 1/m
+    nmodes: int,
+    betas: np.ndarray,  # shape (n,) in 1/m
     xmin_m: float,  # m
     L_m: float,  # m
     thickness_m: float,  # m
@@ -362,19 +363,20 @@ def modal_forces_4(
     """
     .. admonition:: Description
 
-        Compute the modal forces :math:`F_i` for the first 4 modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:
+        Compute the modal forces :math:`F_i` for the first :math:`n\\leq 4` modes by integrating the Maxwell traction over the force segment (tag 10) weighted by the mode shape functions. The force for each mode is given by:
 
         .. math::
 
-            F_i = \\text{thickness} \\cdot \\int_{ds(10)} \\mathbf{t}_{\\text{beam}} \\cdot \\boldsymbol{\\psi}_i \\, ds, \\quad i=1..4 \\text{ with } \\boldsymbol{\\psi}_i = (0, \\text{mode}_i(x)).
+            F_i = \\text{thickness} \\cdot \\int_{ds(10)} \\mathbf{t}_{\\text{beam}} \\cdot \\boldsymbol{\\psi}_i \\, ds, \\quad i=1..n \\text{ with } \\boldsymbol{\\psi}_i = (0, \\text{mode}_i(x)).
 
         The Maxwell traction is computed from the electric field :math:`\\mathbf{E} = -\\nabla \\phi` and the permittivity, and the mode shapes are evaluated at the spatial coordinate :math:`\\xi = x - x_{\\min}` along the beam.
 
     :param domain: The FEniCSx mesh domain object.
     :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.
     :param phi: The electrostatic potential function defined on the mesh.
-    :param betas: Array of mode parameters (beta_i) for the first 4 modes, in units of 1/m.
-    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute xi).
+    :param nmodes: The number of modes to compute (shouldn't be greater than 4 for this function).
+    :param betas: Array of mode parameters (:math:`\\beta_i`) for the first :math:`n` modes, in units of 1/m.
+    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute :math:`\\xi`).
     :param L_m: The length of the cantilever beam in meters (used in the mode shape function).
     :param thickness_m: The thickness of the beam in meters (used to scale the integrated force).
     :param eps_r: Relative permittivity of the medium (default: 1.0).
@@ -383,6 +385,9 @@ def modal_forces_4(
     :returns:
         - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.
     """
+    if nmodes > 4:
+        raise ValueError("This function is designed for up to 4 modes. For more modes, a generalization is needed.")
+    
     comm = domain.comm
     ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tags)
 
@@ -398,7 +403,7 @@ def modal_forces_4(
     t_beam = -ufl.dot(T, n)  # force on conductor
 
     F = np.zeros(4, dtype=float)
-    for i in range(4):
+    for i in range(nmodes):
         mode_i = cantilever_shape(xi, float(betas[i]), L_m)
         psi_i = ufl.as_vector((0.0, mode_i))
         Fi_form = thickness_m * ufl.dot(t_beam, psi_i) * ds(10)
@@ -491,6 +496,9 @@ def main():
 
     ap.add_argument("--dt", type=float, default=1e-6)
     ap.add_argument("--nsteps", type=int, default=200)
+    ap.add_argument("--nmodes", type=int, default=4)
+    if ap.parse_known_args()[0].nmodes > 4:
+        ap.error("The current implementation supports up to 4 modes. Please set --nmodes to 4 or less.")
 
     ap.add_argument("--xmin-um", type=float, default=-50.0)
     ap.add_argument("--L-um", type=float, default=100.0)
@@ -671,6 +679,7 @@ def main():
                 domain=domain,
                 facet_tags=facet_tags,
                 phi=phi,
+                nmodes = args.nmodes,
                 betas=betas,
                 xmin_m=xmin_m,
                 L_m=L_m,
