@@ -428,22 +428,6 @@ def modal_forces_4(
         )
         dphidn.x.array[boundary_cells] = dphidn_vals
 
-    if phi is not None and dphidn_vals is not None:
-        # Check if they are equal
-        dphidn_diff = fem.assemble_scalar(
-            fem.form(
-                ufl.inner(
-                    dphidn - ufl.dot(ufl.grad(phi), n),
-                    dphidn - ufl.dot(ufl.grad(phi), n),
-                )
-                * ds(10)
-            )
-        )
-        dphidn_diff = comm.allreduce(dphidn_diff, op=MPI.SUM)
-        print(
-            f"Difference between provided dphidn and gradient-based dphidn on tag 10: {dphidn_diff:e}"
-        )
-
     t_beam = -0.5 * eps * dphidn**2 * n
 
     # Since we only need the normal component for the force on the beam,  we can use the normal derivative directly as shown above.
@@ -546,7 +530,7 @@ def main():
 
     ap.add_argument("--gmsh", type=str, default="gmsh")
     ap.add_argument("--mshver", type=str, default="4.1", choices=["2.2", "4.1"])
-
+    
     ap.add_argument("--dt", type=float, default=1e-6)
     ap.add_argument("--nsteps", type=int, default=200)
     ap.add_argument("--nmodes", type=int, default=4)
@@ -777,11 +761,12 @@ def main():
                     * dphidn_nn(
                         [
                             np.concatenate([np.array([0.0, 1.5]), q / UM]),
-                            midpoints[np.newaxis, :, :]/UM,
+                            midpoints[np.newaxis, :, :] / UM,
                         ]
                     )
                     .numpy()
-                    .squeeze()/UM,
+                    .squeeze()
+                    / UM,
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
