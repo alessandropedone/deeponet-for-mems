@@ -290,7 +290,7 @@ $$
 
 ## To launch the code
 ```bash
-python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilever1.geo --dt 1e-5 --nsteps 200 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast --nn-path models/derivative1.keras
+python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilever1.geo --dt 1e-5 --nsteps 200 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast --derivative-nn-path models/derivative1.keras
 ```
 
 ### References:

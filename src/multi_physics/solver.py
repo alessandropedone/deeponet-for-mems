@@ -357,6 +357,65 @@ def _cantilever_shape_ufl(
         - C * (ufl.sinh(beta * xi) - ufl.sin(beta * xi))
     )
 
+
+def _cantilever_shape_np(xi: np.ndarray, beta: float, L: float) -> np.ndarray:
+    """
+    .. admonition:: Description
+
+        Compute the cantilever mode shape function.
+        The mode shape is given by
+
+        .. math::
+
+            \\psi_i(\\xi) = \\cosh(\\beta_i \\xi) - \\cos(\\beta_i \\xi) - C_i \\left( \\sinh(\\beta_i \\xi) - \\sin(\\beta_i \\xi) \\right)
+
+        where
+
+        .. math::
+
+            C_i = \\frac{\\cosh(\\beta_i L) + \\cos(\\beta_i L)}{\\sinh(\\beta_i L) + \\sin(\\beta_i L)}.
+
+    :param xi: The spatial coordinate along the beam, :math:`\\xi = x - x_{\\min}`.
+    :param beta: The mode parameter :math:`\\beta_i` for the *i*-th mode, related to the natural frequency.
+    :param L: The cantilever beam length.
+
+    :returns:
+        - psi (``np.ndarray``) -- The computed mode shape function evaluated at xi.
+    """
+    C = (np.cosh(beta * L) + np.cos(beta * L)) / (np.sinh(beta * L) + np.sin(beta * L))
+    return (
+        np.cosh(beta * xi)
+        - np.cos(beta * xi)
+        - C * (np.sinh(beta * xi) - np.sin(beta * xi))
+    )
+
+
+def _compute_displacement(
+    x: np.ndarray, L: float, q: np.ndarray
+) -> np.ndarray:
+    """
+    .. admonition:: Description
+
+        Compute the displacement field along the beam by superposing the first 4 modes weighted by their modal coefficients. The mode shapes are evaluated at the spatial coordinates `x` along the beam. The mode parameters `beta_i` are computed from the known roots of the cantilever beam characteristic equation divided by the beam length `L_m`.
+
+    :param x: The spatial coordinates along the beam where the displacement is evaluated (1D array).
+    :param L: The length of the cantilever beam (used to compute the mode parameters).
+    :param q: The modal coefficients for the first `nmodes` modes (array of shape (nmodes,)).
+
+    :returns:
+        - u (``np.ndarray``) -- The computed displacement field along the beam at the coordinates `x`, resulting from the superposition of the first `nmodes` mode shapes weighted by their coefficients `q`.
+    """
+    roots = np.array(
+        [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
+        dtype=float,
+    )
+    betas = roots / L
+    modes = np.array([_cantilever_shape_np(x, betas[i], L) for i in range(4)])
+    u = q @ modes
+    print(u.shape, modes.shape, q.shape)
+    return u
+
+
 # ------------------------------
 # Force projection
 # ------------------------------
@@ -617,6 +676,11 @@ def main():
 
     overetch = get_variable(template_geo_text, "overetch")
     distance = get_variable(template_geo_text, "distance")
+    ref_factor = int(get_variable(template_geo_text, "r"))
+    xmin = get_variable(template_geo_text, "xmin")
+    xmax = - xmin - overetch
+    n_nodes = 50 * ref_factor
+    n_segments = n_nodes - 1
 
     comm = MPI.COMM_WORLD
     rank = comm.rank
@@ -710,7 +774,7 @@ def main():
         from src.surrogate.losses import masked_mse, masked_mae
 
         dphidn_nn = tf.keras.models.load_model(
-            "{}".format(args.nn_path),
+            "{}".format(args.derivative_nn_path),
             custom_objects={
                 "DenseNetwork": DenseNetwork,
                 "FourierFeatures": FourierFeatures,
@@ -785,6 +849,13 @@ def main():
             normals, midpoints = compute_boundary_normals_and_midpoints(
                 domain, facet_tags.find(10)
             )
+            midpoints = midpoints / UM
+
+            # Compute midpoints directly from the geometry information
+            x_nodes = np.linspace(xmin, xmax, n_nodes)
+            x_mid = 0.5 * (x_nodes[:-1] + x_nodes[1:])
+            y_mid = np.full(n_segments, distance / 2 + overetch + _compute_displacement(x_mid - xmin, L_m/UM, q/UM))
+            midpoints2 = np.column_stack((x_mid, y_mid))
 
             # --- Modal forces ---
             if args.derivative_nn_path is not None:
@@ -801,7 +872,7 @@ def main():
                     * dphidn_nn(
                         [
                             np.concatenate([np.array([overetch, distance]), q / UM]),
-                            midpoints[np.newaxis, :, :] / UM,
+                            midpoints[np.newaxis, :, :],
                         ]
                     )
                     .numpy()
@@ -811,7 +882,7 @@ def main():
                     eps0=eps0,
                 )
             else:
-                F = modal_forces_4(
+                F = _modal_forces_4(
                     domain=domain,
                     facet_tags=facet_tags,
                     nmodes=args.nmodes,

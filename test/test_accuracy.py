@@ -106,7 +106,7 @@ def main():
         "--print-every",
         "1",
         "--fail-fast",
-        "--nn-path",
+        "--derivative-nn-path",
         "models/derivative1.keras",
     ]
 
