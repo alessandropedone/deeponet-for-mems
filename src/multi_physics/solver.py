@@ -407,8 +407,6 @@ def modal_forces_4(
     n = ufl.FacetNormal(domain)
     eps = eps0 * eps_r
 
-    if phi is not None:
-        dphidn = ufl.dot(ufl.grad(phi), n)
     if dphidn_vals is not None:
         # Boundary scalar field storing dphidn values on tag 10, zero elsewhere
         Q = fem.functionspace(domain, ("DG", 0))
@@ -427,6 +425,8 @@ def modal_forces_4(
             np.hstack([facet_to_cell.links(f) for f in boundary_facets])
         )
         dphidn.x.array[boundary_cells] = dphidn_vals
+    else:
+        dphidn = ufl.dot(ufl.grad(phi), n)
 
     t_beam = -0.5 * eps * dphidn**2 * n
 
@@ -530,7 +530,7 @@ def main():
 
     ap.add_argument("--gmsh", type=str, default="gmsh")
     ap.add_argument("--mshver", type=str, default="4.1", choices=["2.2", "4.1"])
-    
+
     ap.add_argument("--dt", type=float, default=1e-6)
     ap.add_argument("--nsteps", type=int, default=200)
     ap.add_argument("--nmodes", type=int, default=4)
