@@ -6,32 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import argparse
 
-
-def cantilever_shape_np(xi, beta, L) -> np.ndarray:
-    """Compute the shape of the cantilever beam for a given beta and length."""
-    C = (np.cosh(beta * L) + np.cos(beta * L)) / (np.sinh(beta * L) + np.sin(beta * L))
-    return (
-        np.cosh(beta * xi)
-        - np.cos(beta * xi)
-        - C * (np.sinh(beta * xi) - np.sin(beta * xi))
-    )
-
-
-def compute_displacement_field(nmodes, x, L_m, path) -> np.ndarray:
-    """Compute the displacement field from the modal history CSV file."""
-    roots = np.array(
-        [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
-        dtype=float,
-    )
-    betas = roots / L_m
-    modes = np.array([cantilever_shape_np(x, betas[i], L_m) for i in range(nmodes)])
-    workdir = Path(f"{path}")
-    csv_path = workdir / "modal_history.csv"
-    data = np.genfromtxt(csv_path, delimiter=",", skip_header=1)
-    q_values = data[:, 3 : 3 + nmodes]
-    u = q_values @ modes
-    return u
-
+from utils import cantilever_shape_np, compute_displacement_from_history
 
 def main():
     ap = argparse.ArgumentParser()
@@ -143,8 +118,8 @@ def main():
     L_m = 1e-4
 
     x = np.linspace(0, L_m, 100)
-    u = compute_displacement_field(4, x, L_m, "temp/run_nmodes_4_nn")
-    u_ref = compute_displacement_field(4, x, L_m, "temp/run_nmodes_4")
+    u = compute_displacement_from_history(4, x, L_m, Path("temp/run_nmodes_4_nn"))
+    u_ref = compute_displacement_from_history(4, x, L_m, Path("temp/run_nmodes_4"))
     diff = u - u_ref
 
     # Integrate in L2 the difference over the length of the beam (row-wise)

@@ -20,7 +20,10 @@ There are several optional arguments to customize the behavior:
 
 - ``--template-geo``: Path to the Gmsh geometry template file (required). This file should contain placeholders ``__COEFF1__``, ``__COEFF2__``, ``__COEFF3__``, and ``__COEFF4__`` which will be replaced by the current modal coefficients (in microns) at each time step.
 - ``--workdir``: Base directory for output files (default: "coupled_work"). Meshes will be saved in ``workdir/meshes`` and results in ``workdir/results``.
-- ``--nn-path``: Optional path to a neural network model that can be used to predict the normal derivative of the potential on the force segment (tag 10) instead of computing it from the gradient. If provided, the code will call the model at each time step with appropriate input features to get the predicted dphi/dn values for use in the force computation.
+- ``--derivative-nn-path``: Optional path to a neural network model that can be used to predict the normal derivative of the potential on the force segment (tag 10) instead of computing it from the gradient. If provided, the code will call the model at each time step with appropriate input features to get the predicted dphi/dn values for use in the force computation.
+- ``--potential-nn-path``: Optional path to a neural network model that can be used to predict the potential instead of solving the electrostatics problem with FEniCSx. If provided, the code will call the model at each time step with appropriate input features to get the predicted potential values for use in saving the results and computing diagnostics.
+- ``--postprocess``: If set, the code will run, in parallel with the simulation, the post-processing steps too (i.e., saving the potential field to a ParaView file and writing the modal history CSV).
+- ``--postprocess-step``: Frequency of post-processing steps in terms of time steps (default: every step). For example, if set to 10, the code will save results and write to CSV every 10 time steps.
 - ``--gmsh``: Path to the Gmsh executable (default: "gmsh").
 - ``--mshver``: Gmsh mesh format version to use ("2.2" or "4.1", default: "4.1"). Note that the code currently expects physical tags to be integers, which is the case in both versions, but the internal handling of tags differs between versions. Version 4.1 is recommended for better performance and support for larger meshes.
 - ``--dt``: Time step size for the Newmark integration (default: 1e-6 seconds).
@@ -51,6 +54,7 @@ import csv
 from matplotlib.pyplot import plot
 import numpy as np
 import time
+import re
 
 from mpi4py import MPI
 from dolfinx.io import gmshio, VTKFile
@@ -68,7 +72,7 @@ UM = 1e-6  # micron -> meter
 # ----------------------------
 # Utilities
 # ----------------------------
-def run(cmd: list[str]) -> None:
+def _run(cmd: list[str]) -> None:
     """
     .. admonition:: Description
 
@@ -81,7 +85,7 @@ def run(cmd: list[str]) -> None:
         raise RuntimeError(f"Command failed:\n  {' '.join(cmd)}\n\nOutput:\n{r.stdout}")
 
 
-def render_geo_template(template_text: str, coeff_um: np.ndarray) -> str:
+def _render_geo_template(template_text: str, coeff_um: np.ndarray) -> str:
     """
     .. admonition:: Description
 
@@ -102,7 +106,7 @@ def render_geo_template(template_text: str, coeff_um: np.ndarray) -> str:
     )
 
 
-def make_mesh_step(
+def _make_mesh_step(
     template_geo: Path,
     workdir: Path,
     step: int,
@@ -132,18 +136,18 @@ def make_mesh_step(
 
     template_text = template_geo.read_text()
     coeff_um = coeff_m / UM
-    geo_text = render_geo_template(template_text, coeff_um)
+    geo_text = _render_geo_template(template_text, coeff_um)
     geo_path.write_text(geo_text)
 
     fmt = "msh2" if mshver == "2.2" else "msh4"
-    run([gmsh_exec, "-2", str(geo_path), "-format", fmt, "-o", str(msh_path)])
+    _run([gmsh_exec, "-2", str(geo_path), "-format", fmt, "-o", str(msh_path)])
     return msh_path
 
 
 # ----------------------------
 # Diagnostics helpers
 # ----------------------------
-def mesh_stats(domain) -> dict:
+def _mesh_stats(domain) -> dict:
     """
     .. admonition:: Description
 
@@ -169,7 +173,7 @@ def mesh_stats(domain) -> dict:
     }
 
 
-def tag_counts(facet_tags) -> dict:
+def _tag_counts(facet_tags) -> dict:
     """
     .. admonition:: Description
 
@@ -190,7 +194,7 @@ def tag_counts(facet_tags) -> dict:
     return {"n10": n(10), "n11": n(11), "n12": n(12), "n20": n(20)}
 
 
-def project_E_dg0(domain, phi) -> fem.Function:
+def _project_E_dg0(domain, phi) -> fem.Function:
     """
     .. admonition:: Description
 
@@ -213,7 +217,7 @@ def project_E_dg0(domain, phi) -> fem.Function:
     return Eh
 
 
-def energy_and_cap(
+def _energy_and_cap(
     domain, phi, Vdiff, eps_r=1.0, eps0=8.8541878128e-12
 ) -> tuple[float, float]:
     """
@@ -242,7 +246,7 @@ def energy_and_cap(
 # ----------------------------
 # Electrostatics
 # ----------------------------
-def solve_electrostatics_one(
+def _solve_electrostatics_one(
     msh_path: Path,
     V_lower: float,
     V_upper: float = 0.0,
@@ -316,9 +320,9 @@ def solve_electrostatics_one(
 
 
 # ------------------------------
-# Mode shapes + force projection
+# Mode shapes
 # ------------------------------
-def cantilever_shape(
+def _cantilever_shape_ufl(
     xi: ufl.core.expr.Expr, beta: float, L: float
 ) -> ufl.core.expr.Expr:
     """
@@ -353,8 +357,10 @@ def cantilever_shape(
         - C * (ufl.sinh(beta * xi) - ufl.sin(beta * xi))
     )
 
-
-def modal_forces_4(
+# ------------------------------
+# Force projection
+# ------------------------------
+def _modal_forces_4(
     domain,
     facet_tags,
     nmodes: int,
@@ -438,7 +444,7 @@ def modal_forces_4(
 
     F = np.zeros(4, dtype=float)
     for i in range(nmodes):
-        mode_i = cantilever_shape(xi, float(betas[i]), L_m)
+        mode_i = _cantilever_shape_ufl(xi, float(betas[i]), L_m)
         psi_i = ufl.as_vector((0.0, mode_i))
         Fi_form = thickness_m * ufl.dot(t_beam, psi_i) * ds(10)
         Fi = fem.assemble_scalar(fem.form(Fi_form))
@@ -450,7 +456,7 @@ def modal_forces_4(
 # ----------------------------
 # Newmark (vector, diagonal modal system)
 # ----------------------------
-def newmark_step_diag(M, C, K, q, qd, qdd, F, dt, beta=0.25, gamma=0.5):
+def _newmark_step_diag(M, C, K, q, qd, qdd, F, dt, beta=0.25, gamma=0.5):
     """
     .. admonition:: Description
 
@@ -516,7 +522,27 @@ def main():
     ap.add_argument("--template-geo", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, default=Path("coupled_work"))
     ap.add_argument(
-        "--nn-path", type=Path, help="Path to the neural network model.", default=None
+        "--derivative-nn-path",
+        type=Path,
+        help="Path to the neural network for the derivative.",
+        default=None,
+    )
+    ap.add_argument(
+        "--potential-nn-path",
+        type=Path,
+        help="Path to the neural network for the potential.",
+        default=None,
+    )
+    ap.add_argument(
+        "--postprocess",
+        action="store_true",
+        help="If set to True, it will also save the results in VTK format for visualization in ParaView.",
+    )
+    ap.add_argument(
+        "--postprocess-step",
+        type=int,
+        default=1,
+        help="Interval of steps to save VTK files when --postprocess is enabled.",
     )
 
     if ap.parse_known_args()[0].workdir.exists():
@@ -577,6 +603,20 @@ def main():
     ap.add_argument("--min-nodes", type=int, default=2000)
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
+
+    # Read from the geometry template overecth and distance
+    with open(args.template_geo, "r") as f:
+        template_geo_text = f.read()
+
+    def get_variable(text, var_name):
+        pattern = rf"{var_name}\s*=\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*;"
+        match = re.search(pattern, text)
+        if not match:
+            raise ValueError(f"Variable '{var_name}' not found")
+        return float(match.group(1))
+
+    overetch = get_variable(template_geo_text, "overetch")
+    distance = get_variable(template_geo_text, "distance")
 
     comm = MPI.COMM_WORLD
     rank = comm.rank
@@ -658,7 +698,7 @@ def main():
 
     eps0 = 8.8541878128e-12
 
-    if args.nn_path is not None:
+    if args.derivative_nn_path is not None:
         import tensorflow as tf
         from src.surrogate.model import (
             DenseNetwork,
@@ -693,7 +733,7 @@ def main():
             # --- Remesh (rank 0) ---
             if rank == 0:
                 coeff_m = q.copy()
-                msh_path = make_mesh_step(
+                msh_path = _make_mesh_step(
                     template_geo=args.template_geo,
                     workdir=work_mesh,
                     step=k,
@@ -711,7 +751,7 @@ def main():
             # --- Electrostatics ---
             Vlower = V_lower_time(t, args.Vdc, args.Vac, args.freq)
             Vouter = None if args.no_outer_bc else args.Vouter
-            domain, phi, facet_tags = solve_electrostatics_one(
+            domain, phi, facet_tags = _solve_electrostatics_one(
                 msh_path=msh_path,
                 V_lower=Vlower,
                 V_upper=args.Vupper,
@@ -720,8 +760,8 @@ def main():
             )
 
             # --- Diagnostics (mesh + tags) ---
-            stats = mesh_stats(domain)
-            tags = tag_counts(facet_tags)
+            stats = _mesh_stats(domain)
+            tags = _tag_counts(facet_tags)
 
             if args.fail_fast:
                 ok = True
@@ -747,8 +787,8 @@ def main():
             )
 
             # --- Modal forces ---
-            if args.nn_path is not None:
-                F = modal_forces_4(
+            if args.derivative_nn_path is not None:
+                F = _modal_forces_4(
                     domain=domain,
                     facet_tags=facet_tags,
                     nmodes=args.nmodes,
@@ -760,7 +800,7 @@ def main():
                     dphidn_vals=Vlower
                     * dphidn_nn(
                         [
-                            np.concatenate([np.array([0.0, 1.5]), q / UM]),
+                            np.concatenate([np.array([overetch, distance]), q / UM]),
                             midpoints[np.newaxis, :, :] / UM,
                         ]
                     )
@@ -791,7 +831,7 @@ def main():
             phi_max = float(domain.comm.allreduce(phi_arr.max(), op=MPI.MAX))
 
             # E magnitude max (DG0 projection) — component-blocked layout
-            Eh = project_E_dg0(domain, phi)
+            Eh = _project_E_dg0(domain, phi)
             arr = Eh.x.array
             nc = domain.topology.index_map(domain.topology.dim).size_local
             Ex = arr[0:nc]
@@ -801,10 +841,10 @@ def main():
             Emax = float(np.sqrt(E2max))
 
             Vdiff = float(Vlower - args.Vupper)
-            W, Cap = energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
+            W, Cap = _energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
 
             # --- Mechanical update ---
-            q, qd, qdd = newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
+            q, qd, qdd = _newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
             q_static = np.where(K != 0, F / K, np.nan)
 
             # --- Write ParaView time series ---
