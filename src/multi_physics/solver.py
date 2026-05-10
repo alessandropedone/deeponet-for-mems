@@ -51,10 +51,11 @@ import argparse
 import shutil
 import subprocess
 import csv
-from matplotlib.pyplot import plot
 import numpy as np
 import time
 import re
+import sys
+import os
 
 from mpi4py import MPI
 from dolfinx.io import gmshio, VTKFile
@@ -206,14 +207,24 @@ def _project_E_dg0(domain, phi) -> fem.Function:
     :returns:
         - Eh (``fem.Function``) -- A function in the DG0 space representing the projected electric field magnitude.
     """
+    # Define the vector function space for the gradient
+    domain.geometry.x[:] /= UM
     Vdg0 = fem.functionspace(domain, ("DG", 0, (domain.geometry.dim,)))
+    # Define the trial and test functions for the vector space
     u = ufl.TrialFunction(Vdg0)
     v = ufl.TestFunction(Vdg0)
+    # Define the gradient of the solution
+    E = -ufl.grad(phi)
+    # Define the bilinear and linear forms
     a = ufl.inner(u, v) * ufl.dx
-    L = ufl.inner(-ufl.grad(phi), v) * ufl.dx
-    prob = LinearProblem(a, L, petsc_options={"ksp_type": "preonly", "pc_type": "lu"})
-    Eh = prob.solve()
+    L = ufl.inner(E, v) * ufl.dx
+    # Assemble the system
+    problem = LinearProblem(
+        a, L, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    )
+    Eh = problem.solve()
     Eh.name = "E"
+    Eh.x.array[:] /= UM
     return Eh
 
 
@@ -270,7 +281,15 @@ def _solve_electrostatics_one(
         - facet_tags (``mesh.MeshTags``) -- The facet tags for further processing.
     """
     comm = MPI.COMM_WORLD
+    stdout_fd = sys.stdout.fileno()
+    saved_stdout = os.dup(stdout_fd)
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    os.dup2(devnull, stdout_fd)
+    os.close(devnull)
     domain, cell_tags, facet_tags = gmshio.read_from_msh(str(msh_path), comm, 0, gdim=2)
+
+    # Restore stdout for the rest of the function (e.g., to print diagnostics)
+    os.dup2(saved_stdout, stdout_fd)
 
     # Convert geometry coordinates from microns to meters (SI)
     domain.geometry.x[:] *= UM
@@ -390,9 +409,7 @@ def _cantilever_shape_np(xi: np.ndarray, beta: float, L: float) -> np.ndarray:
     )
 
 
-def _compute_displacement(
-    x: np.ndarray, L: float, q: np.ndarray
-) -> np.ndarray:
+def _compute_displacement(x: np.ndarray, L: float, q: np.ndarray) -> np.ndarray:
     """
     .. admonition:: Description
 
@@ -412,23 +429,56 @@ def _compute_displacement(
     betas = roots / L
     modes = np.array([_cantilever_shape_np(x, betas[i], L) for i in range(4)])
     u = q @ modes
-    print(u.shape, modes.shape, q.shape)
     return u
+
+
+def compute_normals_ordered(points: np.ndarray) -> np.ndarray:
+    """
+    .. admonition:: Description
+
+        Compute the outward normal vectors at a set of ordered points along the lower edge (e.g., the boundary of the beam) by computing the tangent vector from neighboring points. The function assumes that the points are ordered along the curve.
+
+    :param points: An array of shape (n, 2) containing the coordinates of the points along the curve in order.
+
+
+    :returns:
+        - normals (``np.ndarray``) -- An array of shape (n-1, 2) containing the estimated normal vectors at each midpoint, normalized to unit length and oriented outward.
+    """
+    npts = len(points)
+
+    # Tangents
+    tangents = np.empty((npts - 1, 2), dtype=float)
+    # t = p_{i+1} - p_i
+    tangents[:, 0] = points[1:, 0] - points[:-1, 0]
+    tangents[:, 1] = points[1:, 1] - points[:-1, 1]
+
+    # Rotate by +90°
+    normals = np.empty_like(tangents)
+    normals[:, 0] = -tangents[:, 1]
+    normals[:, 1] = tangents[:, 0]
+
+    # Force downward orientation
+    flip = normals[:, 1] > 0
+    normals[flip] *= -1.0
+
+    # Normalize
+    norms = np.linalg.norm(normals, axis=1, keepdims=True)
+    normals /= norms
+
+    return normals
 
 
 # ------------------------------
 # Force projection
 # ------------------------------
 def _modal_forces_4(
-    domain,
-    facet_tags,
     nmodes: int,
     betas: np.ndarray,
     xmin_m: float,
     L_m: float,
     thickness_m: float,
-    phi: fem.Function | None = None,
-    dphidn_vals: np.ndarray | None = None,
+    dphidn: tuple[np.ndarray, np.ndarray, np.ndarray] = None,
+    phi: tuple[fem.Function, ufl.Domain, ufl.Measure] = None,
     eps_r: float = 1.0,
     eps0: float = 8.8541878128e-12,
 ) -> np.ndarray:
@@ -443,72 +493,90 @@ def _modal_forces_4(
 
         The Maxwell traction is computed from the electric field :math:`\\mathbf{E} = -\\nabla \\phi` and the permittivity, and the mode shapes are evaluated at the spatial coordinate :math:`\\xi = x - x_{\\min}` along the beam.
 
-    :param domain: The FEniCSx mesh domain object.
-    :param facet_tags: The facet tags object from the FEniCSx mesh, which contains information about the physical tags assigned to facets.
-    :param nmodes: The number of modes to compute (shouldn't be greater than 4 for this function).
-    :param betas: Array of mode parameters (:math:`\\beta_i`) for the first :math:`n` modes, in units of 1/m.
-    :param xmin_m: The minimum x-coordinate of the beam in meters (used to compute :math:`\\xi`).
-    :param L_m: The length of the cantilever beam in meters (used in the mode shape function).
-    :param thickness_m: The thickness of the beam in meters (used to scale the integrated force).
-    :param phi: The electrostatic potential function defined on the mesh.
-    :param dphidn_vals: Optional array of precomputed normal derivatives of phi on the force segment (tag 10) to use instead of computing them from the gradient. If provided, this should be an array of shape (n10,) containing the values of ∂phi/∂n at each facet on tag 10. If None, the normal derivative will be computed from the gradient of phi.
+    :param nmodes: The number of modes to compute forces for (up to 4).
+    :param betas: Array of mode parameters :math:`\\beta_i` for the first 4 modes, related to the natural frequencies.
+    :param xmin_m: The minimum x coordinate of the beam (used to compute the spatial coordinate xi).
+    :param L_m: The length of the cantilever beam (used to compute the mode shapes).
+    :param thickness_m: The thickness of the beam in the out-of-plane direction (used to scale the force).
+    :param dphidn: Optional tuple containing the normal derivative of the potential on the plate segment, the corresponding coordinates of the midpoints and the integration points used to compute the force without FEniCSx forms. If provided, it should be a tuple of (dphidn_values, midpoints, integration_points) where dphidn_values is an array of the normal derivative values at the midpoints, midpoints is an array of the (x,y) coordinates of the midpoints, and integration_points is an array of the integration point coordinates. Both midpoints and integration_points are assumed to be increasing in x.
+    :param phi: Optional tuple containing the potential function, domain, and facet tags, used to compute the force using FEniCSx forms. If provided, it should be a tuple of (phi_function, domain, facet_tags) where phi_function is the computed potential function, domain is the FEniCSx mesh domain, and facet_tags contains the physical tags for the facets.
     :param eps_r: Relative permittivity of the medium (default: 1.0).
     :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).
 
     :returns:
         - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.
+
+    :raises ValueError:
+        - If `nmodes` is greater than 4, since the function is designed for up to 4 modes and would require generalization for more modes.
+        - If neither `phi` nor `dphidn` is provided, since at least one of them is needed to compute the forces.
     """
     if nmodes > 4:
         raise ValueError(
             "This function is designed for up to 4 modes. For more modes, a generalization is needed."
         )
 
-    comm = domain.comm
-    ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tags)
-
-    x = ufl.SpatialCoordinate(domain)
-    xi = x[0] - xmin_m
-
-    n = ufl.FacetNormal(domain)
     eps = eps0 * eps_r
 
-    if dphidn_vals is not None:
-        # Boundary scalar field storing dphidn values on tag 10, zero elsewhere
-        Q = fem.functionspace(domain, ("DG", 0))
-        dphidn = fem.Function(Q)
-        # Facets on tag 10
-        boundary_facets = facet_tags.find(10)
-        if len(dphidn_vals) != len(boundary_facets):
-            raise ValueError(
-                "Output size of the network does not match number of facets on tag 10."
+    if phi is not None:
+        phi, domain, facet_tags = phi
+        n = ufl.FacetNormal(domain)
+        if dphidn is not None:
+            dphidn_vals, midpoints, integration_points = dphidn
+            Q = fem.functionspace(domain, ("DG", 0))
+            dphidn = fem.Function(Q)
+            # Facets on tag 10
+            boundary_facets = facet_tags.find(10)
+            if len(dphidn_vals) != len(boundary_facets):
+                raise ValueError(
+                    "Output size of the network does not match number of facets on tag 10."
+                )
+            fdim = domain.topology.dim - 1
+            tdim = domain.topology.dim
+            domain.topology.create_connectivity(fdim, tdim)
+            facet_to_cell = domain.topology.connectivity(fdim, tdim)
+            boundary_cells = np.unique(
+                np.hstack([facet_to_cell.links(f) for f in boundary_facets])
             )
-        fdim = domain.topology.dim - 1
-        tdim = domain.topology.dim
-        domain.topology.create_connectivity(fdim, tdim)
-        facet_to_cell = domain.topology.connectivity(fdim, tdim)
-        boundary_cells = np.unique(
-            np.hstack([facet_to_cell.links(f) for f in boundary_facets])
-        )
-        dphidn.x.array[boundary_cells] = dphidn_vals
+            dphidn.x.array[boundary_cells] = dphidn_vals
+        else:
+            dphidn = ufl.dot(ufl.grad(phi), n)
+        comm = domain.comm
+        ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tags)
+        x = ufl.SpatialCoordinate(domain)
+        xi = x[0] - xmin_m
+        t_beam = -0.5 * eps * dphidn**2 * n
+        # Since we only need the normal component for the force on the beam,  we can use the normal derivative directly as shown above.
+        # The commented-out code below shows the more general approach using the Maxwell stress tensor.
+        # I = ufl.Identity(domain.geometry.dim)
+        # T = eps * (ufl.outer(E, E) - 0.5 * ufl.dot(E, E) * I)
+        # t_beam = -ufl.dot(T, n)  # force on conductor
+        F = np.zeros(4, dtype=float)
+        for i in range(nmodes):
+            mode_i = _cantilever_shape_ufl(xi, float(betas[i]), L_m)
+            psi_i = ufl.as_vector((0.0, mode_i))
+            Fi_form = thickness_m * ufl.dot(t_beam, psi_i) * ds(10)
+            Fi = fem.assemble_scalar(fem.form(Fi_form))
+            Fi = comm.allreduce(Fi, op=MPI.SUM)
+            F[i] = float(Fi)
     else:
-        dphidn = ufl.dot(ufl.grad(phi), n)
+        if dphidn is None:
+            raise ValueError(
+                "Either phi or dphidn must be provided to compute the forces."
+            )
+        # Extract the normal derivative values and midpoints from the provided dphidn tuple
+        dphidn_vals, midpoints, integration_points = dphidn
+        dx = np.linalg.norm(integration_points[1:] - integration_points[:-1], axis=1)
+        # Compute the force without using FEniCSx forms, using the provided normal derivative values directly on the midpoints
+        normals = compute_normals_ordered(integration_points)
+        n_y = normals[:, 1]
+        t_beam_vals = 0.5 * eps * dphidn_vals**2 * n_y
+        F = np.zeros(4, dtype=float)
+        for i in range(nmodes):
+            xi = midpoints[:, 0] - xmin_m
+            mode_i = _cantilever_shape_np(xi, float(betas[i]), L_m)
+            Fi = thickness_m * np.sum(t_beam_vals * mode_i * dx)
+            F[i] = float(Fi)
 
-    t_beam = -0.5 * eps * dphidn**2 * n
-
-    # Since we only need the normal component for the force on the beam,  we can use the normal derivative directly as shown above.
-    # The commented-out code below shows the more general approach using the Maxwell stress tensor.
-    # I = ufl.Identity(domain.geometry.dim)
-    # T = eps * (ufl.outer(E, E) - 0.5 * ufl.dot(E, E) * I)
-    # t_beam = -ufl.dot(T, n)  # force on conductor
-
-    F = np.zeros(4, dtype=float)
-    for i in range(nmodes):
-        mode_i = _cantilever_shape_ufl(xi, float(betas[i]), L_m)
-        psi_i = ufl.as_vector((0.0, mode_i))
-        Fi_form = thickness_m * ufl.dot(t_beam, psi_i) * ds(10)
-        Fi = fem.assemble_scalar(fem.form(Fi_form))
-        Fi = comm.allreduce(Fi, op=MPI.SUM)
-        F[i] = float(Fi)
     return F
 
 
@@ -663,7 +731,7 @@ def main():
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
 
-    # Read from the geometry template overecth and distance
+    # Read from the geometry template overetch and distance
     with open(args.template_geo, "r") as f:
         template_geo_text = f.read()
 
@@ -674,11 +742,11 @@ def main():
             raise ValueError(f"Variable '{var_name}' not found")
         return float(match.group(1))
 
-    overetch = get_variable(template_geo_text, "overetch")
-    distance = get_variable(template_geo_text, "distance")
+    overetch_um = get_variable(template_geo_text, "overetch")
+    distance_um = get_variable(template_geo_text, "distance")
+    overetch_m = overetch_um * UM
+    distance_m = distance_um * UM
     ref_factor = int(get_variable(template_geo_text, "r"))
-    xmin = get_variable(template_geo_text, "xmin")
-    xmax = - xmin - overetch
     n_nodes = 50 * ref_factor
     n_segments = n_nodes - 1
 
@@ -695,6 +763,7 @@ def main():
 
     xmin_m = args.xmin_um * UM
     L_m = args.L_um * UM
+    xmax_m = xmin_m + L_m
     thickness_m = args.thickness_um * UM
 
     roots = np.array(
@@ -745,7 +814,7 @@ def main():
                 "F4_N",
                 "phi_min_V",
                 "phi_max_V",
-                "Emax_Vpm",
+                "|E|_max_Vpm",
                 "energy_J",
                 "cap_like_F",
                 "nnodes",
@@ -846,52 +915,66 @@ def main():
                         )
                     break
 
-            normals, midpoints = compute_boundary_normals_and_midpoints(
+            # Compute midpoints directly from the geometry information
+            x_nodes_m = np.linspace(xmin_m, xmax_m, n_nodes)
+            y_nodes_m = (
+                distance_m / 2
+                + overetch_m
+                + _compute_displacement(x_nodes_m - xmin_m, L_m, q)
+            )
+            x_mid_m = 0.5 * (x_nodes_m[:-1] + x_nodes_m[1:])
+            y_mid_m = np.full(
+                n_segments,
+                distance_m / 2
+                + overetch_m
+                + _compute_displacement(x_mid_m - xmin_m, L_m, q),
+            )
+            midpoints_m = np.column_stack((x_mid_m, y_mid_m))
+            nodes_m = np.column_stack((x_nodes_m, y_nodes_m))
+            midpoints_um = midpoints_m / UM
+            nodes_um = nodes_m / UM
+
+            normals, midpoints_m = compute_boundary_normals_and_midpoints(
                 domain, facet_tags.find(10)
             )
-            midpoints = midpoints / UM
-
-            # Compute midpoints directly from the geometry information
-            x_nodes = np.linspace(xmin, xmax, n_nodes)
-            x_mid = 0.5 * (x_nodes[:-1] + x_nodes[1:])
-            y_mid = np.full(n_segments, distance / 2 + overetch + _compute_displacement(x_mid - xmin, L_m/UM, q/UM))
-            midpoints2 = np.column_stack((x_mid, y_mid))
+            midpoints_um = midpoints_m / UM
 
             # --- Modal forces ---
             if args.derivative_nn_path is not None:
                 F = _modal_forces_4(
-                    domain=domain,
-                    facet_tags=facet_tags,
                     nmodes=args.nmodes,
                     betas=betas,
                     xmin_m=xmin_m,
                     L_m=L_m,
                     thickness_m=thickness_m,
-                    phi=phi,
-                    dphidn_vals=Vlower
-                    * dphidn_nn(
-                        [
-                            np.concatenate([np.array([overetch, distance]), q / UM]),
-                            midpoints[np.newaxis, :, :],
-                        ]
-                    )
-                    .numpy()
-                    .squeeze()
-                    / UM,
+                    dphidn=[
+                        Vlower
+                        * dphidn_nn(
+                            [
+                                np.concatenate(
+                                    [np.array([overetch_um, distance_um]), q / UM]
+                                ),
+                                midpoints_um[np.newaxis, :, :],
+                            ]
+                        )
+                        .numpy()
+                        .squeeze()
+                        / UM,
+                        midpoints_m,
+                        nodes_m,
+                    ],
+                    phi=[phi, domain, facet_tags],
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
             else:
                 F = _modal_forces_4(
-                    domain=domain,
-                    facet_tags=facet_tags,
                     nmodes=args.nmodes,
                     betas=betas,
                     xmin_m=xmin_m,
                     L_m=L_m,
                     thickness_m=thickness_m,
-                    phi=phi,
-                    dphidn_vals=None,
+                    phi=[phi, domain, facet_tags],
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
@@ -903,12 +986,11 @@ def main():
 
             # E magnitude max (DG0 projection) — component-blocked layout
             Eh = _project_E_dg0(domain, phi)
-            arr = Eh.x.array
-            nc = domain.topology.index_map(domain.topology.dim).size_local
-            Ex = arr[0:nc]
-            Ey = arr[nc : 2 * nc]
-            E2max_local = float(np.max(Ex * Ex + Ey * Ey)) if nc > 0 else 0.0
-            E2max = float(domain.comm.allreduce(E2max_local, op=MPI.MAX))
+            dim = domain.geometry.dim
+            Ex = Eh.x.array[0::dim]
+            Ey = Eh.x.array[1::dim]
+            E2_local_max = np.max(Ex**2 + Ey**2)
+            E2max = domain.comm.allreduce(E2_local_max, op=MPI.MAX)
             Emax = float(np.sqrt(E2max))
 
             Vdiff = float(Vlower - args.Vupper)
@@ -925,14 +1007,32 @@ def main():
             # --- Print diagnostics ---
             if rank == 0 and (k % args.print_every == 0):
                 print(
-                    f"[{k:04d}] t={t:.3e} V={Vlower:.3f}  "
-                    f"q(um)=[{q[0]/UM:+.4f},{q[1]/UM:+.4f},{q[2]/UM:+.4f},{q[3]/UM:+.4f}]  "
-                    f"F(N)=[{F[0]:+.2e},{F[1]:+.2e},{F[2]:+.2e},{F[3]:+.2e}]  "
-                    f"F/K(um)=[{q_static[0]/UM:+.4f},{q_static[1]/UM:+.4f},{q_static[2]/UM:+.4f},{q_static[3]/UM:+.4f}]  "
-                    f"phi=[{phi_min:.3f},{phi_max:.3f}] Emax={Emax:.3e} V/m  "
-                    f"W={W:.3e}J C~={Cap:.3e}F  "
-                    f"nodes={stats['nnodes']} cells={stats['ncells']} "
-                    f"tags(10,11,12,20)=({tags['n10']},{tags['n11']},{tags['n12']},{tags['n20']})"
+                    f"\n{'='*80}"
+                    f"\nStep: {k:04d}, "
+                    f"Time: {t:.3e} s"
+                    f"\n{'-'*80}"
+                    f"\nVlower = {Vlower:.3f} V  "
+                    f"Phi_min = {phi_min:.3f} V  "
+                    f"Phi_max = {phi_max:.3f} V  "
+                    f"|E|_max = {Emax:.3e} V/m "
+                    f"\nEnergy = {W:.3e} J  "
+                    f"Cap = {Cap:.3e} F  "
+                    f"Nodes = {stats['nnodes']} "
+                    f"Cells = {stats['ncells']}  "
+                    f"\n{'-'*80}"
+                    f"\nTags   : "
+                    f"n10={tags['n10']},  "
+                    f"n11={tags['n11']},  "
+                    f"n12={tags['n12']},  "
+                    f"n20={tags['n20']}"
+                    f"\n{'-'*80}"
+                    f"\n Mode   |    q (um)    |    F (N)     |   F/K (um)"
+                    f"\n        |              |              |           "
+                    f"\n   1    | {q[0]/UM:+12.2e} | {F[0]:+12.2e} | {q_static[0]/UM:+10.4f}"
+                    f"\n   2    | {q[1]/UM:+12.2e} | {F[1]:+12.2e} | {q_static[1]/UM:+10.4f}"
+                    f"\n   3    | {q[2]/UM:+12.2e} | {F[2]:+12.2e} | {q_static[2]/UM:+10.4f}"
+                    f"\n   4    | {q[3]/UM:+12.2e} | {F[3]:+12.2e} | {q_static[3]/UM:+10.4f}"
+                    f"\n{'='*80}\n"
                 )
 
             # --- Save CSV ---
