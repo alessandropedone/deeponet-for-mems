@@ -75,8 +75,6 @@ from src.surrogate.model import (
     DeepONet,
 )
 
-import tensorflow as tf
-
 UM = 1e-6  # micron -> meter
 
 
@@ -578,15 +576,14 @@ def _modal_forces_4(
         dx = np.linalg.norm(integration_points[1:] - integration_points[:-1], axis=1)
         # Compute the force without using FEniCSx forms, using the provided normal derivative values directly on the midpoints
         normals = compute_normals_ordered(integration_points)
-        n_y = normals[:, 1]
-        t_beam_vals = 0.5 * eps * dphidn_vals**2 * n_y
+        t_beam_vals = 0.5 * eps * dphidn_vals**2 * normals[:, 1]
         F = np.zeros(4, dtype=float)
         for i in range(nmodes):
             xi = midpoints[:, 0] - xmin_m
             mode_i = _cantilever_shape_np(xi, float(betas[i]), L_m)
-            Fi = thickness_m * np.sum(t_beam_vals * mode_i * dx)
+            Fi_local = thickness_m * np.sum(t_beam_vals * mode_i * dx)
+            Fi = MPI.COMM_WORLD.allreduce(Fi_local, op=MPI.SUM)
             F[i] = float(Fi)
-
     return F
 
 
@@ -694,7 +691,10 @@ def main():
         help="Interval of steps to save VTK files when --not-postprocessing is not set. Ignored if --no-postprocessing is set.",
     )
 
-    if ap.parse_known_args()[0].workdir.exists():
+    comm = MPI.COMM_WORLD
+    rank = comm.rank
+
+    if ap.parse_known_args()[0].workdir.exists() and rank == 0:
         response = input(
             f"Working directory '{ap.parse_known_args()[0].workdir}' already exists. Do you want to delete it and continue? [y/N] "
         )
@@ -709,7 +709,7 @@ def main():
     ap.add_argument("--dt", type=float, default=1e-6)
     ap.add_argument("--nsteps", type=int, default=200)
     ap.add_argument("--nmodes", type=int, default=4)
-    if ap.parse_known_args()[0].nmodes > 4:
+    if ap.parse_known_args()[0].nmodes > 4 and rank == 0:
         ap.error(
             "The current implementation supports up to 4 modes. Please set --nmodes to 4 or less."
         )
@@ -752,16 +752,24 @@ def main():
     ap.add_argument("--min-nodes", type=int, default=2000)
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
-
-    if args.no_postprocessing and args.derivative_nn_path is None:
-        print("Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False.")
-        args.no_postprocessing = False
     
-    if args.derivative_nn_path is None and args.postprocessing_step > 1:
-        print(
-            "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
-        )
-        args.postprocessing_step = 1
+    if rank == 0:
+
+        if args.potential_nn_path is not None or args.derivative_nn_path is not None:
+            import tensorflow as tf
+
+        if args.no_postprocessing and args.derivative_nn_path is None:
+            print("Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False.")
+            args.no_postprocessing = False
+        
+        if args.derivative_nn_path is None and args.postprocessing_step > 1:
+            print(
+                "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
+            )
+            args.postprocessing_step = 1
+
+        if shutil.which(args.gmsh) is None:
+            raise RuntimeError(f"gmsh executable '{args.gmsh}' not found on PATH.")
 
     # Read from the geometry template overetch and distance
     with open(args.template_geo, "r") as f:
@@ -781,12 +789,6 @@ def main():
     ref_factor = int(get_variable(template_geo_text, "r"))
     n_nodes = 50 * ref_factor
     n_segments = n_nodes - 1
-
-    comm = MPI.COMM_WORLD
-    rank = comm.rank
-
-    if shutil.which(args.gmsh) is None:
-        raise RuntimeError(f"gmsh executable '{args.gmsh}' not found on PATH.")
 
     work_mesh = args.workdir / "meshes"
     work_out = args.workdir / "results"

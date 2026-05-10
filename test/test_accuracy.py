@@ -173,6 +173,7 @@ def main():
 
     (line1,) = ax.plot([], [], label="Classical ROM", linestyle="-", linewidth=2)
     (line2,) = ax.plot([], [], label="DL-ROM", linestyle="--", linewidth=2)
+    (line3,) = ax.plot([], [], label="Difference (DL-ROM - Classical ROM)", linestyle=":", linewidth=2)
 
     ax.set_xlim(x[0], x[-1])
     ax.set_ylim(ymin, ymax)
@@ -185,10 +186,11 @@ def main():
     def update(frame):
         line1.set_data(x, u[frame, :])
         line2.set_data(x, u_ref[frame, :])
+        line3.set_data(x, diff[frame, :])
 
         title.set_text(f"Beam displacement at t = {time[frame]*1e6:.0f} μs")
 
-        return line1, line2, title
+        return line1, line2, line3, title
 
     anim = FuncAnimation(
         fig,
