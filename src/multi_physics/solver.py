@@ -22,8 +22,8 @@ There are several optional arguments to customize the behavior:
 - ``--workdir``: Base directory for output files (default: "coupled_work"). Meshes will be saved in ``workdir/meshes`` and results in ``workdir/results``.
 - ``--derivative-nn-path``: Optional path to a neural network model that can be used to predict the normal derivative of the potential on the force segment (tag 10) instead of computing it from the gradient. If provided, the code will call the model at each time step with appropriate input features to get the predicted dphi/dn values for use in the force computation.
 - ``--potential-nn-path``: Optional path to a neural network model that can be used to predict the potential instead of solving the electrostatics problem with FEniCSx. If provided, the code will call the model at each time step with appropriate input features to get the predicted potential values for use in saving the results and computing diagnostics.
-- ``--postprocess``: If set, the code will run, in parallel with the simulation, the post-processing steps too (i.e., saving the potential field to a ParaView file and writing the modal history CSV).
-- ``--postprocess-step``: Frequency of post-processing steps in terms of time steps (default: every step). For example, if set to 10, the code will save results and write to CSV every 10 time steps.
+- ``--no-postprocessing``: If set, the code will not run post-processing steps (i.e., saving the potential field to a ParaView file and writing the modal history CSV).
+- ``--postprocessing-step``: Frequency of post-processing steps in terms of time steps (default: every step). For example, if set to 10, the code will save results and write to CSV every 10 time steps.
 - ``--gmsh``: Path to the Gmsh executable (default: "gmsh").
 - ``--mshver``: Gmsh mesh format version to use ("2.2" or "4.1", default: "4.1"). Note that the code currently expects physical tags to be integers, which is the case in both versions, but the internal handling of tags differs between versions. Version 4.1 is recommended for better performance and support for larger meshes.
 - ``--dt``: Time step size for the Newmark integration (default: 1e-6 seconds).
@@ -66,6 +66,16 @@ from dolfinx import default_scalar_type
 import ufl
 
 from src.data.fom import compute_boundary_normals_and_midpoints
+from src.surrogate.losses import masked_mse, masked_mae
+from src.surrogate.model import (
+    DenseNetwork,
+    FourierFeatures,
+    LogUniformFreqInitializer,
+    EinsumLayer,
+    DeepONet,
+)
+
+import tensorflow as tf
 
 UM = 1e-6  # micron -> meter
 
@@ -583,7 +593,18 @@ def _modal_forces_4(
 # ----------------------------
 # Newmark (vector, diagonal modal system)
 # ----------------------------
-def _newmark_step_diag(M, C, K, q, qd, qdd, F, dt, beta=0.25, gamma=0.5):
+def _newmark_step_diag(
+    M: np.ndarray,
+    C: np.ndarray,
+    K: np.ndarray,
+    q: np.ndarray,
+    qd: np.ndarray,
+    qdd: np.ndarray,
+    F: np.ndarray,
+    dt: float,
+    beta: float = 0.25,
+    gamma: float = 0.5,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     .. admonition:: Description
 
@@ -661,15 +682,16 @@ def main():
         default=None,
     )
     ap.add_argument(
-        "--postprocess",
+        "--no-postprocessing",
         action="store_true",
         help="If set to True, it will also save the results in VTK format for visualization in ParaView.",
+        default=False,
     )
     ap.add_argument(
-        "--postprocess-step",
+        "--postprocessing-step",
         type=int,
         default=1,
-        help="Interval of steps to save VTK files when --postprocess is enabled.",
+        help="Interval of steps to save VTK files when --not-postprocessing is not set. Ignored if --no-postprocessing is set.",
     )
 
     if ap.parse_known_args()[0].workdir.exists():
@@ -731,6 +753,16 @@ def main():
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
 
+    if args.no_postprocessing and args.derivative_nn_path is None:
+        print("Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False.")
+        args.no_postprocessing = False
+    
+    if args.derivative_nn_path is None and args.postprocessing_step > 1:
+        print(
+            "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
+        )
+        args.postprocessing_step = 1
+
     # Read from the geometry template overetch and distance
     with open(args.template_geo, "r") as f:
         template_geo_text = f.read()
@@ -770,7 +802,7 @@ def main():
         [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
         dtype=float,
     )
-    betas = roots / L_m  # 1/m
+    betas = roots / L_m
 
     omega = np.array(args.omega, dtype=float)
     M = np.array(args.mass, dtype=float)
@@ -786,7 +818,7 @@ def main():
 
     vtk_path = work_out / "electro_series.pvd"
     csv_path = args.workdir / "modal_history.csv"
-    execution_time_path = args.workdir / "execution_time.txt"
+    execution_time_path = args.workdir / "execution_time.csv"
 
     if rank == 0:
         fcsv = csv_path.open("w", newline="")
@@ -832,16 +864,11 @@ def main():
     eps0 = 8.8541878128e-12
 
     if args.derivative_nn_path is not None:
-        import tensorflow as tf
-        from src.surrogate.model import (
-            DenseNetwork,
-            FourierFeatures,
-            LogUniformFreqInitializer,
-            EinsumLayer,
-            DeepONet,
-        )
-        from src.surrogate.losses import masked_mse, masked_mae
-
+        stdout_fd = sys.stdout.fileno()
+        saved_stdout = os.dup(stdout_fd)
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, stdout_fd)
+        os.close(devnull)
         dphidn_nn = tf.keras.models.load_model(
             "{}".format(args.derivative_nn_path),
             custom_objects={
@@ -854,93 +881,121 @@ def main():
                 "masked_mae": masked_mae,
             },
         )
-        print("\033[38;2;0;175;6m\n\nLoaded surrogate model summary.\033[0m")
-        dphidn_nn.summary()
+        os.dup2(saved_stdout, stdout_fd)
+        print("\033[38;2;0;175;6m\n\nLoaded derivative surrogate.\033[0m")
+
+    if args.potential_nn_path is not None:
+        stdout_fd = sys.stdout.fileno()
+        saved_stdout = os.dup(stdout_fd)
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, stdout_fd)
+        os.close(devnull)
+        potential_nn = tf.keras.models.load_model(
+            "{}".format(args.potential_nn_path),
+            custom_objects={
+                "DenseNetwork": DenseNetwork,
+                "FourierFeatures": FourierFeatures,
+                "LogUniformFreqInitializer": LogUniformFreqInitializer,
+                "EinsumLayer": EinsumLayer,
+                "DeepONet": DeepONet,
+                "masked_mse": masked_mse,
+                "masked_mae": masked_mae,
+            },
+        )
+        os.dup2(saved_stdout, stdout_fd)
+        print("\033[38;2;0;175;6m\n\nLoaded potential surrogate.\033[0m")
 
     start = time.perf_counter()
+    postproc_time = 0
+    solution_time = 0
+
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
         for k in range(args.nsteps):
             t = k * args.dt
-
-            # --- Remesh (rank 0) ---
-            if rank == 0:
-                coeff_m = q.copy()
-                msh_path = _make_mesh_step(
-                    template_geo=args.template_geo,
-                    workdir=work_mesh,
-                    step=k,
-                    coeff_m=coeff_m,
-                    gmsh_exec=args.gmsh,
-                    mshver=args.mshver,
-                )
-            else:
-                msh_path = None
-
-            comm.barrier()
-            if rank != 0:
-                msh_path = work_mesh / f"step_{k:05d}.msh"
-
-            # --- Electrostatics ---
             Vlower = V_lower_time(t, args.Vdc, args.Vac, args.freq)
-            Vouter = None if args.no_outer_bc else args.Vouter
-            domain, phi, facet_tags = _solve_electrostatics_one(
-                msh_path=msh_path,
-                V_lower=Vlower,
-                V_upper=args.Vupper,
-                V_outer=Vouter,
-                eps_r=args.epsr,
-            )
 
-            # --- Diagnostics (mesh + tags) ---
-            stats = _mesh_stats(domain)
-            tags = _tag_counts(facet_tags)
+            postproc = time.perf_counter()
+            if not args.no_postprocessing and (k % args.postprocessing_step == 0):
+                # --- Remesh (rank 0) ---
+                if rank == 0:
+                    coeff_m = q.copy()
+                    print("")
+                    print("-" * 65)
+                    print(
+                        f"Meshing with q = [{coeff_m[0]:.2e}, {coeff_m[1]:.2e}, {coeff_m[2]:.2e}, {coeff_m[3]:.2e}]"
+                    )
+                    print("-" * 65)
+                    print("")
+                    msh_path = _make_mesh_step(
+                        template_geo=args.template_geo,
+                        workdir=work_mesh,
+                        step=k,
+                        coeff_m=coeff_m,
+                        gmsh_exec=args.gmsh,
+                        mshver=args.mshver,
+                    )
+                else:
+                    msh_path = None
 
-            if args.fail_fast:
-                ok = True
-                if stats["nnodes"] < args.min_nodes or stats["ncells"] < args.min_cells:
-                    ok = False
-                if tags["n10"] == 0 or tags["n12"] == 0:
-                    ok = False
-                if not ok:
-                    if rank == 0:
-                        print(f"\nFAIL-FAST at step {k}: mesh/tags look broken")
-                        print(f"  nodes={stats['nnodes']} cells={stats['ncells']}")
-                        print(
-                            f"  n10={tags['n10']} n11={tags['n11']} n12={tags['n12']} n20={tags['n20']}"
-                        )
-                        print(
-                            f"  bbox x[{stats['xmin']/UM:.3f},{stats['xmax']/UM:.3f}] um"
-                            f" y[{stats['ymin']/UM:.3f},{stats['ymax']/UM:.3f}] um"
-                        )
-                    break
+                comm.barrier()
+                if rank != 0:
+                    msh_path = work_mesh / f"step_{k:05d}.msh"
 
-            # Compute midpoints directly from the geometry information
-            x_nodes_m = np.linspace(xmin_m, xmax_m, n_nodes)
-            y_nodes_m = (
-                distance_m / 2
-                + overetch_m
-                + _compute_displacement(x_nodes_m - xmin_m, L_m, q)
-            )
-            x_mid_m = 0.5 * (x_nodes_m[:-1] + x_nodes_m[1:])
-            y_mid_m = np.full(
-                n_segments,
-                distance_m / 2
-                + overetch_m
-                + _compute_displacement(x_mid_m - xmin_m, L_m, q),
-            )
-            midpoints_m = np.column_stack((x_mid_m, y_mid_m))
-            nodes_m = np.column_stack((x_nodes_m, y_nodes_m))
-            midpoints_um = midpoints_m / UM
-            nodes_um = nodes_m / UM
+                # --- Electrostatics ---
+                Vouter = None if args.no_outer_bc else args.Vouter
+                domain, phi, facet_tags = _solve_electrostatics_one(
+                    msh_path=msh_path,
+                    V_lower=Vlower,
+                    V_upper=args.Vupper,
+                    V_outer=Vouter,
+                    eps_r=args.epsr,
+                )
 
-            normals, midpoints_m = compute_boundary_normals_and_midpoints(
-                domain, facet_tags.find(10)
-            )
-            midpoints_um = midpoints_m / UM
+                # --- Diagnostics (mesh + tags) ---
+                stats = _mesh_stats(domain)
+                tags = _tag_counts(facet_tags)
 
+                if args.fail_fast:
+                    ok = True
+                    if stats["nnodes"] < args.min_nodes or stats["ncells"] < args.min_cells:
+                        ok = False
+                    if tags["n10"] == 0 or tags["n12"] == 0:
+                        ok = False
+                    if not ok:
+                        if rank == 0:
+                            print(f"\nFAIL-FAST at step {k}: mesh/tags look broken")
+                            print(f"  nodes={stats['nnodes']} cells={stats['ncells']}")
+                            print(
+                                f"  n10={tags['n10']} n11={tags['n11']} n12={tags['n12']} n20={tags['n20']}"
+                            )
+                            print(
+                                f"  bbox x[{stats['xmin']/UM:.3f},{stats['xmax']/UM:.3f}] um"
+                                f" y[{stats['ymin']/UM:.3f},{stats['ymax']/UM:.3f}] um"
+                            )
+                        break
+            postproc_time = postproc_time + time.perf_counter() - postproc
+            
             # --- Modal forces ---
             if args.derivative_nn_path is not None:
+                sol = time.perf_counter()
+                # Compute midpoints directly from the geometry information
+                x_nodes_m = np.linspace(xmin_m, xmax_m, n_nodes)
+                y_nodes_m = (
+                    distance_m / 2
+                    + overetch_m
+                    + _compute_displacement(x_nodes_m - xmin_m, L_m, q)
+                )
+                x_mid_m = 0.5 * (x_nodes_m[:-1] + x_nodes_m[1:])
+                y_mid_m = np.full(
+                    n_segments,
+                    distance_m / 2
+                    + overetch_m
+                    + _compute_displacement(x_mid_m - xmin_m, L_m, q),
+                )
+                midpoints_m = np.column_stack((x_mid_m, y_mid_m))
+                nodes_m = np.column_stack((x_nodes_m, y_nodes_m))
+                midpoints_um = midpoints_m / UM
                 F = _modal_forces_4(
                     nmodes=args.nmodes,
                     betas=betas,
@@ -963,11 +1018,47 @@ def main():
                         midpoints_m,
                         nodes_m,
                     ],
-                    phi=[phi, domain, facet_tags],
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
+                solution_time = solution_time + time.perf_counter() - sol
+                postproc = time.perf_counter()
+                if not args.no_postprocessing and (k % args.postprocessing_step == 0):
+                    # --- Field scale diagnostics ---
+                    phi_arr = phi.x.array
+                    phi_min = float(domain.comm.allreduce(phi_arr.min(), op=MPI.MIN))
+                    phi_max = float(domain.comm.allreduce(phi_arr.max(), op=MPI.MAX))
+
+                    # E magnitude max (DG0 projection) — component-blocked layout
+                    Eh = _project_E_dg0(domain, phi)
+                    dim = domain.geometry.dim
+                    Ex = Eh.x.array[0::dim]
+                    Ey = Eh.x.array[1::dim]
+                    E2_local_max = np.max(Ex**2 + Ey**2)
+                    E2max = domain.comm.allreduce(E2_local_max, op=MPI.MAX)
+                    Emax = float(np.sqrt(E2max))
+
+                    Vdiff = float(Vlower - args.Vupper)
+                    W, Cap = _energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
+
+                    # --- Write ParaView time series ---
+                    vtk.write_mesh(domain, t)
+                    vtk.write_function(phi, t)
+                else:
+                    stats = {"nnodes": np.nan, "ncells": np.nan, "xmin": np.nan, "xmax": np.nan, "ymin": np.nan, "ymax": np.nan}
+                    tags = {"n10": np.nan, "n11": np.nan, "n12": np.nan, "n20": np.nan}
+                    phi_min = np.nan
+                    phi_max = np.nan
+                    Emax = np.nan
+                    W = np.nan
+                    Cap = np.nan
+                postproc_time = postproc_time + time.perf_counter() - postproc
             else:
+                sol = time.perf_counter()
+                normals, midpoints_m = compute_boundary_normals_and_midpoints(
+                    domain, facet_tags.find(10)
+                )
+                midpoints_um = midpoints_m / UM
                 F = _modal_forces_4(
                     nmodes=args.nmodes,
                     betas=betas,
@@ -978,34 +1069,41 @@ def main():
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
+                solution_time = solution_time + time.perf_counter() - sol
+                postproc = time.perf_counter()
+                # --- Field scale diagnostics ---
+                phi_arr = phi.x.array
+                phi_min = float(domain.comm.allreduce(phi_arr.min(), op=MPI.MIN))
+                phi_max = float(domain.comm.allreduce(phi_arr.max(), op=MPI.MAX))
 
-            # --- Field scale diagnostics ---
-            phi_arr = phi.x.array
-            phi_min = float(domain.comm.allreduce(phi_arr.min(), op=MPI.MIN))
-            phi_max = float(domain.comm.allreduce(phi_arr.max(), op=MPI.MAX))
+                # E magnitude max (DG0 projection) — component-blocked layout
+                Eh = _project_E_dg0(domain, phi)
+                dim = domain.geometry.dim
+                Ex = Eh.x.array[0::dim]
+                Ey = Eh.x.array[1::dim]
+                E2_local_max = np.max(Ex**2 + Ey**2)
+                E2max = domain.comm.allreduce(E2_local_max, op=MPI.MAX)
+                Emax = float(np.sqrt(E2max))
 
-            # E magnitude max (DG0 projection) — component-blocked layout
-            Eh = _project_E_dg0(domain, phi)
-            dim = domain.geometry.dim
-            Ex = Eh.x.array[0::dim]
-            Ey = Eh.x.array[1::dim]
-            E2_local_max = np.max(Ex**2 + Ey**2)
-            E2max = domain.comm.allreduce(E2_local_max, op=MPI.MAX)
-            Emax = float(np.sqrt(E2max))
+                Vdiff = float(Vlower - args.Vupper)
+                W, Cap = _energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
 
-            Vdiff = float(Vlower - args.Vupper)
-            W, Cap = _energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
+                # --- Write ParaView time series ---
+                vtk.write_mesh(domain, t)
+                vtk.write_function(phi, t)
+                postproc_time = postproc_time + time.perf_counter() - postproc
+
+            sol = time.perf_counter()
 
             # --- Mechanical update ---
             q, qd, qdd = _newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
             q_static = np.where(K != 0, F / K, np.nan)
 
-            # --- Write ParaView time series ---
-            vtk.write_mesh(domain, t)
-            vtk.write_function(phi, t)
+            solution_time = solution_time + time.perf_counter() - sol
 
             # --- Print diagnostics ---
             if rank == 0 and (k % args.print_every == 0):
+                # Print nan if postprocessing is disabled or not performed at this step
                 print(
                     f"\n{'='*80}"
                     f"\nStep: {k:04d}, "
@@ -1035,8 +1133,9 @@ def main():
                     f"\n{'='*80}\n"
                 )
 
+            postproc = time.perf_counter()
             # --- Save CSV ---
-            if rank == 0:
+            if rank == 0 and k % args.print_every == 0:
                 writer.writerow(
                     [
                         k,
@@ -1071,16 +1170,38 @@ def main():
                         tags["n20"],
                     ]
                 )
+            postproc_time = postproc_time + time.perf_counter() - postproc
 
     end = time.perf_counter()
-    with open(execution_time_path, "w") as f:
-        f.write(f"{end - start:.6f}\n")
+    total_time = end - start
+    fcsv = execution_time_path.open("w", newline="")
+    writer = csv.writer(fcsv)
+    writer.writerow(
+        [
+            "total_s",
+            "postprocessing_s",
+            "solution_s"
+        ]
+    )
+    writer.writerow(
+        [
+            total_time,
+            postproc_time,
+            solution_time
+        ]
+    )
 
     if rank == 0:
         fcsv.close()
-        print(f"\nParaView time series: {vtk_path}")
+        print("")
+        print("=" * 80)
+        print(f"ParaView time series: {vtk_path}")
         print(f"Modal history CSV:    {csv_path}")
-        print(f"Total runtime: {end - start:.2f} seconds")
+        print(f"Execution time CSV:   {execution_time_path}")
+        print(f"Total runtime: {total_time:.2f} seconds")
+        print(f"  Postprocessing time: {postproc_time:.2f} seconds")
+        print(f"  Solution time:       {solution_time:.2f} seconds")
+        print("=" * 80)
 
 
 if __name__ == "__main__":
