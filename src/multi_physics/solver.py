@@ -21,7 +21,6 @@ There are several optional arguments to customize the behavior:
 - ``--template-geo``: Path to the Gmsh geometry template file (required). This file should contain placeholders ``__COEFF1__``, ``__COEFF2__``, ``__COEFF3__``, and ``__COEFF4__`` which will be replaced by the current modal coefficients (in microns) at each time step.
 - ``--workdir``: Base directory for output files (default: "coupled_work"). Meshes will be saved in ``workdir/meshes`` and results in ``workdir/results``.
 - ``--derivative-nn-path``: Optional path to a neural network model that can be used to predict the normal derivative of the potential on the force segment (tag 10) instead of computing it from the gradient. If provided, the code will call the model at each time step with appropriate input features to get the predicted dphi/dn values for use in the force computation.
-- ``--potential-nn-path``: Optional path to a neural network model that can be used to predict the potential instead of solving the electrostatics problem with FEniCSx. If provided, the code will call the model at each time step with appropriate input features to get the predicted potential values for use in saving the results and computing diagnostics.
 - ``--no-postprocessing``: If set, the code will not run post-processing steps (i.e., saving the potential field to a ParaView file and writing the modal history CSV).
 - ``--postprocessing-step``: Frequency of post-processing steps in terms of time steps (default: every step). For example, if set to 10, the code will save results and write to CSV every 10 time steps.
 - ``--gmsh``: Path to the Gmsh executable (default: "gmsh").
@@ -673,12 +672,6 @@ def main():
         default=None,
     )
     ap.add_argument(
-        "--potential-nn-path",
-        type=Path,
-        help="Path to the neural network for the potential.",
-        default=None,
-    )
-    ap.add_argument(
         "--no-postprocessing",
         action="store_true",
         help="If set to True, it will also save the results in VTK format for visualization in ParaView.",
@@ -752,16 +745,18 @@ def main():
     ap.add_argument("--min-nodes", type=int, default=2000)
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
-    
+
     if rank == 0:
 
-        if args.potential_nn_path is not None or args.derivative_nn_path is not None:
+        if args.derivative_nn_path is not None:
             import tensorflow as tf
 
         if args.no_postprocessing and args.derivative_nn_path is None:
-            print("Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False.")
+            print(
+                "Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False."
+            )
             args.no_postprocessing = False
-        
+
         if args.derivative_nn_path is None and args.postprocessing_step > 1:
             print(
                 "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
@@ -886,31 +881,9 @@ def main():
         os.dup2(saved_stdout, stdout_fd)
         print("\033[38;2;0;175;6m\n\nLoaded derivative surrogate.\033[0m")
 
-    if args.potential_nn_path is not None:
-        stdout_fd = sys.stdout.fileno()
-        saved_stdout = os.dup(stdout_fd)
-        devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(devnull, stdout_fd)
-        os.close(devnull)
-        potential_nn = tf.keras.models.load_model(
-            "{}".format(args.potential_nn_path),
-            custom_objects={
-                "DenseNetwork": DenseNetwork,
-                "FourierFeatures": FourierFeatures,
-                "LogUniformFreqInitializer": LogUniformFreqInitializer,
-                "EinsumLayer": EinsumLayer,
-                "DeepONet": DeepONet,
-                "masked_mse": masked_mse,
-                "masked_mae": masked_mae,
-            },
-        )
-        os.dup2(saved_stdout, stdout_fd)
-        print("\033[38;2;0;175;6m\n\nLoaded potential surrogate.\033[0m")
-
     start = time.perf_counter()
     postproc_time = 0
     solution_time = 0
-
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
         for k in range(args.nsteps):
@@ -960,7 +933,10 @@ def main():
 
                 if args.fail_fast:
                     ok = True
-                    if stats["nnodes"] < args.min_nodes or stats["ncells"] < args.min_cells:
+                    if (
+                        stats["nnodes"] < args.min_nodes
+                        or stats["ncells"] < args.min_cells
+                    ):
                         ok = False
                     if tags["n10"] == 0 or tags["n12"] == 0:
                         ok = False
@@ -977,7 +953,7 @@ def main():
                             )
                         break
             postproc_time = postproc_time + time.perf_counter() - postproc
-            
+
             # --- Modal forces ---
             if args.derivative_nn_path is not None:
                 sol = time.perf_counter()
@@ -1041,13 +1017,22 @@ def main():
                     Emax = float(np.sqrt(E2max))
 
                     Vdiff = float(Vlower - args.Vupper)
-                    W, Cap = _energy_and_cap(domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0)
+                    W, Cap = _energy_and_cap(
+                        domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0
+                    )
 
                     # --- Write ParaView time series ---
                     vtk.write_mesh(domain, t)
                     vtk.write_function(phi, t)
                 else:
-                    stats = {"nnodes": np.nan, "ncells": np.nan, "xmin": np.nan, "xmax": np.nan, "ymin": np.nan, "ymax": np.nan}
+                    stats = {
+                        "nnodes": np.nan,
+                        "ncells": np.nan,
+                        "xmin": np.nan,
+                        "xmax": np.nan,
+                        "ymin": np.nan,
+                        "ymax": np.nan,
+                    }
                     tags = {"n10": np.nan, "n11": np.nan, "n12": np.nan, "n20": np.nan}
                     phi_min = np.nan
                     phi_max = np.nan
@@ -1178,20 +1163,8 @@ def main():
     total_time = end - start
     fcsv = execution_time_path.open("w", newline="")
     writer = csv.writer(fcsv)
-    writer.writerow(
-        [
-            "total_s",
-            "postprocessing_s",
-            "solution_s"
-        ]
-    )
-    writer.writerow(
-        [
-            total_time,
-            postproc_time,
-            solution_time
-        ]
-    )
+    writer.writerow(["total_s", "postprocessing_s", "solution_s"])
+    writer.writerow([total_time, postproc_time, solution_time])
 
     if rank == 0:
         fcsv.close()
