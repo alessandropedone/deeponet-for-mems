@@ -3,7 +3,7 @@ Script to generate meshes, run simulations, and save results based on geometry p
 
 Example usage::
 
-    python -m data.generate --folder "test/test1" --data_file "test/test1.csv" --geometry_input "geometries/cantilever1.geo" --workers 2
+    python -m src.data.generate --folder "test/test1" --data_file "test/test1.csv" --geometry_input "geometries/cantilever1.geo" --workers 2
 
 There are several optional arguments to customize the behavior:
 

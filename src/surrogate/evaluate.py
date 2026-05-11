@@ -3,7 +3,7 @@ Evaluate a trained DeepONet surrogate model on a test dataset.
 
 Example usage::
     
-    python -m surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential" 
+    python -m src.surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential" 
 
 There are several optional arguments to customize the behavior:
 

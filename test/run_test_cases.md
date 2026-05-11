@@ -32,7 +32,7 @@ python -m src.surrogate.predict --folder "test/test1" --model_path "models/poten
 
 You can do the same for with the model for the normal derivative of the potential on the boundary of the upper plate.
 ```bash
-python -m src.surrogate.evalutate --folder "test/test1" --model_path "models/derivative1.keras" --target "normal_derivative" 
+python -m src.surrogate.evaluate --folder "test/test1" --model_path "models/derivative1.keras" --target "normal_derivative" 
 ```
 ```bash
 python -m src.surrogate.predict --folder "test/test1" --model_path "models/derivative1.keras"  --target "normal_derivative" 

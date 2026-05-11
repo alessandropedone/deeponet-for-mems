@@ -567,10 +567,15 @@ class DeepONet(tf.keras.Model):
     :type branch: ``DenseNetwork``
     :param trunk: The trunk network to generate the basis functions.
     :type trunk: ``DenseNetwork``
+    :param rescale_output: The factor by which to rescale the output.
+    :type rescale_output: ``float``
+
     :ivar branch: The branch network to generate expansion coefficients.
     :vartype branch: ``DenseNetwork``
     :ivar trunk: The trunk network to generate the basis functions.
     :vartype trunk: ``DenseNetwork``
+    :ivar rescale_output: The factor by which to rescale the output.
+    :vartype rescale_output: ``float``
     :ivar history: Training history after model training.
     :vartype history: ``tf.keras.callbacks.History``
     :raises AssertionError: If the output dimensions of the branch and trunk networks do not match
@@ -580,12 +585,14 @@ class DeepONet(tf.keras.Model):
             self, 
             branch : DenseNetwork, 
             trunk : DenseNetwork,
+            rescale_output: float = 1.0,
             **kwargs
         ):
         super(DeepONet, self).__init__(**kwargs)
         assert branch.output_neurons == trunk.output_neurons
         self.branch = branch
         self.trunk = trunk
+        self.rescale_output = rescale_output
 
         # Initialize history to None
         self.history = None
@@ -630,7 +637,7 @@ class DeepONet(tf.keras.Model):
         
         ein_syntax = 'bj,bij->bi' if (len(basis.shape) == 3) else 'bj,ij->bi'
         output = EinsumLayer(ein_syntax)([coeffs, basis])
-        return output
+        return output / self.rescale_output
 
     def build(self, input_shape):
         """
@@ -655,7 +662,8 @@ class DeepONet(tf.keras.Model):
         return {
             **base_config,
             "branch": tf.keras.utils.serialize_keras_object(self.branch),
-            "trunk": tf.keras.utils.serialize_keras_object(self.trunk)
+            "trunk": tf.keras.utils.serialize_keras_object(self.trunk),
+            "rescale_output": self.rescale_output,
         }
 
     @classmethod
@@ -669,8 +677,10 @@ class DeepONet(tf.keras.Model):
         """
         branch_config = config.pop("branch")
         trunk_config = config.pop("trunk")
+        rescale_output = config.pop("rescale_output")
         config["branch"] = tf.keras.utils.deserialize_keras_object(branch_config)
         config["trunk"] = tf.keras.utils.deserialize_keras_object(trunk_config)
+        config["rescale_output"] = rescale_output
         return cls(**config)
     
 

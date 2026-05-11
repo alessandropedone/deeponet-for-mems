@@ -7,7 +7,7 @@
 
 Example of usage::
 
-    python -m data.delete --folder <data_folder_path>
+    python -m src.data.delete --folder <data_folder_path>
 
 """
 

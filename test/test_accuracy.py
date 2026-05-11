@@ -11,17 +11,18 @@ from utils import cantilever_shape_np, compute_displacement_from_history
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-simulation", action="store_true")
+    ap.add_argument("--big-deformation", action="store_true")
 
-    workdir = Path(f"temp/run_nmodes_4")
+    workdir_ref = Path(f"temp/run_nmodes_4") if not ap.parse_args().big_deformation else Path(f"temp/run_nmodes_4_big_deformation")
 
     cmd = [
         "python",
         "-m",
         "src.multi_physics.solver",
         "--template-geo",
-        "geometries/cantilever1.geo",
+        "geometries/cantilever1.geo" if not ap.parse_args().big_deformation else "geometries/cantilever2.geo",
         "--workdir",
-        str(workdir),
+        str(workdir_ref),
         "--nmodes",
         "4",
         "--dt",
@@ -31,7 +32,7 @@ def main():
         "--Vdc",
         "0",
         "--Vac",
-        "5",
+        "5" if not ap.parse_args().big_deformation else "230",
         "--freq",
         "2.5e3",
         "--Vupper",
@@ -59,19 +60,19 @@ def main():
     ]
 
     if not ap.parse_args().no_simulation:
-        print(f"Running with 4 modes...")
+        print(f"Running classical ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
 
-    workdir_ref = Path(f"temp/run_nmodes_4_nn")
+    workdir = Path(f"temp/run_nmodes_4_nn") if not ap.parse_args().big_deformation else Path(f"temp/run_nmodes_4_nn_big_deformation")
 
     cmd = [
         "python",
         "-m",
         "src.multi_physics.solver",
         "--template-geo",
-        "geometries/cantilever1.geo",
+        "geometries/cantilever1.geo" if not ap.parse_args().big_deformation else "geometries/cantilever2.geo",
         "--workdir",
-        str(workdir_ref),
+        str(workdir),
         "--nmodes",
         "4",
         "--dt",
@@ -81,7 +82,7 @@ def main():
         "--Vdc",
         "0",
         "--Vac",
-        "5",
+        "5" if not ap.parse_args().big_deformation else "230",
         "--freq",
         "2.5e3",
         "--Vupper",
@@ -107,35 +108,44 @@ def main():
         "1",
         "--fail-fast",
         "--derivative-nn-path",
-        "models/derivative1.keras",
+        "models/derivative1.keras" if not ap.parse_args().big_deformation else "models/derivative2.keras",
     ]
 
     if not ap.parse_args().no_simulation:
-        print(f"Running with 4 modes...")
+        print(f"Running DL-ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
 
     # Compare the L2 norms of the displacement fields
     L_m = 1e-4
 
     x = np.linspace(0, L_m, 100)
-    u = compute_displacement_from_history(4, x, L_m, Path("temp/run_nmodes_4_nn"))
-    u_ref = compute_displacement_from_history(4, x, L_m, Path("temp/run_nmodes_4"))
+    u = compute_displacement_from_history(4, x, L_m, workdir)
+    u_ref = compute_displacement_from_history(4, x, L_m, workdir_ref)
     diff = u - u_ref
 
     # Integrate in L2 the difference over the length of the beam (row-wise)
     # and then integrate it over time (column-wise)
-    l2_norm = np.sqrt(np.trapezoid(np.trapezoid(diff**2, x), dx=1e-5))
+    l2_norm = np.sqrt(np.trapezoid(diff**2, x))
     # Do the same for the reference solution
-    l2_norm_ref = np.sqrt(np.trapezoid(np.trapezoid(u_ref**2, x), dx=1e-5))
+    l2_norm_ref = np.sqrt(np.trapezoid(u_ref**2, x))
     print("")
     print("DL-ROM vs classical ROM")
+    print("="*70)
     print("")
-    print("L2 norm of the displacement fields:")
-    print(f"{'L2 norm of difference':35s} {l2_norm:16.6e}")
-    print(f"{'L2 norm of reference':35s} {l2_norm_ref:16.6e}")
-    print(f"{'Relative L2 error':35s} {l2_norm / l2_norm_ref:16.6e}")
+    print("L2 norm in space of the displacement fields")
+    print(f"{'-'*70}")
+    print(f"{'L2 norm range (Classical ROM)':45s} ({l2_norm_ref.min():.3e}, {l2_norm_ref.max():.3e})")
+    print(f"{'L2 norm of difference range':45s} ({l2_norm.min():.3e}, {l2_norm.max():.3e})")
+    print(f"{'-'*70}")
     print("")
-    print("Capacitance difference at final time step:")
+    print("Linf norm in space of the displacement fields")
+    print(f"{'-'*70}")
+    print(f"{'Linf norm range (Classical ROM)':45s} ({np.max(abs(u_ref), axis=1).min():.3e}, {np.max(abs(u_ref), axis=1).max():.3e})")
+    print(f"{'Linf norm of difference range':45s} ({np.max(abs(diff), axis=1).min():.3e}, {np.max(abs(diff), axis=1).max():.3e})")
+    print(f"{'-'*70}")
+    print("")
+    print("Capacitance")
+    print(f"{'-'*70}")
     csv_path = workdir / "modal_history.csv"
     csv_path_ref = workdir_ref / "modal_history.csv"
     data = pd.read_csv(csv_path)
@@ -145,20 +155,15 @@ def main():
     capacity = np.nan_to_num(capacity, nan=1e-30)  # Avoid division by zero
     capacity_ref = np.nan_to_num(capacity_ref, nan=1e-30)  # Avoid division by zero
     capacity_diff = abs(capacity - capacity_ref)
-    print(f"{'Max capacitance (nmodes)':35s}  {capacity[1:].max():15.6e}")
-    print(f"{'Max capacitance (reference)':35s}  {capacity_ref[1:].max():15.6e}")
-    print(f"{'Max difference in capacitance':35s}  {capacity_diff[1:].max():15.6e}")
-    print(
-        f"{'Relative difference in capacitance':35s}  {(capacity_diff[1:]/capacity_ref[1:]).max():15.6e}"
-    )
-    print(f"{'-'*60}")
+    print(f"{'Capacitance range (Classical ROM)':45s}  ({capacity_ref[1:].min():.3e}, {capacity_ref[1:].max():.3e})")
+    print(f"{'Capacitance difference range':45s}  ({capacity_diff[1:].min():.3e}, {capacity_diff[1:].max():.3e})")
     print("")
 
     # Plot all capacities over time
     time = data["t_s"].values
     plt.figure(figsize=(10, 6))
-    plt.plot(time[1:], capacity[1:], label="1 mode", linestyle="-", linewidth=2)
-    plt.plot(time[1:], capacity_ref[1:], label="2 modes", linestyle="--", linewidth=2)
+    plt.plot(time[1:], capacity[1:], label="DL-ROM", linestyle="-", linewidth=2)
+    plt.plot(time[1:], capacity_ref[1:], label="Classical ROM", linestyle="--", linewidth=2)
     plt.xlabel("Time (s)")
     plt.ylabel("Capacitance (F)")
     plt.title("Capacitance over time for different numbers of modes")
@@ -171,9 +176,9 @@ def main():
 
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    (line1,) = ax.plot([], [], label="Classical ROM", linestyle="-", linewidth=2)
-    (line2,) = ax.plot([], [], label="DL-ROM", linestyle="--", linewidth=2)
-    (line3,) = ax.plot([], [], label="Difference (DL-ROM - Classical ROM)", linestyle=":", linewidth=2)
+    (line1,) = ax.plot([], [], label="DL-ROM", linestyle="-", linewidth=2)
+    (line2,) = ax.plot([], [], label="Classical ROM", linestyle="--", linewidth=2)
+    (line3,) = ax.plot([], [], label="Difference", linestyle=":", linewidth=2)
 
     ax.set_xlim(x[0], x[-1])
     ax.set_ylim(ymin, ymax)
@@ -199,7 +204,7 @@ def main():
         interval=200,  # ms between frames
         blit=False,
     )
-
+    
     plt.show()
 
 

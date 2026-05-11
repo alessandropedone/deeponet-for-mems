@@ -3,7 +3,7 @@ A file to summarize the specified surrogate model.
 
 Example usage::
     
-    python -m surrogate.summary --model_path "models/potential1.keras"
+    python -m src.surrogate.summary --model_path "models/potential1.keras"
 """
 
 

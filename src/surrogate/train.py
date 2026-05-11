@@ -5,7 +5,7 @@ to the solution of a physical problem.
 
 Example usage::
 
-    python -m surrogate.train --folder "test/test1" --model_path "models/potential.keras" --target "potential"
+    python -m src.surrogate.train --folder "temp/test1" --model_path "models/potential.keras" --target "potential"
 
 There are several optional arguments to customize the behavior:
 
@@ -37,7 +37,8 @@ def train(model_path: str,
           y:  np.ndarray,
           mu: np.ndarray,
           seed: int = 40,
-          batch_size: int = 8) -> None:
+          batch_size: int = 64,
+          rescale_output: float = 1.0) -> None:
     """
     .. admonition:: Description
 
@@ -51,6 +52,7 @@ def train(model_path: str,
     :param mu: Geometrical parameters array of shape ``(ns, p)``.
     :param seed: Random seed for data splitting.
     :param batch_size: Batch size for training.
+    :param rescale_output: Factor to scale the output during training (default: 1.0, no scaling).
     """
     # Hyperparameters setup ----------------------------------------------------------
     r    = r             # low-rank dimension
@@ -124,7 +126,7 @@ def train(model_path: str,
     )
     trunk.adapt(x_train)
 
-    model = DeepONet(branch = branch, trunk = trunk)
+    model = DeepONet(branch = branch, trunk = trunk, rescale_output=rescale_output)
 
     model.build(input_shape=[(None, p), (None, d)])
     model.summary()
@@ -187,6 +189,7 @@ def main():
     parser.add_argument("--seed", type=int, default=40, help="Random seed for data splitting.")
     parser.add_argument("--target", choices=["potential", "normal_derivative"], default="potential", help="Target quantity to predict.")
     parser.add_argument("--batch_size", type=int, default=8, help="Batch size for training.")
+    parser.add_argument("--rescale_output", type=float, default=1.0, help="Factor to scale the output during training (default: 1.0, no scaling).")
     args = parser.parse_args()
     data_folder = args.folder
     model_path = args.model_path
@@ -206,7 +209,7 @@ def main():
 
     # Train the model
     from .gpu import run_on_device
-    run_on_device(train, model_path=model_path, r=r, x=x, y=y, mu=mu, seed=seed, batch_size=args.batch_size)
+    run_on_device(train, model_path=model_path, r=r, x=x, y= y, mu=mu, seed=seed, batch_size=args.batch_size, rescale_output=args.rescale_output)
 
 if __name__ == "__main__":
     main()

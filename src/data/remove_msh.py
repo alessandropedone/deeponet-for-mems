@@ -2,7 +2,7 @@
 Script to remove all .msh files from a specified data folder.
 Example of usage::
 
-    python -m data.remove_msh --folder <data_folder_path>
+    python -m src.data.remove_msh --folder <data_folder_path>
 """
 
 from .mesh import remove_msh_files
