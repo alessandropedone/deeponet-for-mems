@@ -289,8 +289,13 @@ $$
 
 
 ## To launch the code
+Case of cantilever with small deformations
 ```bash
 python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilever1.geo --dt 1e-5 --nsteps 40 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast --derivative-nn-path models/derivative1.keras --postprocessing-step 5
+```
+Case of cantilever with big deformations
+```bash
+python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilever2.geo --dt 5e-6 --nsteps 80 --Vdc 0 --Vac 230 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast
 ```
 
 ### References:
@@ -299,5 +304,3 @@ python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilev
 2. Modal Projection:
     - https://lib.physcon.ru/file?id=c3839b099d0c
     - https://amsdottorato.unibo.it/id/eprint/461/1/2007_03_13_Tesi_Dottorato_Laura_Del_Tin.pdf
-    
-mpirun -n 4 python -m src.multi_physics.solver --nmodes 2 --template-geo geometries/cantilever1.geo --dt 1e-5 --nsteps 40 --Vdc 0 --Vac 5 --freq 2.5e3 --Vupper 0 --Vouter 0 --omega 6.3e5 3.9e6 1.1e7 2.1e7 --mass 1e-12 1e-12 1e-12 1e-12 --zeta 0.01 0.01 0.01 0.01 --print-every 1 --fail-fast
