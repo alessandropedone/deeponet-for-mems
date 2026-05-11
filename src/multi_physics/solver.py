@@ -1092,10 +1092,10 @@ def main():
             if rank == 0 and (k % args.print_every == 0):
                 # Print nan if postprocessing is disabled or not performed at this step
                 print(
-                    f"\n{'='*80}"
+                    f"\n{'='*90}"
                     f"\nStep: {k:04d}, "
                     f"Time: {t:.3e} s"
-                    f"\n{'-'*80}"
+                    f"\n{'-'*90}"
                     f"\nVlower = {Vlower:.3f} V  "
                     f"Phi_min = {phi_min:.3f} V  "
                     f"Phi_max = {phi_max:.3f} V  "
@@ -1104,20 +1104,20 @@ def main():
                     f"Cap = {Cap:.3e} F  "
                     f"Nodes = {stats['nnodes']} "
                     f"Cells = {stats['ncells']}  "
-                    f"\n{'-'*80}"
+                    f"\n{'-'*90}"
                     f"\nTags   : "
                     f"n10={tags['n10']},  "
                     f"n11={tags['n11']},  "
                     f"n12={tags['n12']},  "
                     f"n20={tags['n20']}"
-                    f"\n{'-'*80}"
+                    f"\n{'-'*90}"
                     f"\n Mode   |    q (um)    |    F (N)     |   F/K (um)"
                     f"\n        |              |              |           "
                     f"\n   1    | {q[0]/UM:+12.2e} | {F[0]:+12.2e} | {q_static[0]/UM:+10.4f}"
                     f"\n   2    | {q[1]/UM:+12.2e} | {F[1]:+12.2e} | {q_static[1]/UM:+10.4f}"
                     f"\n   3    | {q[2]/UM:+12.2e} | {F[2]:+12.2e} | {q_static[2]/UM:+10.4f}"
                     f"\n   4    | {q[3]/UM:+12.2e} | {F[3]:+12.2e} | {q_static[3]/UM:+10.4f}"
-                    f"\n{'='*80}\n"
+                    f"\n{'='*90}\n"
                 )
 
             postproc = time.perf_counter()
@@ -1169,14 +1169,14 @@ def main():
     if rank == 0:
         fcsv.close()
         print("")
-        print("=" * 80)
+        print("=" * 90)
         print(f"ParaView time series: {vtk_path}")
         print(f"Modal history CSV:    {csv_path}")
         print(f"Execution time CSV:   {execution_time_path}")
         print(f"Total runtime: {total_time:.2f} seconds")
         print(f"  Postprocessing time: {postproc_time:.2f} seconds")
         print(f"  Solution time:       {solution_time:.2f} seconds")
-        print("=" * 80)
+        print("=" * 90)
 
 
 if __name__ == "__main__":
