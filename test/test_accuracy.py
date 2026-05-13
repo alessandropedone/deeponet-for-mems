@@ -18,6 +18,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-simulation", action="store_true")
     ap.add_argument("--big-deformation", action="store_true")
+    ap.add_argument("--accurate-capacity", action="store_true")
 
     # -----------------------------------------
     # Run the reference simulation with 4 modes
@@ -139,6 +140,12 @@ def main():
             else "models/derivative2.keras"
         ),
     ]
+    if not ap.parse_args().accurate_capacity:
+        cmd.append("--no-postprocessing")
+    else:
+        cmd.append("--postprocessing-step")
+        cmd.append("5")
+        
     if not ap.parse_args().no_simulation:
         print(f"Running DL-ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
@@ -190,35 +197,11 @@ def main():
     data = pd.read_csv(csv_path)
     data_ref = pd.read_csv(csv_path_ref)
     thickness_m = 10e-6
-    capacity = thickness_m * data["cap_like_F"].values
+    capacity = thickness_m * data["cap_like_F_approx"].values
     capacity_ref = thickness_m * data_ref["cap_like_F"].values
     capacity = np.nan_to_num(capacity, nan=1e-30)  # Avoid division by zero
     capacity_ref = np.nan_to_num(capacity_ref, nan=1e-30)  # Avoid division by zero
     capacity_diff = abs(capacity - capacity_ref)
-    # Read from the geometry template overetch and distance
-    with open(
-        (
-            "geometries/cantilever1.geo"
-            if not ap.parse_args().big_deformation
-            else "geometries/cantilever2.geo"
-        ),
-        "r",
-    ) as f:
-        template_geo_text = f.read()
-
-    def get_variable(text, var_name):
-        pattern = rf"{var_name}\s*=\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*;"
-        match = re.search(pattern, text)
-        if not match:
-            raise ValueError(f"Variable '{var_name}' not found")
-        return float(match.group(1))
-
-    distance_um = get_variable(template_geo_text, "distance")
-    distance_m = distance_um * 1e-6
-    # Compute the approximate capacitance
-    eps0 = 8.8541878128e-12  # Vacuum permittivity
-    capacity_approx = eps0 * thickness_m * np.trapezoid((1 / (distance_m + u)), x)
-    capacity_approx = capacity_approx + (capacity_ref[1] - capacity_approx[1])
     print(
         f"{'Cap. range (Classical ROM)':50s}  ({capacity_ref[1:].min():.3e}, {capacity_ref[1:].max():.3e})"
     )
@@ -226,17 +209,6 @@ def main():
         f"{'Cap. difference range':50s}  ({capacity_diff[1:].min():.3e}, {capacity_diff[1:].max():.3e})"
     )
     print("")
-    print("Approximate capacitance: Int_0^L {eps * thickness / (distance + u(x))} dx")
-    print(f"{'-'*75}")
-    print(
-        f"{'Approx. cap. range':50s}  ({capacity_approx[1:].min():.3e}, {capacity_approx[1:].max():.3e})"
-    )
-    print(
-        f"{'Approx. cap. difference range':50s}  ({abs(capacity_approx[1:] - capacity_ref[1:]).min():.3e}, {abs(capacity_approx[1:] - capacity_ref[1:]).max():.3e})"
-    )
-    print(
-        f"{'Approx. cap. difference range (relative)':50s}  ({abs(capacity_approx[1:] - capacity_ref[1:]).min()/capacity_ref[1:].min():.3e}, {abs(capacity_approx[1:] - capacity_ref[1:]).max()/capacity_ref[1:].max():.3e})"
-    )
 
     # ------------------------------
     # Plot the capacitance over time
@@ -247,13 +219,6 @@ def main():
     plt.plot(time[1:], capacity[1:], label="DL-ROM", linestyle="-", linewidth=2)
     plt.plot(
         time[1:], capacity_ref[1:], label="Classical ROM", linestyle="--", linewidth=2
-    )
-    plt.plot(
-        time[1:],
-        capacity_approx[1:],
-        label="Approximate capacitance",
-        linestyle=":",
-        linewidth=2,
     )
     plt.xlabel("Time (s)")
     plt.ylabel("Capacitance (F)")

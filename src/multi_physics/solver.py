@@ -844,6 +844,7 @@ def main():
                 "|E|_max_Vpm",
                 "energy_J",
                 "cap_like_F",
+                "cap_like_F_approx",
                 "nnodes",
                 "ncells",
                 "n10",
@@ -883,6 +884,7 @@ def main():
     postproc_time = 0
     solution_time = 0
     F = np.zeros(4, dtype=float)
+    correction = 0.0
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
         for k in range(args.nsteps):
@@ -896,7 +898,7 @@ def main():
             solution_time = solution_time + time.perf_counter() - sol
 
             postproc = time.perf_counter()
-            if not args.no_postprocessing and (k % args.postprocessing_step == 0):
+            if (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
                 # --- Remesh (rank 0) ---
                 if rank == 0:
                     coeff_m = q.copy()
@@ -928,7 +930,7 @@ def main():
                     msh_path=msh_path,
                     V_lower=Vlower,
                     V_upper=args.Vupper,
-                    V_outer=Vouter
+                    V_outer=Vouter,
                 )
 
                 # --- Diagnostics (mesh + tags) ---
@@ -1003,9 +1005,10 @@ def main():
                     eps_r=args.epsr,
                     eps0=eps0,
                 )
+                # Estimate the capacitance using the displacement
                 solution_time = solution_time + time.perf_counter() - sol
                 postproc = time.perf_counter()
-                if not args.no_postprocessing and (k % args.postprocessing_step == 0):
+                if (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
                     # --- Field scale diagnostics ---
                     phi_arr = phi.x.array
                     phi_min = float(domain.comm.allreduce(phi_arr.min(), op=MPI.MIN))
@@ -1019,7 +1022,6 @@ def main():
                     E2_local_max = np.max(Ex**2 + Ey**2)
                     E2max = domain.comm.allreduce(E2_local_max, op=MPI.MAX)
                     Emax = float(np.sqrt(E2max))
-
                     Vdiff = float(Vlower - args.Vupper)
                     W, Cap = _energy_and_cap(
                         domain, phi, Vdiff, eps_r=args.epsr, eps0=eps0
@@ -1085,7 +1087,17 @@ def main():
                 vtk.write_function(phi, t)
                 postproc_time = postproc_time + time.perf_counter() - postproc
 
-
+            postproc = time.perf_counter()
+            # --- Capacitance approximation ---
+            x = np.linspace(0, L_m, n_segments)
+            modes = np.array([_cantilever_shape_np(x, betas[i], L_m) for i in range(4)])
+            u = q @ modes
+            Cap_approx = eps0 * np.trapezoid((1 / (distance_m + u)), x) 
+            if  (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
+                correction = Cap - Cap_approx if not np.isnan(Cap) and not np.isnan(Cap_approx) else 0.0
+            Cap_approx += correction
+            postproc_time = postproc_time + time.perf_counter() - postproc
+            
             # --- Print diagnostics ---
             if rank == 0 and (k % args.print_every == 0):
                 # Print nan if postprocessing is disabled or not performed at this step
@@ -1100,7 +1112,8 @@ def main():
                     f"|E|_max = {Emax:.3e} V/m "
                     f"\nEnergy = {W:.3e} J  "
                     f"Cap = {Cap:.3e} F  "
-                    f"Nodes = {stats['nnodes']} "
+                    f"Cap_approx = {Cap_approx:.3e} F  "
+                    f"\nNodes = {stats['nnodes']} "
                     f"Cells = {stats['ncells']}  "
                     f"\n{'-'*90}"
                     f"\nTags   : "
@@ -1147,6 +1160,7 @@ def main():
                         Emax,
                         W,
                         Cap,
+                        Cap_approx,
                         stats["nnodes"],
                         stats["ncells"],
                         tags["n10"],
@@ -1161,7 +1175,7 @@ def main():
     total_time = end - start
     fcsv = execution_time_path.open("w", newline="")
     writer = csv.writer(fcsv)
-    writer.writerow(["total_s", "postprocessing_s", "solution_s"])
+    writer.writerow(["total_s", "postprocessing_and_meshing_s", "solution_s"])
     writer.writerow([total_time, postproc_time, solution_time])
 
     if rank == 0:
@@ -1172,8 +1186,8 @@ def main():
         print(f"Modal history CSV:    {csv_path}")
         print(f"Execution time CSV:   {execution_time_path}")
         print(f"Total runtime: {total_time:.2f} seconds")
-        print(f"  Postprocessing time: {postproc_time:.2f} seconds")
-        print(f"  Solution time:       {solution_time:.2f} seconds")
+        print(f"  Postprocessing/meshing time: {postproc_time:.2f} seconds")
+        print(f"  Solution time:               {solution_time:.2f} seconds")
         print("=" * 90)
 
 
