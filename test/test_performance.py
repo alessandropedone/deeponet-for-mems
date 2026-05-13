@@ -210,6 +210,32 @@ def main():
     )
     print("")
 
+    # -----------------------
+    # Analyze execution times
+    # -----------------------
+    print("Total execution time and speedup")
+    print(f"{'-'*75}")
+    execution_time_path = workdir / "execution_time.csv"
+    execution_time_path_ref = workdir_ref / "execution_time.csv"
+    exec_time_data = pd.read_csv(execution_time_path)
+    exec_time_data_ref = pd.read_csv(execution_time_path_ref)
+    total_time = exec_time_data["total_s"].values[0]
+    total_time_ref = exec_time_data_ref["total_s"].values[0]
+    print(f"{'Total runtime (DL-ROM)':50s} {total_time:.2f} seconds")
+    print(f"{'Total runtime (Classical ROM)':50s} {total_time_ref:.2f} seconds")
+    print(f"{'Speedup':50s} {total_time_ref/total_time:.2f}x")
+    print("")
+    print("Postprocessing/meshing time")
+    print(f"{'-'*75}")
+    print(f"{'Postprocessing/meshing time (DL-ROM)':50s} {exec_time_data['postprocessing_and_meshing_s'].values[0]:.2f} seconds")
+    print(f"{'Postprocessing/meshing time (Classical ROM)':50s} {exec_time_data_ref['postprocessing_and_meshing_s'].values[0]:.2f} seconds")
+    print("")
+    print("Solution time")
+    print(f"{'-'*75}")
+    print(f"{'Solution time (DL-ROM)':50s} {exec_time_data['solution_s'].values[0]:.2f} seconds")
+    print(f"{'Solution time (Classical ROM)':50s} {exec_time_data_ref['solution_s'].values[0]:.2f} seconds")
+    print("")
+
     # ------------------------------
     # Plot the capacitance over time
     # ------------------------------
