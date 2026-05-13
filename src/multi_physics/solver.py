@@ -254,6 +254,7 @@ def _energy_and_cap(
         - C (``float``) -- The computed effective capacitance in farads.
     """
     eps = eps0 * eps_r
+    # Linear dielectric
     W_form = 0.5 * eps * ufl.dot(ufl.grad(phi), ufl.grad(phi)) * ufl.dx
     W = fem.assemble_scalar(fem.form(W_form))
     W = domain.comm.allreduce(W, op=MPI.SUM)
@@ -269,7 +270,6 @@ def _solve_electrostatics_one(
     V_lower: float,
     V_upper: float = 0.0,
     V_outer: float | None = None,  # None -> natural Neumann
-    eps_r: float = 1.0,
 ) -> tuple:
     """
     .. admonition:: Description
@@ -280,7 +280,6 @@ def _solve_electrostatics_one(
     :param V_lower: Voltage to apply on the lower conductor (tag 12).
     :param V_upper: Voltage to apply on the upper conductor (tags 10 and 11, default: 0.0 V).
     :param V_outer: Voltage to apply on the outer boundary (tag 20). If None, natural Neumann conditions are applied instead (default: None).
-    :param eps_r: Relative permittivity of the medium (default: 1.0).
 
     :returns:
         - domain (``mesh.Mesh``) -- The FEniCSx domain object.
@@ -333,8 +332,7 @@ def _solve_electrostatics_one(
     u = ufl.TrialFunction(V)
     v = ufl.TestFunction(V)
 
-    eps = fem.Constant(domain, default_scalar_type(eps_r))
-    a = eps * ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
+    a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
     L = fem.Constant(domain, default_scalar_type(0.0)) * v * ufl.dx
 
     problem = LinearProblem(
@@ -884,11 +882,18 @@ def main():
     start = time.perf_counter()
     postproc_time = 0
     solution_time = 0
+    F = np.zeros(4, dtype=float)
 
     with VTKFile(comm, str(vtk_path), "w") as vtk:
         for k in range(args.nsteps):
             t = k * args.dt
             Vlower = V_lower_time(t, args.Vdc, args.Vac, args.freq)
+
+            sol = time.perf_counter()
+            # --- Mechanical update ---
+            q, qd, qdd = _newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
+            q_static = np.where(K != 0, F / K, np.nan)
+            solution_time = solution_time + time.perf_counter() - sol
 
             postproc = time.perf_counter()
             if not args.no_postprocessing and (k % args.postprocessing_step == 0):
@@ -923,8 +928,7 @@ def main():
                     msh_path=msh_path,
                     V_lower=Vlower,
                     V_upper=args.Vupper,
-                    V_outer=Vouter,
-                    eps_r=args.epsr,
+                    V_outer=Vouter
                 )
 
                 # --- Diagnostics (mesh + tags) ---
@@ -1057,6 +1061,7 @@ def main():
                     eps0=eps0,
                 )
                 solution_time = solution_time + time.perf_counter() - sol
+
                 postproc = time.perf_counter()
                 # --- Field scale diagnostics ---
                 phi_arr = phi.x.array
@@ -1080,13 +1085,6 @@ def main():
                 vtk.write_function(phi, t)
                 postproc_time = postproc_time + time.perf_counter() - postproc
 
-            sol = time.perf_counter()
-
-            # --- Mechanical update ---
-            q, qd, qdd = _newmark_step_diag(M, C, K, q, qd, qdd, F, args.dt)
-            q_static = np.where(K != 0, F / K, np.nan)
-
-            solution_time = solution_time + time.perf_counter() - sol
 
             # --- Print diagnostics ---
             if rank == 0 and (k % args.print_every == 0):

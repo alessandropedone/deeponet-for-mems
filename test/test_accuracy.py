@@ -5,22 +5,38 @@ import subprocess
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import argparse
+import re
 
-from utils import cantilever_shape_np, compute_displacement_from_history
+from utils import compute_displacement_from_history
+
 
 def main():
+
+    # ----------------------------
+    # Parse command line arguments
+    # ----------------------------
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-simulation", action="store_true")
     ap.add_argument("--big-deformation", action="store_true")
 
-    workdir_ref = Path(f"temp/run_nmodes_4") if not ap.parse_args().big_deformation else Path(f"temp/run_nmodes_4_big_deformation")
-
+    # -----------------------------------------
+    # Run the reference simulation with 4 modes
+    # -----------------------------------------
+    workdir_ref = (
+        Path(f"temp/run_nmodes_4")
+        if not ap.parse_args().big_deformation
+        else Path(f"temp/run_nmodes_4_big_deformation")
+    )
     cmd = [
         "python",
         "-m",
         "src.multi_physics.solver",
         "--template-geo",
-        "geometries/cantilever1.geo" if not ap.parse_args().big_deformation else "geometries/cantilever2.geo",
+        (
+            "geometries/cantilever1.geo"
+            if not ap.parse_args().big_deformation
+            else "geometries/cantilever2.geo"
+        ),
         "--workdir",
         str(workdir_ref),
         "--nmodes",
@@ -58,19 +74,28 @@ def main():
         "1",
         "--fail-fast",
     ]
-
     if not ap.parse_args().no_simulation:
         print(f"Running classical ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
 
-    workdir = Path(f"temp/run_nmodes_4_nn") if not ap.parse_args().big_deformation else Path(f"temp/run_nmodes_4_nn_big_deformation")
-
+    # ---------------------------------------
+    # Run the DL-ROM simulation with 4 modes
+    # ---------------------------------------
+    workdir = (
+        Path(f"temp/run_nmodes_4_nn")
+        if not ap.parse_args().big_deformation
+        else Path(f"temp/run_nmodes_4_nn_big_deformation")
+    )
     cmd = [
         "python",
         "-m",
         "src.multi_physics.solver",
         "--template-geo",
-        "geometries/cantilever1.geo" if not ap.parse_args().big_deformation else "geometries/cantilever2.geo",
+        (
+            "geometries/cantilever1.geo"
+            if not ap.parse_args().big_deformation
+            else "geometries/cantilever2.geo"
+        ),
         "--workdir",
         str(workdir),
         "--nmodes",
@@ -108,62 +133,128 @@ def main():
         "1",
         "--fail-fast",
         "--derivative-nn-path",
-        "models/derivative1.keras" if not ap.parse_args().big_deformation else "models/derivative2.keras",
+        (
+            "models/derivative1.keras"
+            if not ap.parse_args().big_deformation
+            else "models/derivative2.keras"
+        ),
     ]
-
     if not ap.parse_args().no_simulation:
         print(f"Running DL-ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
 
-    # Compare the L2 norms of the displacement fields
+    # ---------------------------------------------------------
+    # Compare the displacement fields and capacitance over time
+    # ---------------------------------------------------------
     L_m = 1e-4
-
     x = np.linspace(0, L_m, 100)
     u = compute_displacement_from_history(4, x, L_m, workdir)
     u_ref = compute_displacement_from_history(4, x, L_m, workdir_ref)
     diff = u - u_ref
 
+    # --- L2 and Linf norms ---
     # Integrate in L2 the difference over the length of the beam (row-wise)
-    # and then integrate it over time (column-wise)
     l2_norm = np.sqrt(np.trapezoid(diff**2, x))
     # Do the same for the reference solution
     l2_norm_ref = np.sqrt(np.trapezoid(u_ref**2, x))
     print("")
     print("DL-ROM vs classical ROM")
-    print("="*70)
+    print("=" * 75)
     print("")
     print("L2 norm in space of the displacement fields")
-    print(f"{'-'*70}")
-    print(f"{'L2 norm range (Classical ROM)':45s} ({l2_norm_ref.min():.3e}, {l2_norm_ref.max():.3e})")
-    print(f"{'L2 norm of difference range':45s} ({l2_norm.min():.3e}, {l2_norm.max():.3e})")
-    print(f"{'-'*70}")
+    print(f"{'-'*75}")
+    print(
+        f"{'L2 norm range (Classical ROM)':50s} ({l2_norm_ref.min():.3e}, {l2_norm_ref.max():.3e})"
+    )
+    print(
+        f"{'L2 norm of difference range':50s} ({l2_norm.min():.3e}, {l2_norm.max():.3e})"
+    )
+
+    # --- Linf norm ---
     print("")
     print("Linf norm in space of the displacement fields")
-    print(f"{'-'*70}")
-    print(f"{'Linf norm range (Classical ROM)':45s} ({np.max(abs(u_ref), axis=1).min():.3e}, {np.max(abs(u_ref), axis=1).max():.3e})")
-    print(f"{'Linf norm of difference range':45s} ({np.max(abs(diff), axis=1).min():.3e}, {np.max(abs(diff), axis=1).max():.3e})")
-    print(f"{'-'*70}")
+    print(f"{'-'*75}")
+    print(
+        f"{'Linf norm range (Classical ROM)':50s} ({np.max(abs(u_ref), axis=1).min():.3e}, {np.max(abs(u_ref), axis=1).max():.3e})"
+    )
+    print(
+        f"{'Linf norm of difference range':50s} ({np.max(abs(diff), axis=1).min():.3e}, {np.max(abs(diff), axis=1).max():.3e})"
+    )
     print("")
+
+    # --- Capacitance ---
     print("Capacitance")
-    print(f"{'-'*70}")
+    print(f"{'-'*75}")
     csv_path = workdir / "modal_history.csv"
     csv_path_ref = workdir_ref / "modal_history.csv"
     data = pd.read_csv(csv_path)
     data_ref = pd.read_csv(csv_path_ref)
-    capacity = data["cap_like_F"].values
-    capacity_ref = data_ref["cap_like_F"].values
+    thickness_m = 10e-6
+    capacity = thickness_m * data["cap_like_F"].values
+    capacity_ref = thickness_m * data_ref["cap_like_F"].values
     capacity = np.nan_to_num(capacity, nan=1e-30)  # Avoid division by zero
     capacity_ref = np.nan_to_num(capacity_ref, nan=1e-30)  # Avoid division by zero
     capacity_diff = abs(capacity - capacity_ref)
-    print(f"{'Capacitance range (Classical ROM)':45s}  ({capacity_ref[1:].min():.3e}, {capacity_ref[1:].max():.3e})")
-    print(f"{'Capacitance difference range':45s}  ({capacity_diff[1:].min():.3e}, {capacity_diff[1:].max():.3e})")
-    print("")
+    # Read from the geometry template overetch and distance
+    with open(
+        (
+            "geometries/cantilever1.geo"
+            if not ap.parse_args().big_deformation
+            else "geometries/cantilever2.geo"
+        ),
+        "r",
+    ) as f:
+        template_geo_text = f.read()
 
-    # Plot all capacities over time
+    def get_variable(text, var_name):
+        pattern = rf"{var_name}\s*=\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*;"
+        match = re.search(pattern, text)
+        if not match:
+            raise ValueError(f"Variable '{var_name}' not found")
+        return float(match.group(1))
+
+    distance_um = get_variable(template_geo_text, "distance")
+    distance_m = distance_um * 1e-6
+    # Compute the approximate capacitance
+    eps0 = 8.8541878128e-12  # Vacuum permittivity
+    capacity_approx = eps0 * thickness_m * np.trapezoid((1 / (distance_m + u)), x)
+    capacity_approx = capacity_approx + (capacity_ref[1] - capacity_approx[1])
+    print(
+        f"{'Cap. range (Classical ROM)':50s}  ({capacity_ref[1:].min():.3e}, {capacity_ref[1:].max():.3e})"
+    )
+    print(
+        f"{'Cap. difference range':50s}  ({capacity_diff[1:].min():.3e}, {capacity_diff[1:].max():.3e})"
+    )
+    print("")
+    print("Approximate capacitance: Int_0^L {eps * thickness / (distance + u(x))} dx")
+    print(f"{'-'*75}")
+    print(
+        f"{'Approx. cap. range':50s}  ({capacity_approx[1:].min():.3e}, {capacity_approx[1:].max():.3e})"
+    )
+    print(
+        f"{'Approx. cap. difference range':50s}  ({abs(capacity_approx[1:] - capacity_ref[1:]).min():.3e}, {abs(capacity_approx[1:] - capacity_ref[1:]).max():.3e})"
+    )
+    print(
+        f"{'Approx. cap. difference range (relative)':50s}  ({abs(capacity_approx[1:] - capacity_ref[1:]).min()/capacity_ref[1:].min():.3e}, {abs(capacity_approx[1:] - capacity_ref[1:]).max()/capacity_ref[1:].max():.3e})"
+    )
+
+    # ------------------------------
+    # Plot the capacitance over time
+    # ------------------------------
+    # Time vector
     time = data["t_s"].values
     plt.figure(figsize=(10, 6))
     plt.plot(time[1:], capacity[1:], label="DL-ROM", linestyle="-", linewidth=2)
-    plt.plot(time[1:], capacity_ref[1:], label="Classical ROM", linestyle="--", linewidth=2)
+    plt.plot(
+        time[1:], capacity_ref[1:], label="Classical ROM", linestyle="--", linewidth=2
+    )
+    plt.plot(
+        time[1:],
+        capacity_approx[1:],
+        label="Approximate capacitance",
+        linestyle=":",
+        linewidth=2,
+    )
     plt.xlabel("Time (s)")
     plt.ylabel("Capacitance (F)")
     plt.title("Capacitance over time for different numbers of modes")
@@ -204,7 +295,7 @@ def main():
         interval=200,  # ms between frames
         blit=False,
     )
-    
+
     plt.show()
 
 
