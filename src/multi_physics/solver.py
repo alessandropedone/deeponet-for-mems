@@ -50,6 +50,8 @@ import argparse
 import shutil
 import subprocess
 import csv
+from matplotlib.pylab import beta
+from matplotlib.pylab import beta
 import numpy as np
 import time
 import re
@@ -414,7 +416,73 @@ def _cantilever_shape_np(xi: np.ndarray, beta: float, L: float) -> np.ndarray:
     )
 
 
-def _compute_displacement(x: np.ndarray, L: float, q: np.ndarray) -> np.ndarray:
+def _clamped_shape_ufl(
+    xi: ufl.core.expr.Expr, beta: float, L: float
+) -> ufl.core.expr.Expr:
+    """
+    .. admonition:: Description
+
+        Compute the clamped-clamped mode shape function.
+        The mode shape is given by
+
+        .. math::
+
+            \\psi_i(\\xi) = \\sinh(\\beta_i \\xi) - \\sin(\\beta_i \\xi) + C_i \\left( \\cosh(\\beta_i \\xi) - \\cos(\\beta_i \\xi) \\right)
+
+        .. math::
+
+            C_i = \\frac{\\cosh(\\beta_i L) - \\cos(\\beta_i L)}{\\sinh(\\beta_i L) + \\sin(\\beta_i L)}.
+
+    :param xi: The spatial coordinate along the beam, :math:`\\xi = x - x_{\\min}`.
+    :param beta: The mode parameter :math:`\\beta_i` for the *i*-th mode, related to the natural frequency.
+    :param L: The clamped-clamped beam length.
+
+    :returns:
+        - psi (``ufl.core.expr.Expr``) -- The computed mode shape function evaluated at xi.
+    """
+    C = (ufl.cos(beta * L) - ufl.cosh(beta * L)) / (
+        ufl.sinh(beta * L) + ufl.sin(beta * L)
+    )
+    return (
+        ufl.sinh(beta * xi)
+        - ufl.sin(beta * xi)
+        + C * (ufl.cosh(beta * xi) - ufl.cos(beta * xi))
+    )
+
+
+def _clamped_shape_np(xi: np.ndarray, beta: float, L: float) -> np.ndarray:
+    """
+    .. admonition:: Description
+
+        Compute the clamped-clamped mode shape function.
+        The mode shape is given by
+
+        .. math::
+
+            \\psi_i(\\xi) = \\sinh(\\beta_i \\xi) - \\sin(\\beta_i \\xi) + C_i \\left( \\cosh(\\beta_i \\xi) - \\cos(\\beta_i \\xi) \\right)
+
+        .. math::
+
+            C_i = \\frac{\\cosh(\\beta_i L) - \\cos(\\beta_i L)}{\\sinh(\\beta_i L) + \\sin(\\beta_i L)}.
+
+    :param xi: The spatial coordinate along the beam, :math:`\\xi = x - x_{\\min}`.
+    :param beta: The mode parameter :math:`\\beta_i` for the *i*-th mode, related to the natural frequency.
+    :param L: The clamped-clamped beam length.
+
+    :returns:
+        - psi (``np.ndarray``) -- The computed mode shape function evaluated at xi.
+    """
+    C = (np.cos(beta * L) - np.cosh(beta * L)) / (np.sinh(beta * L) + np.sin(beta * L))
+    return (
+        np.sinh(beta * xi)
+        - np.sin(beta * xi)
+        + C * (np.cosh(beta * xi) - np.cos(beta * xi))
+    )
+
+
+def _compute_displacement(
+    x: np.ndarray, L: float, q: np.ndarray, clamped: bool = False
+) -> np.ndarray:
     """
     .. admonition:: Description
 
@@ -423,16 +491,31 @@ def _compute_displacement(x: np.ndarray, L: float, q: np.ndarray) -> np.ndarray:
     :param x: The spatial coordinates along the beam where the displacement is evaluated (1D array).
     :param L: The length of the cantilever beam (used to compute the mode parameters).
     :param q: The modal coefficients for the first `nmodes` modes (array of shape (nmodes,)).
+    :param clamped: A boolean indicating whether the beam is clamped at both ends.
 
     :returns:
         - u (``np.ndarray``) -- The computed displacement field along the beam at the coordinates `x`, resulting from the superposition of the first `nmodes` mode shapes weighted by their coefficients `q`.
     """
-    roots = np.array(
-        [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
-        dtype=float,
-    )
-    betas = roots / L
-    modes = np.array([_cantilever_shape_np(x, betas[i], L) for i in range(4)])
+
+    if not clamped:
+        roots = np.array(
+            [
+                1.875104068711961,
+                4.694091132974174,
+                7.854757438237612,
+                10.995540734875466,
+            ],
+            dtype=float,
+        )
+        betas = roots / L
+        modes = np.array([_cantilever_shape_np(x, betas[i], L) for i in range(4)])
+    else:
+        roots = np.array(
+            [4.73004074486270, 7.85320462409584, 10.9956078380017, 14.1371654912575],
+            dtype=float,
+        )
+        betas = roots / L
+        modes = np.array([_clamped_shape_np(x, betas[i], L) for i in range(4)])
     u = q @ modes
     return u
 
@@ -486,6 +569,7 @@ def _modal_forces_4(
     phi: tuple[fem.Function, ufl.Domain, ufl.Measure] = None,
     eps_r: float = 1.0,
     eps0: float = 8.8541878128e-12,
+    clamped: bool = False,
 ) -> np.ndarray:
     """
     .. admonition:: Description
@@ -507,6 +591,7 @@ def _modal_forces_4(
     :param phi: Optional tuple containing the potential function, domain, and facet tags, used to compute the force using FEniCSx forms. If provided, it should be a tuple of (phi_function, domain, facet_tags) where phi_function is the computed potential function, domain is the FEniCSx mesh domain, and facet_tags contains the physical tags for the facets.
     :param eps_r: Relative permittivity of the medium (default: 1.0).
     :param eps0: Vacuum permittivity (default: 8.8541878128e-12 F/m).
+    :param clamped: A boolean indicating whether the beam is clamped at both ends (default: False). This affects the mode shapes used in the force computation.
 
     :returns:
         - F (``np.ndarray``) -- Array of modal forces for the first 4 modes.
@@ -557,7 +642,10 @@ def _modal_forces_4(
         # t_beam = -ufl.dot(T, n)  # force on conductor
         F = np.zeros(4, dtype=float)
         for i in range(nmodes):
-            mode_i = _cantilever_shape_ufl(xi, float(betas[i]), L_m)
+            if clamped:
+                mode_i = _clamped_shape_ufl(xi, float(betas[i]), L_m)
+            else:
+                mode_i = _cantilever_shape_ufl(xi, float(betas[i]), L_m)
             psi_i = ufl.as_vector((0.0, mode_i))
             Fi_form = thickness_m * ufl.dot(t_beam, psi_i) * ds(10)
             Fi = fem.assemble_scalar(fem.form(Fi_form))
@@ -577,7 +665,10 @@ def _modal_forces_4(
         F = np.zeros(4, dtype=float)
         for i in range(nmodes):
             xi = midpoints[:, 0] - xmin_m
-            mode_i = _cantilever_shape_np(xi, float(betas[i]), L_m)
+            if clamped:
+                mode_i = _clamped_shape_np(xi, float(betas[i]), L_m)
+            else:
+                mode_i = _cantilever_shape_np(xi, float(betas[i]), L_m)
             Fi_local = thickness_m * np.sum(t_beam_vals * mode_i * dx)
             Fi = MPI.COMM_WORLD.allreduce(Fi_local, op=MPI.SUM)
             F[i] = float(Fi)
@@ -680,6 +771,12 @@ def main():
         type=int,
         default=1,
         help="Interval of steps to save VTK files when --not-postprocessing is not set. Ignored if --no-postprocessing is set.",
+    )
+    ap.add_argument(
+        "--clamped",
+        action="store_true",
+        help="If set, it will use clamped-clamped mode shapes instead of cantilever mode shapes.",
+        default=False,
     )
 
     comm = MPI.COMM_WORLD
@@ -793,10 +890,16 @@ def main():
     xmax_m = xmin_m + L_m
     thickness_m = args.thickness_um * UM
 
-    roots = np.array(
-        [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
-        dtype=float,
-    )
+    if args.clamped:
+        roots = np.array(
+            [4.73004074486270, 7.85320462409584, 10.9956078380017, 14.1371654912575],
+            dtype=float,
+        )
+    else:
+        roots = np.array(
+            [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
+            dtype=float,
+        )
     betas = roots / L_m
 
     omega = np.array(args.omega, dtype=float)
@@ -898,7 +1001,9 @@ def main():
             solution_time = solution_time + time.perf_counter() - sol
 
             postproc = time.perf_counter()
-            if (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
+            if (
+                not args.no_postprocessing and (k % args.postprocessing_step == 0)
+            ) or k == 1:
                 # --- Remesh (rank 0) ---
                 if rank == 0:
                     coeff_m = q.copy()
@@ -968,14 +1073,14 @@ def main():
                 y_nodes_m = (
                     distance_m / 2
                     + overetch_m
-                    + _compute_displacement(x_nodes_m - xmin_m, L_m, q)
+                    + _compute_displacement(x_nodes_m - xmin_m, L_m, q, clamped=args.clamped)
                 )
                 x_mid_m = 0.5 * (x_nodes_m[:-1] + x_nodes_m[1:])
                 y_mid_m = np.full(
                     n_segments,
                     distance_m / 2
                     + overetch_m
-                    + _compute_displacement(x_mid_m - xmin_m, L_m, q),
+                    + _compute_displacement(x_mid_m - xmin_m, L_m, q, clamped=args.clamped),
                 )
                 midpoints_m = np.column_stack((x_mid_m, y_mid_m))
                 nodes_m = np.column_stack((x_nodes_m, y_nodes_m))
@@ -1004,11 +1109,14 @@ def main():
                     ],
                     eps_r=args.epsr,
                     eps0=eps0,
+                    clamped=args.clamped,
                 )
                 # Estimate the capacitance using the displacement
                 solution_time = solution_time + time.perf_counter() - sol
                 postproc = time.perf_counter()
-                if (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
+                if (
+                    not args.no_postprocessing and (k % args.postprocessing_step == 0)
+                ) or k == 1:
                     # --- Field scale diagnostics ---
                     phi_arr = phi.x.array
                     phi_min = float(domain.comm.allreduce(phi_arr.min(), op=MPI.MIN))
@@ -1061,6 +1169,7 @@ def main():
                     phi=[phi, domain, facet_tags],
                     eps_r=args.epsr,
                     eps0=eps0,
+                    clamped=args.clamped,
                 )
                 solution_time = solution_time + time.perf_counter() - sol
 
@@ -1090,14 +1199,23 @@ def main():
             postproc = time.perf_counter()
             # --- Capacitance approximation ---
             x = np.linspace(0, L_m, n_segments)
-            modes = np.array([_cantilever_shape_np(x, betas[i], L_m) for i in range(4)])
+            if args.clamped:
+                modes = np.array([_clamped_shape_np(x, betas[i], L_m) for i in range(4)])
+            else:
+                modes = np.array([_cantilever_shape_np(x, betas[i], L_m) for i in range(4)])
             u = q @ modes
-            Cap_approx = eps0 * np.trapezoid((1 / (distance_m + u)), x) 
-            if  (not args.no_postprocessing and (k % args.postprocessing_step == 0)) or k == 1:
-                correction = Cap - Cap_approx if not np.isnan(Cap) and not np.isnan(Cap_approx) else 0.0
+            Cap_approx = eps0 * np.trapezoid((1 / (distance_m + u)), x)
+            if (
+                not args.no_postprocessing and (k % args.postprocessing_step == 0)
+            ) or k == 1:
+                correction = (
+                    Cap - Cap_approx
+                    if not np.isnan(Cap) and not np.isnan(Cap_approx)
+                    else 0.0
+                )
             Cap_approx += correction
             postproc_time = postproc_time + time.perf_counter() - postproc
-            
+
             # --- Print diagnostics ---
             if rank == 0 and (k % args.print_every == 0):
                 # Print nan if postprocessing is disabled or not performed at this step

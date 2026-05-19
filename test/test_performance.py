@@ -5,7 +5,6 @@ import subprocess
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import argparse
-import re
 
 from utils import compute_displacement_from_history
 
@@ -19,6 +18,9 @@ def main():
     ap.add_argument("--no-simulation", action="store_true")
     ap.add_argument("--big-deformation", action="store_true")
     ap.add_argument("--accurate-capacity", action="store_true")
+    ap.add_argument("--clamped", action="store_true")
+    if ap.parse_args().big_deformation and ap.parse_args().clamped:
+        raise ValueError("The --big-deformation and --clamped options cannot be used together, as the current clamped beam model is not designed for large deformations.")
 
     # -----------------------------------------
     # Run the reference simulation with 4 modes
@@ -28,6 +30,8 @@ def main():
         if not ap.parse_args().big_deformation
         else Path(f"temp/run_nmodes_4_big_deformation")
     )
+    if ap.parse_args().clamped:
+        workdir_ref = workdir_ref.with_name(workdir_ref.name + "_clamped")
     cmd = [
         "python",
         "-m",
@@ -35,7 +39,9 @@ def main():
         "--template-geo",
         (
             "geometries/cantilever1.geo"
-            if not ap.parse_args().big_deformation
+            if not ap.parse_args().big_deformation and not ap.parse_args().clamped
+            else "geometries/clamped.geo"
+            if ap.parse_args().clamped
             else "geometries/cantilever2.geo"
         ),
         "--workdir",
@@ -75,6 +81,8 @@ def main():
         "1",
         "--fail-fast",
     ]
+    if ap.parse_args().clamped:
+        cmd.append("--clamped")
     if not ap.parse_args().no_simulation:
         print(f"Running classical ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
@@ -87,6 +95,8 @@ def main():
         if not ap.parse_args().big_deformation
         else Path(f"temp/run_nmodes_4_nn_big_deformation")
     )
+    if ap.parse_args().clamped:
+        workdir = workdir.with_name(workdir.name + "_clamped")
     cmd = [
         "python",
         "-m",
@@ -94,7 +104,9 @@ def main():
         "--template-geo",
         (
             "geometries/cantilever1.geo"
-            if not ap.parse_args().big_deformation
+            if not ap.parse_args().big_deformation and not ap.parse_args().clamped
+            else "geometries/clamped.geo"
+            if ap.parse_args().clamped
             else "geometries/cantilever2.geo"
         ),
         "--workdir",
@@ -136,7 +148,9 @@ def main():
         "--derivative-nn-path",
         (
             "models/derivative1.keras"
-            if not ap.parse_args().big_deformation
+            if not ap.parse_args().big_deformation and not ap.parse_args().clamped
+            else "models/derivative3.keras"
+            if ap.parse_args().clamped
             else "models/derivative2.keras"
         ),
     ]
@@ -145,6 +159,8 @@ def main():
     else:
         cmd.append("--postprocessing-step")
         cmd.append("5")
+    if ap.parse_args().clamped:
+        cmd.append("--clamped")
         
     if not ap.parse_args().no_simulation:
         print(f"Running DL-ROM simulation with 4 modes...")
@@ -155,8 +171,8 @@ def main():
     # ---------------------------------------------------------
     L_m = 1e-4
     x = np.linspace(0, L_m, 100)
-    u = compute_displacement_from_history(4, x, L_m, workdir)
-    u_ref = compute_displacement_from_history(4, x, L_m, workdir_ref)
+    u = compute_displacement_from_history(4, x, L_m, workdir, clamped=ap.parse_args().clamped)
+    u_ref = compute_displacement_from_history(4, x, L_m, workdir_ref, clamped=ap.parse_args().clamped)
     diff = u - u_ref
 
     # --- L2 and Linf norms ---
