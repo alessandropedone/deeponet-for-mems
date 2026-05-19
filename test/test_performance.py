@@ -10,7 +10,6 @@ from utils import compute_displacement_from_history
 
 
 def main():
-
     # ----------------------------
     # Parse command line arguments
     # ----------------------------
@@ -290,7 +289,14 @@ def main():
     plt.grid()
 
     if ap.parse_args().save_frames:
-        plt.savefig("temp/performance/capacitance_over_time.png", dpi=300)
+        if ap.parse_args().big_deformation:
+            plt.savefig(
+                "temp/performance/capacitance_over_time_big_deformation.png", dpi=300
+            )
+        elif ap.parse_args().clamped:
+            plt.savefig("temp/performance/capacitance_over_time_clamped.png", dpi=300)
+        else:
+            plt.savefig("temp/performance/capacitance_over_time.png", dpi=300)
 
     # Global y-limits so the plot doesn't jump around
     ymin = min(u.min(), u_ref.min())
@@ -331,8 +337,12 @@ def main():
         writer = FFMpegWriter(
             fps=5, codec="libx264", bitrate=2000, extra_args=["-pix_fmt", "yuv420p"]
         )
-        anim.save("temp/performance/simulation.mp4", writer=writer)
-
+        if ap.parse_args().big_deformation:
+            anim.save("temp/performance/simulation_big_deformation.mp4", writer=writer)
+        elif ap.parse_args().clamped:
+            anim.save("temp/performance/simulation_clamped.mp4", writer=writer)
+        else:
+            anim.save("temp/performance/simulation.mp4", writer=writer)
     plt.show()
 
 

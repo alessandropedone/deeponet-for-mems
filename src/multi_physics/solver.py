@@ -761,6 +761,12 @@ def main():
         default=None,
     )
     ap.add_argument(
+        "--potential-nn-path",
+        type=Path,
+        help="Path to the neural network for the potential.",
+        default=None,
+    )
+    ap.add_argument(
         "--no-postprocessing",
         action="store_true",
         help="If set to True, it will also save the results in VTK format for visualization in ParaView.",
@@ -841,25 +847,23 @@ def main():
     ap.add_argument("--min-cells", type=int, default=2000)
     args = ap.parse_args()
 
-    if rank == 0:
+    if args.derivative_nn_path is not None:
+        import tensorflow as tf
 
-        if args.derivative_nn_path is not None:
-            import tensorflow as tf
+    if args.no_postprocessing and args.derivative_nn_path is None:
+        print(
+            "Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False."
+        )
+        args.no_postprocessing = False
 
-        if args.no_postprocessing and args.derivative_nn_path is None:
-            print(
-                "Warning: Postprocessing automatically activated since no surrogate is used for the derivative, which means the FEniCSx solve will be performed at every step to compute the forces. Setting --no-postprocessing to False."
-            )
-            args.no_postprocessing = False
+    if args.derivative_nn_path is None and args.postprocessing_step > 1:
+        print(
+            "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
+        )
+        args.postprocessing_step = 1
 
-        if args.derivative_nn_path is None and args.postprocessing_step > 1:
-            print(
-                "Warning: --postprocessing-step > 1 has no effect when no surrogate is used for the derivative, since the FEniCSx solve will be performed at every step. Setting --postprocess-step to 1."
-            )
-            args.postprocessing_step = 1
-
-        if shutil.which(args.gmsh) is None:
-            raise RuntimeError(f"gmsh executable '{args.gmsh}' not found on PATH.")
+    if shutil.which(args.gmsh) is None:
+        raise RuntimeError(f"gmsh executable '{args.gmsh}' not found on PATH.")
 
     # Read from the geometry template overetch and distance
     with open(args.template_geo, "r") as f:
@@ -897,7 +901,12 @@ def main():
         )
     else:
         roots = np.array(
-            [1.875104068711961, 4.694091132974174, 7.854757438237612, 10.995540734875466],
+            [
+                1.875104068711961,
+                4.694091132974174,
+                7.854757438237612,
+                10.995540734875466,
+            ],
             dtype=float,
         )
     betas = roots / L_m
@@ -915,6 +924,8 @@ def main():
     qdd = np.zeros(4, dtype=float)
 
     vtk_path = work_out / "electro_series.pvd"
+    vtk_nn_path = work_out / "electro_series_nn.pvd"
+    vtk_error_path = work_out / "electro_series_error.pvd"
     csv_path = args.workdir / "modal_history.csv"
     execution_time_path = args.workdir / "execution_time.csv"
 
@@ -982,6 +993,27 @@ def main():
         )
         os.dup2(saved_stdout, stdout_fd)
         print("\033[38;2;0;175;6m\n\nLoaded derivative surrogate.\033[0m")
+
+    if args.potential_nn_path is not None:
+        stdout_fd = sys.stdout.fileno()
+        saved_stdout = os.dup(stdout_fd)
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, stdout_fd)
+        os.close(devnull)
+        phi_nn = tf.keras.models.load_model(
+            "{}".format(args.potential_nn_path),
+            custom_objects={
+                "DenseNetwork": DenseNetwork,
+                "FourierFeatures": FourierFeatures,
+                "LogUniformFreqInitializer": LogUniformFreqInitializer,
+                "EinsumLayer": EinsumLayer,
+                "DeepONet": DeepONet,
+                "masked_mse": masked_mse,
+                "masked_mae": masked_mae,
+            },
+        )
+        os.dup2(saved_stdout, stdout_fd)
+        print("\033[38;2;0;175;6m\n\nLoaded potential surrogate.\033[0m")
 
     start = time.perf_counter()
     postproc_time = 0
@@ -1073,14 +1105,18 @@ def main():
                 y_nodes_m = (
                     distance_m / 2
                     + overetch_m
-                    + _compute_displacement(x_nodes_m - xmin_m, L_m, q, clamped=args.clamped)
+                    + _compute_displacement(
+                        x_nodes_m - xmin_m, L_m, q, clamped=args.clamped
+                    )
                 )
                 x_mid_m = 0.5 * (x_nodes_m[:-1] + x_nodes_m[1:])
                 y_mid_m = np.full(
                     n_segments,
                     distance_m / 2
                     + overetch_m
-                    + _compute_displacement(x_mid_m - xmin_m, L_m, q, clamped=args.clamped),
+                    + _compute_displacement(
+                        x_mid_m - xmin_m, L_m, q, clamped=args.clamped
+                    ),
                 )
                 midpoints_m = np.column_stack((x_mid_m, y_mid_m))
                 nodes_m = np.column_stack((x_nodes_m, y_nodes_m))
@@ -1138,6 +1174,39 @@ def main():
                     # --- Write ParaView time series ---
                     vtk.write_mesh(domain, t)
                     vtk.write_function(phi, t)
+
+                    # Construct surrogate predictions for potential and error fields for visualization in ParaView
+                    if args.potential_nn_path is not None:
+                        # Extract x and y coordinates
+                        V = phi.function_space
+                        dofs_uh = np.arange(V.dofmap.index_map.size_local)
+                        dofs_c = V.tabulate_dof_coordinates()[dofs_uh]
+                        x_um = np.array(dofs_c[:, :2], dtype=float)
+                        phi_pred_arr = (
+                            Vlower
+                            * phi_nn(
+                                [
+                                    np.concatenate(
+                                        [np.array([overetch_um, distance_um]), q / UM]
+                                    ),
+                                    x_um[np.newaxis, :, :],
+                                ]
+                            )
+                            .numpy()
+                            .squeeze()
+                        )
+                        # Save the prediction
+                        phi_pred = fem.Function(phi.function_space)
+                        phi_pred.name = "phi_pred"
+                        phi_pred.x.array[:] = phi_pred_arr
+                        phi_pred.x.scatter_forward()
+                        vtk.write_function(phi_pred, t)
+                        # Save the error
+                        phi_error = fem.Function(phi.function_space)
+                        phi_error.name = "phi_error"
+                        phi_error.x.array[:] = abs(phi.x.array - phi_pred_arr)
+                        phi_error.x.scatter_forward()
+                        vtk.write_function(phi_error, t)
                 else:
                     stats = {
                         "nnodes": np.nan,
@@ -1194,15 +1263,52 @@ def main():
                 # --- Write ParaView time series ---
                 vtk.write_mesh(domain, t)
                 vtk.write_function(phi, t)
+
+                if args.potential_nn_path is not None:
+                    # Extract x and y coordinates
+                    V = phi.function_space
+                    dofs_uh = np.arange(V.dofmap.index_map.size_local)
+                    dofs_c = V.tabulate_dof_coordinates()[dofs_uh]
+                    x_um = np.array(dofs_c[:, :2], dtype=float)
+                    phi_pred_arr = (
+                        Vlower
+                        * phi_nn(
+                            [
+                                np.concatenate(
+                                    [np.array([overetch_um, distance_um]), q / UM]
+                                ),
+                                x_um[np.newaxis, :, :],
+                            ]
+                        )
+                        .numpy()
+                        .squeeze()
+                    )
+                    # Save the prediction
+                    phi_pred = fem.Function(phi.function_space)
+                    phi_pred.name = "phi_pred"
+                    phi_pred.x.array[:] = phi_pred_arr
+                    phi_pred.x.scatter_forward()
+                    vtk.write_function(phi_pred, t)
+                    # Save the error
+                    phi_error = fem.Function(phi.function_space)
+                    phi_error.name = "phi_error"
+                    phi_error.x.array[:] = abs(phi.x.array - phi_pred_arr)
+                    phi_error.x.scatter_forward()
+                    vtk.write_function(phi_error, t)
+
                 postproc_time = postproc_time + time.perf_counter() - postproc
 
             postproc = time.perf_counter()
             # --- Capacitance approximation ---
             x = np.linspace(0, L_m, n_segments)
             if args.clamped:
-                modes = np.array([_clamped_shape_np(x, betas[i], L_m) for i in range(4)])
+                modes = np.array(
+                    [_clamped_shape_np(x, betas[i], L_m) for i in range(4)]
+                )
             else:
-                modes = np.array([_cantilever_shape_np(x, betas[i], L_m) for i in range(4)])
+                modes = np.array(
+                    [_cantilever_shape_np(x, betas[i], L_m) for i in range(4)]
+                )
             u = q @ modes
             Cap_approx = eps0 * np.trapezoid((1 / (distance_m + u)), x)
             if (
@@ -1300,9 +1406,11 @@ def main():
         fcsv.close()
         print("")
         print("=" * 90)
-        print(f"ParaView time series: {vtk_path}")
-        print(f"Modal history CSV:    {csv_path}")
-        print(f"Execution time CSV:   {execution_time_path}")
+        print(f"ParaView time series:         {vtk_path}")
+        print(f"ParaView time series (NN):    {vtk_nn_path}")
+        print(f"ParaView time series (Error): {vtk_error_path}")
+        print(f"Modal history CSV:            {csv_path}")
+        print(f"Execution time CSV:           {execution_time_path}")
         print(f"Total runtime: {total_time:.2f} seconds")
         print(f"  Postprocessing/meshing time: {postproc_time:.2f} seconds")
         print(f"  Solution time:               {solution_time:.2f} seconds")

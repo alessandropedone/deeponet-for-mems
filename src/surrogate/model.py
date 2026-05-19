@@ -771,7 +771,7 @@ class DeepONet(tf.keras.Model):
         """
         branch_config = config.pop("branch")
         trunk_config = config.pop("trunk")
-        rescale_output = config.pop("rescale_output")
+        rescale_output = config.pop("rescale_output", 1.0)
         config["branch"] = tf.keras.utils.deserialize_keras_object(branch_config)
         config["trunk"] = tf.keras.utils.deserialize_keras_object(trunk_config)
         config["rescale_output"] = rescale_output
