@@ -8,7 +8,7 @@ import argparse
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-from utils import cantilever_shape_np, compute_displacement_from_history
+from utils import compute_displacement_from_history
 
 
 def main():

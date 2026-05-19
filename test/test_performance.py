@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import subprocess
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FFMpegWriter, FuncAnimation
 import argparse
 
 from utils import compute_displacement_from_history
@@ -19,16 +19,19 @@ def main():
     ap.add_argument("--big-deformation", action="store_true")
     ap.add_argument("--accurate-capacity", action="store_true")
     ap.add_argument("--clamped", action="store_true")
+    ap.add_argument("--save-frames", action="store_true")
     if ap.parse_args().big_deformation and ap.parse_args().clamped:
-        raise ValueError("The --big-deformation and --clamped options cannot be used together, as the current clamped beam model is not designed for large deformations.")
+        raise ValueError(
+            "The --big-deformation and --clamped options cannot be used together, as the current clamped beam model is not designed for large deformations."
+        )
 
     # -----------------------------------------
     # Run the reference simulation with 4 modes
     # -----------------------------------------
     workdir_ref = (
-        Path(f"temp/run_nmodes_4")
+        Path(f"temp/performance/run_nmodes_4")
         if not ap.parse_args().big_deformation
-        else Path(f"temp/run_nmodes_4_big_deformation")
+        else Path(f"temp/performance/run_nmodes_4_big_deformation")
     )
     if ap.parse_args().clamped:
         workdir_ref = workdir_ref.with_name(workdir_ref.name + "_clamped")
@@ -40,9 +43,11 @@ def main():
         (
             "geometries/cantilever1.geo"
             if not ap.parse_args().big_deformation and not ap.parse_args().clamped
-            else "geometries/clamped.geo"
-            if ap.parse_args().clamped
-            else "geometries/cantilever2.geo"
+            else (
+                "geometries/clamped.geo"
+                if ap.parse_args().clamped
+                else "geometries/cantilever2.geo"
+            )
         ),
         "--workdir",
         str(workdir_ref),
@@ -91,9 +96,9 @@ def main():
     # Run the DL-ROM simulation with 4 modes
     # ---------------------------------------
     workdir = (
-        Path(f"temp/run_nmodes_4_nn")
+        Path(f"temp/performance/run_nmodes_4_nn")
         if not ap.parse_args().big_deformation
-        else Path(f"temp/run_nmodes_4_nn_big_deformation")
+        else Path(f"temp/performance/run_nmodes_4_nn_big_deformation")
     )
     if ap.parse_args().clamped:
         workdir = workdir.with_name(workdir.name + "_clamped")
@@ -105,9 +110,11 @@ def main():
         (
             "geometries/cantilever1.geo"
             if not ap.parse_args().big_deformation and not ap.parse_args().clamped
-            else "geometries/clamped.geo"
-            if ap.parse_args().clamped
-            else "geometries/cantilever2.geo"
+            else (
+                "geometries/clamped.geo"
+                if ap.parse_args().clamped
+                else "geometries/cantilever2.geo"
+            )
         ),
         "--workdir",
         str(workdir),
@@ -149,9 +156,11 @@ def main():
         (
             "models/derivative1.keras"
             if not ap.parse_args().big_deformation and not ap.parse_args().clamped
-            else "models/derivative3.keras"
-            if ap.parse_args().clamped
-            else "models/derivative2.keras"
+            else (
+                "models/derivative3.keras"
+                if ap.parse_args().clamped
+                else "models/derivative2.keras"
+            )
         ),
     ]
     if not ap.parse_args().accurate_capacity:
@@ -161,7 +170,7 @@ def main():
         cmd.append("5")
     if ap.parse_args().clamped:
         cmd.append("--clamped")
-        
+
     if not ap.parse_args().no_simulation:
         print(f"Running DL-ROM simulation with 4 modes...")
         subprocess.run(cmd, check=True)
@@ -171,8 +180,12 @@ def main():
     # ---------------------------------------------------------
     L_m = 1e-4
     x = np.linspace(0, L_m, 100)
-    u = compute_displacement_from_history(4, x, L_m, workdir, clamped=ap.parse_args().clamped)
-    u_ref = compute_displacement_from_history(4, x, L_m, workdir_ref, clamped=ap.parse_args().clamped)
+    u = compute_displacement_from_history(
+        4, x, L_m, workdir, clamped=ap.parse_args().clamped
+    )
+    u_ref = compute_displacement_from_history(
+        4, x, L_m, workdir_ref, clamped=ap.parse_args().clamped
+    )
     diff = u - u_ref
 
     # --- L2 and Linf norms ---
@@ -243,13 +256,21 @@ def main():
     print("")
     print("Postprocessing/meshing time")
     print(f"{'-'*75}")
-    print(f"{'Postprocessing/meshing time (DL-ROM)':50s} {exec_time_data['postprocessing_and_meshing_s'].values[0]:.2f} seconds")
-    print(f"{'Postprocessing/meshing time (Classical ROM)':50s} {exec_time_data_ref['postprocessing_and_meshing_s'].values[0]:.2f} seconds")
+    print(
+        f"{'Postprocessing/meshing time (DL-ROM)':50s} {exec_time_data['postprocessing_and_meshing_s'].values[0]:.2f} seconds"
+    )
+    print(
+        f"{'Postprocessing/meshing time (Classical ROM)':50s} {exec_time_data_ref['postprocessing_and_meshing_s'].values[0]:.2f} seconds"
+    )
     print("")
     print("Solution time")
     print(f"{'-'*75}")
-    print(f"{'Solution time (DL-ROM)':50s} {exec_time_data['solution_s'].values[0]:.2f} seconds")
-    print(f"{'Solution time (Classical ROM)':50s} {exec_time_data_ref['solution_s'].values[0]:.2f} seconds")
+    print(
+        f"{'Solution time (DL-ROM)':50s} {exec_time_data['solution_s'].values[0]:.2f} seconds"
+    )
+    print(
+        f"{'Solution time (Classical ROM)':50s} {exec_time_data_ref['solution_s'].values[0]:.2f} seconds"
+    )
     print("")
 
     # ------------------------------
@@ -267,6 +288,9 @@ def main():
     plt.title("Capacitance over time for different numbers of modes")
     plt.legend()
     plt.grid()
+
+    if ap.parse_args().save_frames:
+        plt.savefig("temp/performance/capacitance_over_time.png", dpi=300)
 
     # Global y-limits so the plot doesn't jump around
     ymin = min(u.min(), u_ref.min())
@@ -302,6 +326,12 @@ def main():
         interval=200,  # ms between frames
         blit=False,
     )
+
+    if ap.parse_args().save_frames:
+        writer = FFMpegWriter(
+            fps=5, codec="libx264", bitrate=2000, extra_args=["-pix_fmt", "yuv420p"]
+        )
+        anim.save("temp/performance/simulation.mp4", writer=writer)
 
     plt.show()
 
