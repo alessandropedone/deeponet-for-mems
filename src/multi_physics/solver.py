@@ -45,18 +45,19 @@ There are several optional arguments to customize the behavior:
 
 from __future__ import annotations
 
+import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 from pathlib import Path
 import argparse
 import shutil
 import subprocess
 import csv
-from matplotlib.pylab import beta
-from matplotlib.pylab import beta
 import numpy as np
 import time
 import re
 import sys
-import os
 
 from mpi4py import MPI
 from dolfinx.io import gmshio, VTKFile
@@ -65,6 +66,7 @@ from dolfinx.fem import functionspace, Constant, dirichletbc, locate_dofs_topolo
 from dolfinx.fem.petsc import LinearProblem
 from dolfinx import default_scalar_type
 import ufl
+import tensorflow as tf
 
 from src.data.fom import compute_boundary_normals_and_midpoints
 from src.surrogate.losses import masked_mse, masked_mae
@@ -790,10 +792,11 @@ def main():
 
     if ap.parse_known_args()[0].workdir.exists() and rank == 0:
         response = input(
-            f"Working directory '{ap.parse_known_args()[0].workdir}' already exists. Do you want to delete it and continue? [y/N] "
-        )
-        if response.lower() != "y":
-            print("Aborting.")
+            f"\n⚠️  The directory '{ap.parse_known_args()[0].workdir}' already exists.\n"
+            "   Do you want to delete it and continue? [y/N]: "
+        ).strip().lower()
+        if response not in {"y", "yes", "Y", "YES"}:
+            print("\033[31mOperation cancelled.\033[0m\n")
             return
         shutil.rmtree(ap.parse_known_args()[0].workdir)
 
@@ -845,10 +848,7 @@ def main():
     ap.add_argument("--fail-fast", action="store_true")
     ap.add_argument("--min-nodes", type=int, default=2000)
     ap.add_argument("--min-cells", type=int, default=2000)
-    args = ap.parse_args()
-
-    if args.derivative_nn_path is not None:
-        import tensorflow as tf
+    args = ap.parse_args()        
 
     if args.no_postprocessing and args.derivative_nn_path is None:
         print(

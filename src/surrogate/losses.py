@@ -14,6 +14,8 @@ and evaluation.
     when the number of points in batch is larger than :math:`6 \cdot 10^{4}`.
 """
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 from keras.utils import register_keras_serializable
 

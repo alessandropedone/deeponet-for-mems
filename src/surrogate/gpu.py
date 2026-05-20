@@ -1,4 +1,6 @@
 import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 import absl.logging
 import tensorflow as tf
 
@@ -15,7 +17,7 @@ def run_on_device(func: callable, *args, **kwargs):
     :return: The result of the function execution.
     """
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # Use GPU 0 only (optional)
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # "0" = all logs, "1" = filter INFO, "2" = filter INFO & WARNING, "3" = only ERRORs
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # "0" = all logs, "1" = filter INFO, "2" = filter INFO & WARNING, "3" = only ERRORs
     os.environ["XLA_FLAGS"] = "--xla_gpu_cuda_data_dir="  # Prevent CUDA libdevice warnings
     absl.logging.set_verbosity(absl.logging.ERROR)
 

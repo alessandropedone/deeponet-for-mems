@@ -20,17 +20,21 @@ There are several optional arguments to customize the behavior:
 
 import os
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
+
 import numpy as np
 import argparse
 
 from .model import DenseNetwork, DeepONet
 from .losses import masked_mse, masked_mae
 from .loader import load
+from .gpu import run_on_device
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 
 def train(
@@ -239,8 +243,6 @@ def main():
         y = np.array(normal_derivatives_plate)
 
     # Train the model
-    from .gpu import run_on_device
-
     run_on_device(
         train,
         model_path=model_path,

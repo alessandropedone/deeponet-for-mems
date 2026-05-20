@@ -6,7 +6,7 @@ from mpi4py import MPI
 from dolfinx.io import gmshio
 from dolfinx import fem
 from dolfinx.fem import functionspace
-from dolfinx.fem import (Constant, dirichletbc, locate_dofs_topological)
+from dolfinx.fem import Constant, dirichletbc, locate_dofs_topological
 from dolfinx.fem.petsc import LinearProblem
 from dolfinx import default_scalar_type
 import ufl
@@ -18,7 +18,7 @@ import h5py
 def _get_domain_from_mesh(mesh_path: str):
     """
     .. admonition:: Description
-        
+
         Read the mesh from the .msh file and return the computational domain.
 
     :param mesh_path: Path to the mesh file.
@@ -29,15 +29,19 @@ def _get_domain_from_mesh(mesh_path: str):
     from mpi4py import MPI
     from dolfinx.io import gmshio
 
-    domain, cell_tags, facet_tags = gmshio.read_from_msh(mesh_path, MPI.COMM_WORLD, 0, gdim=2)
+    domain, cell_tags, facet_tags = gmshio.read_from_msh(
+        mesh_path, MPI.COMM_WORLD, 0, gdim=2
+    )
 
     return domain
 
 
-def compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def compute_boundary_normals_and_midpoints(
+    domain, boundary_facets: np.ndarray
+) -> tuple[np.ndarray, np.ndarray]:
     """
     .. admonition:: Description
-        
+
         Compute boundary normals and midpoints for the facets of the upper plate (tag 10).
 
     :param domain: The computational domain containing mesh information.
@@ -66,27 +70,37 @@ def compute_boundary_normals_and_midpoints(domain, boundary_facets: np.ndarray) 
         n_vec = np.array([-edge[1], edge[0]])
         n_vec /= np.linalg.norm(n_vec)
         normals.append(n_vec)
-        midpoints.append((p0 + p1)/2)
+        midpoints.append((p0 + p1) / 2)
 
     normals = np.array(normals)
     midpoints = np.array(midpoints)[:, :2]  # only x and y coordinates
-    
+
     # Flip normals to point downwards (towards the exterior of the domain)
     normals[(normals[:, 1] > 0)] *= -1
 
     return normals, midpoints
 
 
-def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> tuple[
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
     """
     .. admonition:: Description
 
-        Full order model that solves the PDE with given boundary conditions and computes the solutions and its gradient. 
-    
+        Full order model that solves the PDE with given boundary conditions and computes the solutions and its gradient.
+
     :param mesh: Path to the mesh file.
     :param bc_lower_plate: Dirichlet BC value for the lower plate.
     :param bc_upper_plate: Dirichlet BC value for the upper plate.
-    
+
     :returns:
         - **x** (``np.ndarray``) -- x coordinates of all mesh nodes.
         - **y** (``np.ndarray``) -- y coordinates of all mesh nodes.
@@ -110,13 +124,15 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         devnull = os.open(os.devnull, os.O_WRONLY)
         os.dup2(devnull, stdout_fd)
         os.close(devnull)
-        
-        domain, cell_tags, facet_tags = gmshio.read_from_msh(mesh, MPI.COMM_WORLD, 0, gdim=2)
-        
+
+        domain, cell_tags, facet_tags = gmshio.read_from_msh(
+            mesh, MPI.COMM_WORLD, 0, gdim=2
+        )
+
         # Restore stdout
         os.dup2(saved_stdout, stdout_fd)
         os.close(saved_stdout)
-        
+
         ## SOLVE FOR THE POTENTIAL DISTRIBUTION ##
 
         # Define finite element function space
@@ -157,15 +173,16 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         L = f * v * ufl.dx
 
         # Assemble the system
-         
-        problem = LinearProblem(a, L, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"})
-        uh = problem.solve()
 
+        problem = LinearProblem(
+            a, L, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+        )
+        uh = problem.solve()
 
         ## COMPUTE THE GRADIENT OF THE SOLUTION ##
 
         # Define the vector function space for the gradient
-        V_grad = fem.functionspace(domain, ("DG", 0, (domain.geometry.dim, )))
+        V_grad = fem.functionspace(domain, ("DG", 0, (domain.geometry.dim,)))
 
         # Define the trial and test functions for the vector space
         u_vec = ufl.TrialFunction(V_grad)
@@ -179,9 +196,10 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         L_grad = ufl.inner(grad_u, v_vec) * ufl.dx
 
         # Assemble the system
-        problem_grad = LinearProblem(a_grad, L_grad, petsc_options={"ksp_type": "preonly", "pc_type": "lu"})
+        problem_grad = LinearProblem(
+            a_grad, L_grad, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+        )
         grad_uh = problem_grad.solve()
-
 
         ## EXTRACT AND RETURN RELEVANT DATA ##
 
@@ -212,9 +230,11 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
             boundary_cells.append(connected_cell)
         grad_x_plate = grad_x[boundary_cells]
         grad_y_plate = grad_y[boundary_cells]
-        
+
         # Extract cell connectivity
-        cells = domain.topology.connectivity(domain.topology.dim, 0).array.reshape(-1, domain.geometry.dim + 1)
+        cells = domain.topology.connectivity(domain.topology.dim, 0).array.reshape(
+            -1, domain.geometry.dim + 1
+        )
 
         # Plot potential distribution and gradient components
         # from plot_solutions import plot
@@ -223,25 +243,50 @@ def fom(mesh: str, bc_lower_plate: float = 1.0, bc_upper_plate: float = 0.0) -> 
         # plot(x, y, cells, grad_y, title="Gradient Y Component", colorbar_label="Gradient Y", sharp_color_range=(-0.7, -0.5))
 
         # Extract the normal vectors the upper plate boundary with corresponding midpoints
-        normal_vectors_plate, midpoints_plate = compute_boundary_normals_and_midpoints(domain, boundary_facets)
+        normal_vectors_plate, midpoints_plate = compute_boundary_normals_and_midpoints(
+            domain, boundary_facets
+        )
 
         # Compute the normal derivative on the plate
-        normal_derivatives_plate = grad_x_plate * normal_vectors_plate[:,0] + grad_y_plate * normal_vectors_plate[:,1]
-        
-        return x, y, cells, potential, grad_x, grad_y, midpoints_plate, normal_derivatives_plate, normal_vectors_plate
+        normal_derivatives_plate = (
+            grad_x_plate * normal_vectors_plate[:, 0]
+            + grad_y_plate * normal_vectors_plate[:, 1]
+        )
+
+        return (
+            x,
+            y,
+            cells,
+            potential,
+            grad_x,
+            grad_y,
+            midpoints_plate,
+            normal_derivatives_plate,
+            normal_vectors_plate,
+        )
 
 
 def solvensave(mesh: str, data_folder: str = "test") -> None:
     """
     .. admonition:: Description
-        
+
         Full order model that solves the PDE and saves the output in an .h5 file.
-    
+
     :param mesh: path to the mesh file.
     :param data_folder: path to the data folder.
     """
     if mesh.is_file() and mesh.suffix == ".msh":
-        x, y, cells, potential, grad_x, grad_y, midpoints_plate, normal_derivatives_plate, normal_vectors_plate = fom(mesh) 
+        (
+            x,
+            y,
+            cells,
+            potential,
+            grad_x,
+            grad_y,
+            midpoints_plate,
+            normal_derivatives_plate,
+            normal_vectors_plate,
+        ) = fom(mesh)
         # Save the results in a .h5 file
         results_folder = Path(data_folder) / "results"
         base_name = os.path.splitext(os.path.basename(mesh))[0]
@@ -253,6 +298,8 @@ def solvensave(mesh: str, data_folder: str = "test") -> None:
             file.create_dataset("potential", data=potential)
             file.create_dataset("grad_x", data=grad_x)
             file.create_dataset("grad_y", data=grad_y)
-            file.create_dataset("normal_derivatives_plate", data=normal_derivatives_plate)
+            file.create_dataset(
+                "normal_derivatives_plate", data=normal_derivatives_plate
+            )
             file.create_dataset("midpoints_plate", data=midpoints_plate)
             file.create_dataset("normal_vectors_plate", data=normal_vectors_plate)

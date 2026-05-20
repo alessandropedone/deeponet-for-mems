@@ -2,8 +2,8 @@
 Evaluate a trained DeepONet surrogate model on a test dataset.
 
 Example usage::
-    
-    python -m src.surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential" 
+
+    python -m src.surrogate.evaluate --folder "test/test1" --model_path "models/potential1.keras" --target "potential"
 
 There are several optional arguments to customize the behavior:
 
@@ -19,15 +19,52 @@ There are several optional arguments to customize the behavior:
     Ensure that the seeds used for splitting and prediction are consistent with those used during training for reproducibility.
 """
 
+import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+import tensorflow as tf
+from .model import (
+    DenseNetwork,
+    FourierFeatures,
+    LogUniformFreqInitializer,
+    EinsumLayer,
+    DeepONet,
+)
+from .losses import masked_mse, masked_mae
+from .loader import load
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+import argparse
+
+
 def main():
     # Read input arguments
-    import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--folder", type=str, default="test", help="Path to the data folder to delete.")
-    parser.add_argument("--model_path", type=str, default="models/model.keras", help="Path to save the trained model.")
-    parser.add_argument("--splitting_seed", type=int, default=40, help="Random seed for data splitting.")
-    parser.add_argument("--target", choices=["potential", "normal_derivative"], default="potential", help="Target quantity to predict.")
-    parser.add_argument("--using_training_set", action="store_true", help="If set, divide the set into training, validation, and test sets as in the training script.")
+    parser.add_argument(
+        "--folder", type=str, default="test", help="Path to the data folder to delete."
+    )
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default="models/model.keras",
+        help="Path to save the trained model.",
+    )
+    parser.add_argument(
+        "--splitting_seed", type=int, default=40, help="Random seed for data splitting."
+    )
+    parser.add_argument(
+        "--target",
+        choices=["potential", "normal_derivative"],
+        default="potential",
+        help="Target quantity to predict.",
+    )
+    parser.add_argument(
+        "--using_training_set",
+        action="store_true",
+        help="If set, divide the set into training, validation, and test sets as in the training script.",
+    )
 
     args = parser.parse_args()
     data_folder = args.folder
@@ -36,14 +73,10 @@ def main():
     model_path = args.model_path
     training_set_flag = args.using_training_set
 
-    import os
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-    os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-
     # Import coordinates dataset and solutions
-    from .loader import load
-    import numpy as np
-    mu, x, y, potential, x_plate, y_plate, normal_derivatives_plate = load(data_folder=data_folder)
+    mu, x, y, potential, x_plate, y_plate, normal_derivatives_plate = load(
+        data_folder=data_folder
+    )
 
     if target == "potential":
         x = np.stack((x, y), axis=2)
@@ -54,12 +87,13 @@ def main():
 
     if training_set_flag:
         # Split the dataset into training, validation, and test sets as in the training script
-        from sklearn.model_selection import train_test_split
         ns = mu.shape[0]
         idx = np.arange(ns)
         idx_trainval, idx_test = train_test_split(idx, test_size=0.2, random_state=seed)
         # Split train+val indices into train and val sets
-        idx_train, idx_val = train_test_split(idx_trainval, test_size=0.2, random_state=seed)
+        idx_train, idx_val = train_test_split(
+            idx_trainval, test_size=0.2, random_state=seed
+        )
         # Use indices to split the arrays along the first dimension
         mu_train, mu_val, mu_test = mu[idx_train], mu[idx_val], mu[idx_test]
         x_train, x_val, x_test = x[idx_train], x[idx_val], x[idx_test]
@@ -70,25 +104,24 @@ def main():
         y_test = y
 
     # Load the trained model
-    import tensorflow as tf
-    from .model import DenseNetwork, FourierFeatures, LogUniformFreqInitializer, EinsumLayer, DeepONet
-    from .losses import masked_mse, masked_mae
     model = tf.keras.models.load_model(
-        model_path, 
+        model_path,
         custom_objects={
-            "DenseNetwork": DenseNetwork, 
-            'FourierFeatures': FourierFeatures, 
-            'LogUniformFreqInitializer': LogUniformFreqInitializer, 
-            'EinsumLayer': EinsumLayer, 
-            'DeepONet': DeepONet,
-            'masked_mse': masked_mse,
-            'masked_mae': masked_mae,
-            })
+            "DenseNetwork": DenseNetwork,
+            "FourierFeatures": FourierFeatures,
+            "LogUniformFreqInitializer": LogUniformFreqInitializer,
+            "EinsumLayer": EinsumLayer,
+            "DeepONet": DeepONet,
+            "masked_mse": masked_mse,
+            "masked_mae": masked_mae,
+        },
+    )
     print("\033[38;2;0;175;6m\n\nLoaded surrogate model summary.\033[0m")
     model.summary()
 
     print("\033[38;2;0;175;6m\n\nEvaluating the model on the test set...\033[0m")
     model.evaluate([mu_test, x_test], y_test)
+
 
 if __name__ == "__main__":
     main()
