@@ -48,7 +48,7 @@ python -m src.surrogate.train --folder "test/test1" --model_path "models/potenti
 python -m src.surrogate.train --folder "test/test1" --model_path "models/derivative.keras" --target "normal_derivative"
 ```
 
-You are also able exploit a GPU if you have one, but you need to fulfill the (CUDA) requirements by modifying the environment by yourself (which could not be a straightforward task). For example, you may want to run in the terminal something like:
+You are also able exploit a GPU if you have one, but you need to fulfill the (CUDA) requirements by modifying the environment by yourself (which could not be a straightforward task and could cause warnings if not properly set). For example, you may want to run in the terminal something like:
 ```bash
 mamba activate env-name
 mamba install cuda-cudart cuda-version=12 -y
