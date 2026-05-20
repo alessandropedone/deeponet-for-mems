@@ -156,10 +156,10 @@ def main():
             if "ae" in file:
                 del file["ae"]
             file["ae"] = np.abs(y_pred[0][nan_mask] - file["potential"][:])
-            plot_potential(file, postpone_show=True, zoom=[4, 15, 15], center_points=[(0,0), (-50,0), (50,0)])
-            plot_potential(file, postpone_show=True, zoom=[4, 15, 15], center_points=[(0,0), (-50,0), (50,0)], error = True, error_type='ae')
-            plot_potential(file, postpone_show=True, zoom=[4, 15, 15], center_points=[(0,0), (-50,0), (50,0)], error = True, error_type='se')
-            plot_potential(file, postpone_show=True, zoom=[4, 15, 15], center_points=[(0,0), (-50,0), (50,0)], pred = True)
+            plot_potential(file, postpone_show=True, zoom=[1, 15, 15], center_points=[(0,0), (-50,0), (50,0)])
+            plot_potential(file, postpone_show=True, zoom=[1, 15, 15], center_points=[(0,0), (-50,0), (50,0)], error = True, error_type='ae')
+            plot_potential(file, postpone_show=True, zoom=[1, 15, 15], center_points=[(0,0), (-50,0), (50,0)], error = True, error_type='se')
+            plot_potential(file, postpone_show=True, zoom=[1, 15, 15], center_points=[(0,0), (-50,0), (50,0)], pred = True)
             plt.show()
 
     elif target == "normal_derivative":
